@@ -1,6 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState } from "react"; 
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import { CustomButton, CustomInput } from "../components";
 import { setNickname } from "../lib/userSlice";
@@ -15,11 +16,27 @@ const Home = () => {
     navigate('/main')
   }
 
+  const neonAnimation = {
+    initial: { textShadow: '0 0 4px #fff, 0 0 10px #fff, 0 0 30px #3838c5, 0 0 50px #3838c5, 0 0 70px #3838c5, 0 0 90px #3838c5' },
+    animate: {
+      textShadow: [
+        '0 0 4px #fff, 0 0 10px #fff, 0 0 30px #3838c5, 0 0 50px #3838c5, 0 0 70px #3838c5, 0 0 90px #3838c5',
+        '0 0 2px #fff, 0 0 5px #fff, 0 0 15px #3838c5, 0 0 25px #3838c5, 0 0 35px #3838c5, 0 0 45px #3838c5',
+      ],
+      transition: { duration: 1, repeat: Infinity, repeatType: 'mirror' },
+    },
+  };
+
   return (
     <div className="flex flex-col h-screen w-full md:w-[60%] md:m-auto bg-black text-white items-center justify-center">
-      <div className="denver-regular text-8xl md:text-9xl uppercase my-10">
+      <motion.div 
+        className="denver-regular text-8xl md:text-9xl uppercase my-10"
+        initial="initial"
+        animate="animate"
+        variants={neonAnimation}
+      >
         Line
-      </div>
+      </motion.div>
       <div className="flex flex-col">
         <CustomInput 
             placeholder="Your Nickname..."
