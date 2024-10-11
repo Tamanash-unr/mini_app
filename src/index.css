@@ -10,6 +10,10 @@ body {
 html,body{margin:0;padding:0;}
 h1,p{margin:0 0 1em}
 
+#root{
+  background-color: #0f0a0a;
+}
+
 /* Ubuntu Font */
 
 .ubuntu-regular {

@@ -16,7 +16,7 @@ const Home = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen w-full md:w-[60%] bg-black text-white items-center justify-center">
+    <div className="flex flex-col h-screen w-full md:w-[60%] md:m-auto bg-black text-white items-center justify-center">
       <div className="denver-regular text-8xl md:text-9xl uppercase my-10">
         Line
       </div>
