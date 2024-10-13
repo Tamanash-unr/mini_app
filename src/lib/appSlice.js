@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     currentTab: 'dashboard',
     coinValue: 2000,
+    earnTab: 'tasks',
 }
 
 export const appSlice = createSlice({
@@ -14,10 +15,13 @@ export const appSlice = createSlice({
         },
         updateCoins: (state, action) => {
             state.coinValue += action.payload
-        }
+        },
+        setEarnTab: (state, action) => {
+            state.earnTab = action.payload
+        },
     } 
 })
 
-export const { setCurrentTab, updateCoins } = appSlice.actions
+export const { setCurrentTab, updateCoins, setEarnTab } = appSlice.actions
 
 export default appSlice.reducer

@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <motion.nav 
-        className="fixed bottom-0 z-20 rounded-t-3xl md:rounded-t-full flex items-center justify-between text-xl px-4 bg-black w-full h-16 md:w-[60%]"
+        className="fixed bottom-0 z-20 rounded-t-3xl md:rounded-t-full flex items-center justify-between text-xl px-4 bg-black w-full h-20 md:w-[60%]"
         transition={enterAnimation}
         animate={{
             y:[100, 1]
@@ -34,19 +34,22 @@ const Navbar = () => {
     >
         <TabButton
             icon={icons.Home} 
-            iconStyle="w-[25px] md:w-[30px] h-[25px] md:h-[30px]"
-            buttonStyle="p-2 w-full h-full flex justify-center items-center"
+            iconStyle="w-[22px] md:w-[30px] h-[22px] md:h-[30px]"
+            buttonStyle="p-2 mt-2 w-full h-full flex flex-col justify-center items-center"
             onClick={() => dispatch(setCurrentTab("dashboard"))}
-
+            text="Home"
+            textStyle="ubuntu-bold text-sm my-1"
         />
         <TabButton 
             icon={icons.Coins} 
-            iconStyle="w-[25px] md:w-[30px] h-[25px] md:h-[30px]"
-            buttonStyle="p-2 w-full h-full flex justify-center items-center"
+            iconStyle="w-[22px] md:w-[30px] h-[22px] md:h-[30px]"
+            buttonStyle="p-2 mt-2 w-full h-full flex flex-col justify-center items-center"
             onClick={() => dispatch(setCurrentTab("coins"))}
+            text="Earn"
+            textStyle="ubuntu-bold text-sm my-1"
         />
         <motion.div 
-            className="relative flex justify-center w-48 mx-6 md:mx-auto md:w-1/2 h-full"
+            className="relative flex justify-center w-48 mx-10 md:mx-auto md:w-1/2 h-full"
             transition={bounceAnimation}
             animate={{
                 y: ["15%", "-15%"],
@@ -60,16 +63,20 @@ const Navbar = () => {
             />
         </motion.div>
         <TabButton 
-            icon={icons.Store} 
-            iconStyle="w-[25px] md:w-[30px] h-[25px] md:h-[30px]"
-            buttonStyle="p-2 w-full h-full flex justify-center items-center"
+            icon={icons.Friends} 
+            iconStyle="w-[22px] md:w-[30px] h-[22px] md:h-[30px]"
+            buttonStyle="p-2 mt-2 w-full h-full flex flex-col justify-center items-center"
             onClick={() => dispatch(setCurrentTab("store"))}
+            text="Friends"
+            textStyle="ubuntu-bold text-sm my-1"
         />
         <TabButton 
-            icon={icons.Profile} 
-            iconStyle="w-[25px] md:w-[30px] h-[25px] md:h-[30px]"
-            buttonStyle="p-2 w-full h-full flex justify-center items-center"
+            icon={icons.Wallet} 
+            iconStyle="w-[22px] md:w-[30px] h-[22px] md:h-[30px]"
+            buttonStyle="p-2 mt-2 w-full h-full flex flex-col justify-center items-center"
             onClick={() => dispatch(setCurrentTab("profile"))}
+            text="Wallet"
+            textStyle="ubuntu-bold text-sm my-1"
         />
     </motion.nav>
   )

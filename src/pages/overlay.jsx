@@ -10,7 +10,7 @@ import { gifs } from "../constants"
 
 
 const Overlay = () => {
-    const nickname = useSelector((state) => state.user.nickname)
+    // const nickname = useSelector((state) => state.user.nickname)
     const currentTab = useSelector((state) => state.app.currentTab)
 
     const body = {
@@ -23,10 +23,10 @@ const Overlay = () => {
     console.log(body[currentTab])
 
   return (
-    <div className="relative text-white md:w-[60%] md:m-auto">
-        <div className="fixed z-20 flex items-center text-xl p-4 top-0 bg-black w-full h-16 ubuntu-bold md:w-[60%]">
+    <div className="relative text-white md:w-[60%] md:m-auto overflow-hidden">
+        {/* <div className="fixed z-20 flex items-center text-xl p-4 top-0 bg-black w-full h-16 ubuntu-bold md:w-[60%]">
             Welcome! {nickname}
-        </div>
+        </div> */}
         <img src={gifs.stars_a} className='h-full md:w-[60%] fixed z-0'/>
         {
             body[currentTab]
