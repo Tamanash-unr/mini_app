@@ -5,7 +5,7 @@ const Game = () => {
     const [items, setItems] = useState([])
     const [score, setScore] = useState(0);
     const itemSize = 25;
-    const playerSize = 150;
+    const playerSize = 200;
     
     const handleKeyPress = (evt) => {
         if(evt.key === 'ArrowLeft'){
@@ -84,13 +84,13 @@ const Game = () => {
     }, [playerPosition, score])
 
     useEffect(() => {
-        const itemInterval = setInterval(createItem, 5000);
+        const itemInterval = setInterval(createItem, 1000);
         return () => clearInterval(itemInterval)
     }, [])
 
     return (
         //Game Container
-        <div className="relative w-screen h-screen overflow-hidden bg-[#d1c7c7]">
+        <div className="relative m-auto md:w-[60%] h-screen overflow-hidden bg-[#d1c7c7]">
             {/* Score Div */}
             <div>Score: {score}</div>
 

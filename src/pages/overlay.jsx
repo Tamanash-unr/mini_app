@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux"
 
-import { Navbar } from "../components"
+import { Navbar, WIP } from "../components"
 
 import Dashboard from "./dashboard"
 import CoinPage from "./coinPage"
 import Store from "./store"
 import Profile from "./profile"
+import Wip from "./wip"
 import { gifs } from "../constants"
 
 
@@ -17,7 +18,8 @@ const Overlay = () => {
         dashboard: <Dashboard />,
         coins: <CoinPage />,
         store: <Store />,
-        profile: <Profile />
+        profile: <Profile />,
+        wip: <Wip />,
     }
 
     console.log(body[currentTab])

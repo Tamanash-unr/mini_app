@@ -5,6 +5,7 @@ const Coins = "/assets/icons/coins.png";
 const Wallet = "/assets/icons/wallet.png";
 const Placeholder = "/assets/icons/placeholder.png";
 const Gamepad = "/assets/icons/gamepad.png";
+const Gear = "/assets/icons/arrows.png"
 
-export default {Home, Store, Coins, Wallet, Placeholder, Gamepad, Friends}
+export default {Home, Store, Coins, Wallet, Placeholder, Gamepad, Friends, Gear}
 
