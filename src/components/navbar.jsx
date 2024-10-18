@@ -69,7 +69,7 @@ const Navbar = () => {
             icon={icons.Friends} 
             iconStyle="w-[22px] md:w-[30px] h-[22px] md:h-[30px]"
             buttonStyle="p-2 mt-2 w-full h-full flex flex-col justify-center items-center"
-            onClick={() => dispatch(setCurrentTab("store"))}
+            onClick={() => dispatch(setCurrentTab("friends"))}
             text="Friends"
             textStyle="ubuntu-bold text-sm my-1"
         />
@@ -77,7 +77,7 @@ const Navbar = () => {
             icon={icons.Wallet} 
             iconStyle="w-[22px] md:w-[30px] h-[22px] md:h-[30px]"
             buttonStyle="p-2 mt-2 w-full h-full flex flex-col justify-center items-center"
-            onClick={() => dispatch(setCurrentTab("profile"))}
+            onClick={() => dispatch(setCurrentTab("wallet"))}
             text="Wallet"
             textStyle="ubuntu-bold text-sm my-1"
         />

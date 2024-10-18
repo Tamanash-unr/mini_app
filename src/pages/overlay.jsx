@@ -4,8 +4,8 @@ import { Navbar } from "../components"
 
 import Dashboard from "./dashboard"
 import CoinPage from "./coinPage"
-import Store from "./store"
-import Profile from "./profile"
+import Friends from "./friends"
+import Wallet from "./wallet"
 import Wip from "./wip"
 import { gifs } from "../constants"
 
@@ -16,8 +16,8 @@ const Overlay = () => {
     const body = {
         dashboard: <Dashboard />,
         coins: <CoinPage />,
-        store: <Store />,
-        profile: <Profile />,
+        friends: <Friends />,
+        wallet: <Wallet />,
         wip: <Wip />,
     }
 
