@@ -1,9 +1,41 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
+
 import CustomButton from './customButton'
 
-const Card = ({ cardSyle, contentStyle, title, titleStyle, subtitle, subtitleStyle, btnStyle, btnTxt, txtStyle, onExecute }) => {
+const Card = ({ cardSyle, contentStyle, title, titleStyle, subtitle, subtitleStyle, btnStyle, btnTxt, txtStyle, onExecute, childIndex = 1 }) => {
+  
+  const cardRef = useRef(null)
+
+  // const elementIsVisibleInViewport = (elem, partiallyVisible = false) => {
+  //   const { top, left, bottom, right } = elem.getBoundingClientRect();
+  //   const { innerHeight, innerWidth } = window;
+  //   return partiallyVisible
+  //     ? ((top > 0 && top < innerHeight) ||
+  //         (bottom > 0 && bottom < innerHeight)) &&
+  //         ((left > 0 && left < innerWidth) || (right > 0 && right < innerWidth))
+  //     : top >= 0 && left >= 0 && bottom <= innerHeight && right <= innerWidth;
+  // };
+
+  // useEffect(()=>{
+  //   if(elementIsVisibleInViewport(cardRef.current) === false){
+  //     childIndex = 1
+  //   }
+  // },[])
+
   return (
-    <div className={`flex items-center justify-between w-full p-4 bg-black/75 rounded-xl my-2 ${cardSyle}`}>
+    <motion.div 
+      className={`flex items-center justify-between w-full p-4 bg-black/75 rounded-xl my-2 ${cardSyle}`}
+      ref={cardRef}
+      initial={{ x: -500, opacity: 0 }}
+      animate={{ x: 1, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{
+        duration: 0.5,
+        delay: 0.2 * childIndex,
+        ease: "easeOut"
+      }}
+    >
         <div className={`ubuntu-medium text-xl ${contentStyle}`}>
             <h2 className={`${titleStyle}`}>{title}</h2>
             <h3 className={`${subtitleStyle}`}>{subtitle}</h3>
@@ -14,7 +46,7 @@ const Card = ({ cardSyle, contentStyle, title, titleStyle, subtitle, subtitleSty
             textStyle={txtStyle}
             onClick={onExecute}
         />
-    </div>
+    </motion.div>
   )
 }
 

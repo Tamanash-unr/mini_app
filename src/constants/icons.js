@@ -3,9 +3,10 @@ const Store = "/assets/icons/store.png";
 const Friends = "/assets/icons/friends.png";
 const Coins = "/assets/icons/coins.png";
 const Wallet = "/assets/icons/wallet.png";
-const Placeholder = "/assets/icons/placeholder.png";
+const Placeholder = "/assets/icons/c_edit.png";
 const Gamepad = "/assets/icons/gamepad.png";
-const Gear = "/assets/icons/arrows.png"
+const Gear = "/assets/icons/arrows.png";
+const Pickaxe = "/assets/icons/pickaxe.png";
 
-export default {Home, Store, Coins, Wallet, Placeholder, Gamepad, Friends, Gear}
+export default {Home, Store, Coins, Wallet, Placeholder, Gamepad, Friends, Gear, Pickaxe}
 
