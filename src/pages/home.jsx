@@ -11,7 +11,7 @@ const Home = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const user = useSelector(state => state.user.data)
+    const user = useSelector(state => state.user.test)
 
   const doOnClick = () => {
     dispatch(setNickname(name))
@@ -39,7 +39,7 @@ const Home = () => {
       >
         Line
       </motion.div>
-      <p>
+      <p className="w-full text-wrap">
         {user}
       </p>
       <div className="flex flex-col">
