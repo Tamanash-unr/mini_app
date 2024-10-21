@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react"; 
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -10,6 +10,8 @@ const Home = () => {
     const [name, setName] = useState('')
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const user = useSelector(state => state.user.data)
 
   const doOnClick = () => {
     dispatch(setNickname(name))
@@ -37,6 +39,9 @@ const Home = () => {
       >
         Line
       </motion.div>
+      <p>
+        {user}
+      </p>
       <div className="flex flex-col">
         <CustomInput 
             placeholder="Your Nickname..."

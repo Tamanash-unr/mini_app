@@ -4,6 +4,7 @@ const initialState = {
     id: "",
     nickname: "",
     friendsCount: 0,
+    data: null,
 }
 
 export const userSlice = createSlice({
@@ -15,10 +16,13 @@ export const userSlice = createSlice({
         },
         setId: (state, action) => {
             state.id = action.payload
-        }
+        },
+        setUserData: (state, action) => {
+            state.data = action.payload
+        },
     }
 })
 
-export const { setNickname, setId } = userSlice.actions
+export const { setNickname, setId, setUserData } = userSlice.actions
 
 export default userSlice.reducer
