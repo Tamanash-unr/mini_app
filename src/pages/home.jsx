@@ -39,8 +39,10 @@ const Home = () => {
       >
         Line
       </motion.div>
-      <p className="w-full text-wrap">
-        {user}
+      <p className="w-[60%] text-wrap">
+        {
+          typeof user === "object" ? JSON.stringify(user) : user
+        }
       </p>
       <div className="flex flex-col">
         <CustomInput 
