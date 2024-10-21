@@ -13,7 +13,7 @@ function App() {
     tg.ready()
 
     if(tg.initData) {
-      dispatch(setUserData(tg.initData))
+      dispatch(setUserData(tg.initData.user))
     }
   })  
   return (
