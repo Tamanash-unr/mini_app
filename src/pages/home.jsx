@@ -11,7 +11,7 @@ const Home = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const user = useSelector(state => state.user.test)
+    const user = useSelector(state => state.user.data)
 
   const doOnClick = () => {
     dispatch(setNickname(name))

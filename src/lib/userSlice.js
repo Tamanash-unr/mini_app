@@ -5,16 +5,13 @@ const initialState = {
     nickname: "",
     friendsCount: 0,
     data: {
-        is_bot: false,
         first_name: '',
         last_name: '',
         username: '',
         is_premium: false,
         photo_url: '',
-        allows_write_to_pm: false,
         language_code: ''
     },
-    test: null,
 }
 
 export const userSlice = createSlice({
@@ -28,8 +25,7 @@ export const userSlice = createSlice({
             state.id = action.payload
         },
         setUserData: (state, action) => {
-            // state.data = {...action.payload}
-            state.test = action.payload
+            state.data = {...action.payload}
         },
     }
 })
