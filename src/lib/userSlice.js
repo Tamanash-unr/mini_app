@@ -5,13 +5,14 @@ const initialState = {
     nickname: "",
     friendsCount: 0,
     data: {
-        isBot: false,
-        firstName: '',
-        lastName: '',
-        userName: '',
+        is_bot: false,
+        first_name: '',
+        last_name: '',
+        username: '',
         is_premium: false,
         photo_url: '',
         allows_write_to_pm: false,
+        language_code: ''
     },
     test: null,
 }
@@ -27,14 +28,7 @@ export const userSlice = createSlice({
             state.id = action.payload
         },
         setUserData: (state, action) => {
-            // state.id = action.payload.id;
-            // state.data.firstName = action.payload.first_name;
-            // state.data.lastName = action.payload.last_name;
-            // state.data.userName = action.payload.username;
-            // state.data.isBot = action.payload.is_bot;
-            // state.data.is_premium = action.payload.is_premium;
-            // state.data.allows_write_to_pm = action.payload.allows_write_to_pm;
-            // state.data.photo_url = action.payload.photo_url;
+            state.data = {...action.payload}
             state.test = action.payload
         },
     }

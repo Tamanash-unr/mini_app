@@ -12,8 +12,8 @@ function App() {
     const tg = window.Telegram.WebApp;
     tg.ready()
 
-    if(tg.initData) {
-      dispatch(setUserData(tg.initData.user))
+    if(tg.initDataUnsafe.user) {
+      dispatch(setUserData(tg.initDataUnsafe.user))
     }
   })  
   return (
