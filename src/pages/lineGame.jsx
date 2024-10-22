@@ -11,6 +11,9 @@ const LineGame = () => {
         dataUrl: "build/new diasble.data",
         frameworkUrl: "build/new diasble.framework.js",
         codeUrl: "build/new diasble.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        productName: "web3",
+        productVersion: "1.0.2",
     })
 
     const navigate = useNavigate();
