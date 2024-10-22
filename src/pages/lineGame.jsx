@@ -7,10 +7,10 @@ import { icons } from '../constants';
 
 const LineGame = () => {
     const { unityProvider, unload, addEventListener, removeEventListener, isLoaded, loadingProgression } = useUnityContext({
-        loaderUrl: "build/new diasble.loader.js",
-        dataUrl: "build/new diasble.data",
-        frameworkUrl: "build/new diasble.framework.js",
-        codeUrl: "build/new diasble.wasm",
+        loaderUrl: "build/new_diasble.loader.js",
+        dataUrl: "build/new_diasble.data",
+        frameworkUrl: "build/new_diasble.framework.js",
+        codeUrl: "build/new_diasble.wasm",
         streamingAssetsUrl: "StreamingAssets",
         productName: "web3",
         productVersion: "1.0.2",
