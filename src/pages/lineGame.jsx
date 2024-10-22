@@ -71,7 +71,7 @@ const LineGame = () => {
      <div className='flex justify-center w-screen bg-slate-950'>
             <div className={`flex flex-col items-center justify-center w-screen h-screen ${isLoaded ? 'invisible' : 'visible'}`}>
                 <img src={icons.Gear} alt="WIP..." className='w-20 h-20 animate-spin'/>
-                <div className='w-full md:w-[20%] my-6 h-5 rounded-full bg-white overflow-hidden'>
+                <div className='w-[75%] md:w-[20%] my-6 h-5 rounded-full bg-white overflow-hidden'>
                     <div className={`w-[${ Math.round(loadingProgression * 100)}%] h-full bg-sky-500`}/>
                 </div>
             </div>
@@ -80,7 +80,7 @@ const LineGame = () => {
                 className={`fixed z-0 w-screen h-screen md:w-[500px] md:mx-auto ${isLoaded ? 'visible' : 'invisible'}`}
                 devicePixelRatio={devicePixelRatio}
             />
-            <div className={`fixed transition-transform ease-in-out duration-500 bottom-0 ${ isGameOver ? 'translate-y-0' : 'translate-y-32'} flex justify-center md:w-[500px] pt-6 pb-4 z-10 bg-gradient-to-t from-slate-600`}>
+            <div className={`fixed transition-transform ease-in-out duration-500 bottom-0 ${ isGameOver ? 'translate-y-0' : 'translate-y-32'} flex justify-center w-full md:w-[500px] pt-6 pb-4 z-10 bg-gradient-to-t from-slate-600`}>
                 <CustomButton 
                     text="Go Back"
                     textStyle="m-0 ubuntu-bold"
