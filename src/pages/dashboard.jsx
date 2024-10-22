@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 import SlotCounter from 'react-slot-counter'
+import { useNavigate } from 'react-router-dom'
 
 import { icons, gifs } from '../constants'
 import { CustomButton } from '../components'
@@ -16,6 +17,7 @@ const Dashboard = ({  }) => {
     const [mineState, setMineState] = useState(0)
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const onStartMine = () => {
       if(mineState === 0){
@@ -62,7 +64,7 @@ const Dashboard = ({  }) => {
 
   return (
     <div className='relative w-full h-screen z-20 p-2 flex flex-col items-center'>
-      <div className="text-xl py-3 px-3 md:px-8 top-0 w-full h-16 ubuntu-bold text-2xl">
+      <div className="text-xl pt-2 px-3 md:px-8 top-0 w-full h-16 ubuntu-bold text-2xl">
           Welcome! {nickname}
       </div>
       <motion.div 
@@ -94,6 +96,7 @@ const Dashboard = ({  }) => {
             text="Play"
             textStyle="m-0 ubuntu-bold"
             buttonStyle="p-1 min-w-[100px]"
+            onClick={() => navigate('/game')}
           />
         </div>
       </div>

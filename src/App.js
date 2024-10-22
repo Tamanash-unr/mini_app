@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { Home, Game, Overlay } from "./pages";
+import { Home, LineGame, Overlay } from "./pages";
 import { setUserData } from "./lib/userSlice";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/game" element={<Game />} />
+      <Route path="/game" element={<LineGame />} />
       <Route path="/main" element={<Overlay />} />
     </Routes>
   );

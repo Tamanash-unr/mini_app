@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    id: "",
     nickname: "",
     friendsCount: 0,
     data: {
+        id: null,
         first_name: '',
         last_name: '',
         username: '',
