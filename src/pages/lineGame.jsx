@@ -7,13 +7,14 @@ import { icons } from '../constants';
 
 const LineGame = () => {
     const { unityProvider, unload, addEventListener, removeEventListener, isLoaded, loadingProgression } = useUnityContext({
-        loaderUrl: "build/new_diasble.loader.js",
-        dataUrl: "build/new_diasble.data",
-        frameworkUrl: "build/new_diasble.framework.js",
-        codeUrl: "build/new_diasble.wasm",
+        loaderUrl: "build/line_game.loader.js",
+        dataUrl: "build/line_game.data",
+        frameworkUrl: "build/line_game.framework.js",
+        codeUrl: "build/line_game.wasm",
         streamingAssetsUrl: "StreamingAssets",
         productName: "web3",
         productVersion: "1.0.2",
+        companyName: "digiframe"
     })
 
     const navigate = useNavigate();
@@ -44,17 +45,15 @@ const LineGame = () => {
     },[devicePixelRatio]);
 
     const handleGameOver = useCallback((score) => {
-        setIsGameOver(true)
-        setScore(score);
-        console.log("Game is Over" ,score)
+        if(!isGameOver){
+            setIsGameOver(true)
+            setScore(score);
+            removeEventListener("GameOver", handleGameOver)
+        }
     }, [])
 
     useEffect(() => {
         addEventListener("GameOver", handleGameOver)
-
-        setTimeout(() => {
-            setIsGameOver(true)
-        }, 30000)
 
         return () => {
             removeEventListener("GameOver", handleGameOver)
