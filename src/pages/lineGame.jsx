@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Unity, useUnityContext } from 'react-unity-webgl';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { CustomButton } from '../components';
 import { icons } from '../constants';
+import { updateEarnedFromGame } from '../lib/appSlice';
 
 const LineGame = () => {
     const { unityProvider, unload, addEventListener, removeEventListener, isLoaded, loadingProgression } = useUnityContext({
@@ -18,11 +20,11 @@ const LineGame = () => {
     })
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [devicePixelRatio, setDevicePixelRatio] = useState(window.devicePixelRatio);
 
     const [isGameOver, setIsGameOver] = useState(false);
-    const [score, setScore] = useState(0);
 
     useEffect(function () {
         // A function which will update the device pixel ratio of the Unity
@@ -47,10 +49,10 @@ const LineGame = () => {
     const handleGameOver = useCallback((score) => {
         if(!isGameOver){
             setIsGameOver(true)
-            setScore(score);
+            dispatch(updateEarnedFromGame(score))
             removeEventListener("GameOver", handleGameOver)
         }
-    }, [])
+    }, [dispatch, removeEventListener, isGameOver])
 
     useEffect(() => {
         addEventListener("GameOver", handleGameOver)
@@ -62,7 +64,6 @@ const LineGame = () => {
 
     const handleReturn = async () => {
         await unload();
-        console.log('score: ', score)
         navigate('/main')
     }
 

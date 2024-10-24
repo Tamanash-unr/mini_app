@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, {useCallback, useEffect} from 'react'
 import { motion } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 import SlotCounter from 'react-slot-counter'
@@ -6,54 +6,46 @@ import { useNavigate } from 'react-router-dom'
 
 import { icons, gifs } from '../constants'
 import { CustomButton } from '../components'
-import { updateCoins } from '../lib/appSlice'
+import { updateCoins, updateMineState, updateMinedCoins, updateBoostRate, updateEarnedFromGame } from '../lib/appSlice'
 
-const Dashboard = ({  }) => {
+const Dashboard = () => {
     const nickname = useSelector(state => state.user.nickname)
     const coins = useSelector(state => state.app.coinValue)
-
-    const [minedCoins, setMinedCoins] = useState(0)
-    const [boostRate, setBoostRate] = useState(0)
-    const [mineState, setMineState] = useState(0)
+    const minedCoins = useSelector(state => state.app.minedCoins)
+    const mineState = useSelector(state => state.app.mineState)
+    const boostRate = useSelector(state => state.app.boostRate)
+    const earned = useSelector(state => state.app.earnedFromGame)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    const hasEarnedFromGame = useCallback((value) => {
+      if (value > 0) {
+        dispatch(updateCoins(value))
+        dispatch(updateEarnedFromGame(0))
+      }
+    },[])
+
+    useEffect(()=>{
+      hasEarnedFromGame(earned)
+    }, [hasEarnedFromGame, earned])
+
     const onStartMine = () => {
       if(mineState === 0){
-        setMineState(1)
+        dispatch(updateMineState(1))
       }
 
       if(mineState === 1){
-        setBoostRate(2)
+        dispatch(updateBoostRate(2))
       }
 
       if(mineState === 3){
         dispatch(updateCoins(minedCoins))
-        setMinedCoins(0)
-        setBoostRate(0)
-        setMineState(0)
+        dispatch(updateMinedCoins(-1))
+        dispatch(updateBoostRate(0))
+        dispatch(updateMineState(0))
       }
     }
-
-    useEffect(() => {
-      if(mineState === 1){
-        const timer = setInterval(() => {
-          setMinedCoins(prevCoins => prevCoins + (boostRate > 0 ? 1 * boostRate : 1))
-        }, 1000)
-
-        const timeOutId = setTimeout(() => {
-          clearInterval(timer)
-          setBoostRate(0)
-          setMineState(3)
-        }, 60000)
-
-        return () => {
-          clearInterval(timer)
-          clearTimeout(timeOutId)
-        }
-      }
-    }, [mineState, boostRate])
 
     const mineTxt = {
       0: 'Start Mining',
@@ -64,7 +56,7 @@ const Dashboard = ({  }) => {
 
   return (
     <div className='relative w-full h-screen z-20 p-2 flex flex-col items-center'>
-      <div className="text-xl pt-2 px-3 md:px-8 top-0 w-full h-16 ubuntu-bold text-2xl">
+      <div className="flex items-center text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-2xl">
           Welcome! {nickname}
       </div>
       <motion.div 
@@ -77,10 +69,10 @@ const Dashboard = ({  }) => {
           ease: [0, 0.71, 0.2, 1.01]
         }}
       >
-          <img src={icons.Placeholder} alt='Coin_Placeholder' className='size-12 mx-3'/>
+          <img src={icons.Placeholder} alt='Coin_Placeholder' className='size-8 md:size-12 mx-2 md:mx-3'/>
           <SlotCounter 
             value={coins}
-            numberClassName='ubuntu-bold text-4xl md:text-5xl'
+            numberClassName='ubuntu-bold text-3xl md:text-5xl'
           />
       </motion.div>
       <img 
@@ -129,7 +121,7 @@ const Dashboard = ({  }) => {
           disabled={boostRate > 0 ? true : false}
         />
       </div>
-      <p className='ubuntu-bold my-4 md:text-lg'>
+      <p className='ubuntu-bold my-1.5 md:my-4 md:text-lg'>
           Mining Rate: &nbsp; 1/sec  &nbsp; Boost Rate: &nbsp; x{boostRate}
       </p>       
     </div>
