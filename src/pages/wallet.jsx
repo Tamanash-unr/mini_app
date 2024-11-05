@@ -10,7 +10,7 @@ const Wallet = () => {
   const [currentTab, setCurrentTab] = useState(0);
 
   return (
-    <div className='relative w-full h-screen z-20 p-2 flex flex-col items-center'>
+    <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
       <div className='flex flex-col ubuntu-bold text-3xl md:text-4xl my-10 md:my-20 text-center'>
         Get Real Crypto. Earn and Buy Tokens
         <CustomButton 

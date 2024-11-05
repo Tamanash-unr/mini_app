@@ -7,11 +7,11 @@ import { CustomButton, CustomInput } from "../components";
 import { setNickname } from "../lib/userSlice";
 
 const Home = () => {
-    const [name, setName] = useState('')
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+  const [name, setName] = useState('')
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-    const user = useSelector(state => state.user.data)
+  const user = useSelector(state => state.user.data)
 
   const doOnClick = () => {
     dispatch(setNickname(name))

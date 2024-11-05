@@ -9,11 +9,12 @@ const Gamepad = "/assets/icons/gamepad.png";
 const Gear = "/assets/icons/arrows.png";
 const Pickaxe = "/assets/icons/pickaxe.png";
 const Game = "/assets/icons/game-def.png";
+const Bolt = "/assets/icons/bolt.png";
 
 const attribute = {
     friendsPortrait: <a href="https://www.flaticon.com/free-icons/friends" title="friends icons">Friends icons created by Freepik - Flaticon</a>,
     pixkaxe: <a href="https://www.flaticon.com/free-icons/pickaxe" title="pickaxe icons">Pickaxe icons created by Iconjam - Flaticon</a>,
 }
 
-export default {Home, Store, Coins, Wallet, Placeholder, Gamepad, Friends, Gear, Pickaxe, FriendsPortrait, Game}
+export default {Home, Store, Coins, Wallet, Placeholder, Gamepad, Friends, Gear, Pickaxe, FriendsPortrait, Game, Bolt}
 

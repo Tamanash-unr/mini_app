@@ -10,7 +10,7 @@ const Friends = () => {
   const count = useSelector(state => state.user.friendsCount)
 
   return (
-    <div className='relative w-full h-screen z-20 p-2 flex flex-col items-center'>
+    <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
       <h1 className='ubuntu-bold text-2xl md:text-4xl'>
         <img src={icons.FriendsPortrait} alt='friendsPortrait..' className='mx-auto my-4 w-44 h-44 md:w-auto md:h-auto' />
         Invite Friends. Earn Rewards

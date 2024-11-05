@@ -55,7 +55,7 @@ const Dashboard = () => {
 
 
   return (
-    <div className='relative w-full h-screen z-20 p-2 flex flex-col items-center'>
+    <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
       <div className="flex items-center text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-2xl">
           Welcome! {nickname}
       </div>
@@ -122,7 +122,7 @@ const Dashboard = () => {
         />
       </div>
       <p className='ubuntu-bold my-1.5 md:my-4 md:text-lg'>
-          Mining Rate: &nbsp; 1/sec  &nbsp; Boost Rate: &nbsp; x{boostRate}
+          Mining Rate: &nbsp; 0.1/sec  &nbsp; Boost Rate: &nbsp; x{boostRate}
       </p>       
     </div>
   )

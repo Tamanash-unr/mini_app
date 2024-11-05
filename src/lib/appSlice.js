@@ -2,12 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     currentTab: 'dashboard',
-    coinValue: 2000,
+    coinValue: 0,
     earnTab: 'tasks',
     minedCoins: 0,
     mineState: 0,
     boostRate: 0,
-    earnedFromGame: 0
+    earnedFromGame: 0,
+    modalOpen: false,
+    modalChild: null,
+    dailyClaimed: false,
 }
 
 export const appSlice = createSlice({
@@ -32,7 +35,11 @@ export const appSlice = createSlice({
             if(value < 0){
                 state.minedCoins = 0
             } else {
-                state.minedCoins += (state.boostRate > 0 ? value * state.boostRate : value);
+                let coin = state.boostRate > 0 ? value * state.boostRate : value;
+                let final = state.minedCoins + coin
+                final = Math.floor(final * 100) / 100
+                
+                state.minedCoins = parseFloat(final.toFixed(2));
             }
         },
         updateBoostRate: (state, action) => { 
@@ -40,10 +47,17 @@ export const appSlice = createSlice({
         },
         updateEarnedFromGame: (state, action) => {
             state.earnedFromGame = action.payload
-        }
+        },
+        setModalOpen: (state, action) => {
+            state.modalOpen = action.payload.isOpen
+            state.modalChild = action.payload.modalChild
+        },
+        setDailyClaimed: (state, action) => {
+            state.dailyClaimed = action.payload
+        },
     } 
 })
 
-export const { setCurrentTab, updateCoins, setEarnTab, updateMineState, updateMinedCoins, updateBoostRate, updateEarnedFromGame } = appSlice.actions
+export const { setCurrentTab, updateCoins, setEarnTab, updateMineState, updateMinedCoins, updateBoostRate, updateEarnedFromGame, setModalOpen, setDailyClaimed } = appSlice.actions
 
 export default appSlice.reducer

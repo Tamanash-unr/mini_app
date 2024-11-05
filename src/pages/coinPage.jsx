@@ -17,7 +17,7 @@ const CoinPage = () => {
   }
 
   return (
-    <div className='relative flex flex-col items-center w-full h-dvh z-20'>
+    <div className='relative flex flex-col items-center w-full h-dvh z-10'>
       <p className='w-full text-white my-8 text-center denver-regular text-6xl'>
         EARN
       </p>

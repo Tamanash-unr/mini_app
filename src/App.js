@@ -24,7 +24,7 @@ function App() {
   useEffect(()=> {
     if(mineState === 1){
       const timer = setInterval(() => {
-        dispatch(updateMinedCoins(1))
+        dispatch(updateMinedCoins(0.1))
       }, 1000)
 
       const timeOutId = setTimeout(() => {
