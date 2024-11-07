@@ -56,7 +56,7 @@ const BoostPage = () => {
 
     return (
     <div className='flex justify-center items-center h-full'>
-        <div className='ubuntu-bold bg-zinc-900 rounded-xl w-[95%] md:w-[40%] min-h-[75%] md:max-h-[60%] overflow-hidden'>
+        <div className='ubuntu-bold bg-zinc-900 rounded-xl w-[95%] md:w-[40%] min-h-[75%] md:min-h-[60%] overflow-hidden'>
             <h1 className='text-2xl md:text-4x pt-6 px-8 flex items-center justify-between'>
                 Boost Rate
                 <button className='text-2xl hover:text-gray-400' onClick={onClose}>x</button>
