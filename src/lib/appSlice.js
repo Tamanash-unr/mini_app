@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     currentTab: 'dashboard',
-    coinValue: 0,
+    coinValue: 150,
     earnTab: 'tasks',
     minedCoins: 0,
     mineState: 0,
@@ -21,7 +21,8 @@ export const appSlice = createSlice({
             state.currentTab = action.payload
         },
         updateCoins: (state, action) => {
-            state.coinValue += action.payload
+            const coin = parseFloat((state.coinValue + action.payload).toFixed(2))
+            state.coinValue = coin
         },
         setEarnTab: (state, action) => {
             state.earnTab = action.payload

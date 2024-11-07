@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { icons, gifs } from '../constants'
 import { CustomButton } from '../components'
-import { updateCoins, updateMineState, updateMinedCoins, updateBoostRate, updateEarnedFromGame } from '../lib/appSlice'
+import { updateCoins, updateMineState, updateMinedCoins, updateEarnedFromGame, setModalOpen } from '../lib/appSlice'
 
 const Dashboard = () => {
     const nickname = useSelector(state => state.user.nickname)
@@ -36,13 +36,13 @@ const Dashboard = () => {
       }
 
       if(mineState === 1){
-        dispatch(updateBoostRate(2))
+        dispatch(setModalOpen({isOpen: true, modalChild: 'boostPage'}))
+        // dispatch(updateBoostRate(2))
       }
 
       if(mineState === 3){
         dispatch(updateCoins(minedCoins))
         dispatch(updateMinedCoins(-1))
-        dispatch(updateBoostRate(0))
         dispatch(updateMineState(0))
       }
     }
@@ -118,7 +118,6 @@ const Dashboard = () => {
           textStyle="ubuntu-bold mb-0 text-sm md:text-base"
           buttonStyle="flex items-center justify-center min-w-[90px] px-4"
           onClick={onStartMine}
-          disabled={boostRate > 0 ? true : false}
         />
       </div>
       <p className='ubuntu-bold my-1.5 md:my-4 md:text-lg'>

@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { Toaster } from "react-hot-toast"
 
 import { Navbar, Modal } from "../components"
 
@@ -9,6 +10,7 @@ import Friends from "./friends"
 import Wallet from "./wallet"
 import Wip from "./wip"
 import DailyRewards from "./dailyRewards"
+import BoostPage from "./boostPage"
 import { gifs } from "../constants"
 import { setModalOpen } from "../lib/appSlice"
 
@@ -35,6 +37,7 @@ const Overlay = () => {
 
     const modalBody = {
       dailyRewards: <DailyRewards />,
+      boostPage: <BoostPage />,
     }
 
   return (
@@ -47,6 +50,11 @@ const Overlay = () => {
             body[currentTab]
         }
         <Navbar />
+        <Toaster 
+          toastOptions={{
+            className: 'ubuntu-medium'
+          }}
+        />
     </div>
   )
 }

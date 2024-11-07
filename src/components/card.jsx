@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 import CustomButton from './customButton'
 
-const Card = ({ cardSyle, contentStyle, title, titleStyle, subtitle, subtitleStyle, btnStyle, btnTxt, txtStyle, onExecute, childIndex = 1 }) => {
+const Card = ({ cardSyle, cardIcon, contentStyle, title, titleStyle, subtitle, subtitleStyle, subIcon, subIconStyle, btnStyle, btnTxt, btnDisabled, txtStyle, onExecute, childIndex = 1 }) => {
   
   const cardRef = useRef(null)
 
@@ -38,13 +38,20 @@ const Card = ({ cardSyle, contentStyle, title, titleStyle, subtitle, subtitleSty
     >
         <div className={`ubuntu-medium text-xl ${contentStyle}`}>
             <h2 className={`${titleStyle}`}>{title}</h2>
-            <h3 className={`${subtitleStyle}`}>{subtitle}</h3>
+            <h3 className={`${subtitleStyle}`}>
+              {
+                subIcon && 
+                <img src={subIcon} alt="subIcon.." className={`${subIconStyle}`} />
+              }
+              {subtitle}
+            </h3>
         </div>
         <CustomButton 
             buttonStyle={btnStyle}
             text={btnTxt}
             textStyle={txtStyle}
             onClick={onExecute}
+            disabled={btnDisabled}
         />
     </motion.div>
   )

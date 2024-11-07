@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     nickname: "",
     friendsCount: 0,
+    boostLevel: 0,
     data: {
         id: null,
         first_name: '',
@@ -27,9 +28,12 @@ export const userSlice = createSlice({
         setUserData: (state, action) => {
             state.data = {...action.payload}
         },
+        updateBoostLevel: (state, action) => {
+            state.boostLevel = action.payload
+        },
     }
 })
 
-export const { setNickname, setId, setUserData } = userSlice.actions
+export const { setNickname, setId, setUserData, updateBoostLevel } = userSlice.actions
 
 export default userSlice.reducer

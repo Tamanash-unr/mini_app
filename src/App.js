@@ -29,7 +29,6 @@ function App() {
 
       const timeOutId = setTimeout(() => {
         clearInterval(timer)
-        dispatch(updateBoostRate(0))
         dispatch(updateMineState(3))
       }, 60000)
 
