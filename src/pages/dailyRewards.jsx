@@ -1,26 +1,40 @@
 import React, {useState} from 'react'
 import Confetti from 'react-confetti'
 import { motion } from 'framer-motion'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { CustomButton } from '../components'
 import { icons } from '../constants'
-import { setDailyClaimed, setModalOpen, updateCoins } from '../lib/appSlice'
+import { setDailyClaimed, setModalOpen, updateCoins, setLoading } from '../lib/appSlice'
+import { updateDailyClaim } from '../lib/firebase/firebase_api'
+import toast from 'react-hot-toast'
 
 const DailyRewards = ({  }) => {
     const [showConfetti, setShowConfetti] = useState(false)
-    const [dailyStreak, setDailyStreak] = useState(1)
-    const [claim, setClaim] = useState(false)
+    const dailyStreak = useSelector(state => state.app.dailyStreak)
+    const dailyClaim = useSelector(state => state.app.dailyClaimed)
+    const loading = useSelector(state => state.app.isLoading)
+
+    const uid = useSelector(state => state.user.data.id)
+    const coinsEarned = useSelector(state => state.app.coinValue)
 
     const dispatch = useDispatch();
 
-    const doOnClaim = () => {
+    const doOnClaim = async () => {
         const coins = dailyStreak > 0 ? dailyStreak * 50 : 25;
 
-        setShowConfetti(true);
-        setClaim(true);
-        dispatch(updateCoins(coins))
-        dispatch(setDailyClaimed(true))
+        const result = await updateDailyClaim(uid, {dailyStreak: dailyStreak+1, coinsEarned: coinsEarned+coins})
+        dispatch(setLoading(true))
+
+        if(result.status){
+            setShowConfetti(true);
+            dispatch(updateCoins(coins))
+            dispatch(setDailyClaimed(true))
+        } else {
+            toast.error("Failed to Update", {duration: 2500})
+        }
+        
+        dispatch(setLoading(false))
     }
 
     const onClaimComplete = () => {
@@ -92,7 +106,8 @@ const DailyRewards = ({  }) => {
                     textStyle="m-0 ubuntu-bold"
                     buttonStyle='mt-4'
                     onClick={doOnClaim}
-                    disabled={claim}
+                    isLoading={loading}
+                    disabled={dailyClaim}
                 />
             </div>
         </div>

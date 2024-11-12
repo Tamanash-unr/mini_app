@@ -14,7 +14,6 @@ import BoostPage from "./boostPage"
 import { gifs } from "../constants"
 import { setModalOpen } from "../lib/appSlice"
 
-
 const Overlay = () => {
     const currentTab = useSelector(state => state.app.currentTab)
     const daily = useSelector(state => state.app.dailyClaimed)
@@ -52,7 +51,12 @@ const Overlay = () => {
         <Navbar />
         <Toaster 
           toastOptions={{
-            className: 'ubuntu-medium'
+            className: 'ubuntu-medium',
+            style: {
+                background: '#1d1d1e',
+                color: 'white',
+            },
+            position: 'bottom-center'
           }}
         />
     </div>

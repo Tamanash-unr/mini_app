@@ -6,23 +6,35 @@ import { useNavigate } from 'react-router-dom'
 
 import { icons, gifs } from '../constants'
 import { CustomButton } from '../components'
-import { updateCoins, updateMineState, updateMinedCoins, updateEarnedFromGame, setModalOpen } from '../lib/appSlice'
+import { updateCoins, updateMineState, updateMinedCoins, updateEarnedFromGame, setModalOpen, setLoading } from '../lib/appSlice'
+import { updateEarnedCoins } from '../lib/firebase/firebase_api'
+import toast from 'react-hot-toast'
 
 const Dashboard = () => {
     const nickname = useSelector(state => state.user.nickname)
+    const name = useSelector(state => state.user.data.first_name)
+    const uid = useSelector(state => state.user.data.id)
     const coins = useSelector(state => state.app.coinValue)
     const minedCoins = useSelector(state => state.app.minedCoins)
     const mineState = useSelector(state => state.app.mineState)
     const boostRate = useSelector(state => state.app.boostRate)
+    const loading = useSelector(state => state.app.isLoading)
     const earned = useSelector(state => state.app.earnedFromGame)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const hasEarnedFromGame = useCallback((value) => {
+    const hasEarnedFromGame = useCallback(async (value) => {
       if (value > 0) {
-        dispatch(updateCoins(value))
-        dispatch(updateEarnedFromGame(0))
+        const total = parseFloat((coins + value).toFixed(2))
+        const result = await updateEarnedCoins(uid, total)
+
+        if(!result.status){
+          toast.error(result.message, {duration: 2500})
+        } else {
+          dispatch(updateCoins(value))
+          dispatch(updateEarnedFromGame(0))
+        }
       }
     },[])
 
@@ -30,20 +42,30 @@ const Dashboard = () => {
       hasEarnedFromGame(earned)
     }, [hasEarnedFromGame, earned])
 
-    const onStartMine = () => {
+    const onStartMine = async () => {
       if(mineState === 0){
         dispatch(updateMineState(1))
       }
 
       if(mineState === 1){
         dispatch(setModalOpen({isOpen: true, modalChild: 'boostPage'}))
-        // dispatch(updateBoostRate(2))
       }
 
       if(mineState === 3){
-        dispatch(updateCoins(minedCoins))
-        dispatch(updateMinedCoins(-1))
-        dispatch(updateMineState(0))
+        dispatch(setLoading(true))
+
+        const total = parseFloat((coins + minedCoins).toFixed(2))
+        const result = await updateEarnedCoins(uid, total)
+
+        if(!result.status){
+          toast.error(result.message, {duration: 2500})
+        } else {
+          dispatch(updateCoins(minedCoins))
+          dispatch(updateMinedCoins(-1))
+          dispatch(updateMineState(0))
+        }
+
+        dispatch(setLoading(false))
       }
     }
 
@@ -57,7 +79,7 @@ const Dashboard = () => {
   return (
     <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
       <div className="flex items-center text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-2xl">
-          Welcome! {nickname}
+          Welcome! {nickname === '' ? name : nickname}
       </div>
       <motion.div 
         className='flex w-full items-center justify-center mb-4'
@@ -118,6 +140,7 @@ const Dashboard = () => {
           textStyle="ubuntu-bold mb-0 text-sm md:text-base"
           buttonStyle="flex items-center justify-center min-w-[90px] px-4"
           onClick={onStartMine}
+          isLoading={loading}
         />
       </div>
       <p className='ubuntu-bold my-1.5 md:my-4 md:text-lg'>

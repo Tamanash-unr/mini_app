@@ -11,12 +11,30 @@ const initialState = {
     modalOpen: false,
     modalChild: null,
     dailyClaimed: false,
+    dailyStreak: 0,
+    isLoading: false,
 }
 
 export const appSlice = createSlice({
     name: 'app',
     initialState,
     reducers: {
+        initAppData: (state, action) => {
+            state.coinValue = action.payload.coinsEarned
+
+            if(action.payload.isMining){
+                state.mineState = 1
+            }
+
+            const today = new Date()
+            const lastLogin = new Date(action.payload.lastLoggedIn)
+
+            if(today.getDate() == lastLogin.getDate()){
+                state.dailyClaimed = true
+            }
+
+            state.dailyStreak = action.payload.dailyStreak
+        },
         setCurrentTab: (state, action) => {
             state.currentTab = action.payload
         },
@@ -38,7 +56,6 @@ export const appSlice = createSlice({
             } else {
                 let coin = state.boostRate > 0 ? value * state.boostRate : value;
                 let final = state.minedCoins + coin
-                final = Math.floor(final * 100) / 100
                 
                 state.minedCoins = parseFloat(final.toFixed(2));
             }
@@ -55,10 +72,26 @@ export const appSlice = createSlice({
         },
         setDailyClaimed: (state, action) => {
             state.dailyClaimed = action.payload
+            state.dailyStreak += 1
         },
+        setLoading: (state, action) => {
+            state.isLoading = action.payload
+        }
     } 
 })
 
-export const { setCurrentTab, updateCoins, setEarnTab, updateMineState, updateMinedCoins, updateBoostRate, updateEarnedFromGame, setModalOpen, setDailyClaimed } = appSlice.actions
+export const { 
+    setCurrentTab, 
+    updateCoins, 
+    setEarnTab, 
+    updateMineState, 
+    updateMinedCoins, 
+    updateBoostRate, 
+    updateEarnedFromGame, 
+    setModalOpen, 
+    setDailyClaimed,
+    setLoading,
+    initAppData 
+} = appSlice.actions
 
 export default appSlice.reducer

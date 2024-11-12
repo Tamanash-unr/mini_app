@@ -1,10 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react"; 
+import { useState, useEffect } from "react"; 
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Toaster, toast } from "react-hot-toast";
 
 import { CustomButton, CustomInput } from "../components";
-import { setNickname } from "../lib/userSlice";
+import { setLoading, initAppData } from "../lib/appSlice";
+import { setNickname, initUserData } from "../lib/userSlice";
+import { validateUser, createUser } from "../lib/firebase/firebase_api";
+import { icons } from "../constants"; 
 
 const Home = () => {
   const [name, setName] = useState('')
@@ -12,6 +16,31 @@ const Home = () => {
   const navigate = useNavigate()
 
   const user = useSelector(state => state.user.data)
+  const loading = useSelector(state => state.app.isLoading)
+
+  const doOnInit = async () => {
+    dispatch(setLoading(true))
+
+    const appData = await validateUser(user.id)
+
+    if(appData.status){
+      dispatch(initAppData(appData.data))
+      dispatch(initUserData(appData.data))
+    } else {
+      toast.error(appData.message, {
+        duration: 5000
+      })
+
+      const init = toast.loading("Creating User")
+      const newUser = await createUser(user)
+
+      newUser.status ? 
+      toast.success("User Created", {id: init, duration:5000}) : 
+      toast.error(`Failed: ${newUser.message}`, {id: init, duration:5000})
+    }
+
+    dispatch(setLoading(false))
+  }
 
   const doOnClick = () => {
     dispatch(setNickname(name))
@@ -29,6 +58,10 @@ const Home = () => {
     },
   };
 
+  useEffect(()=>{
+    doOnInit()
+  },[])
+
   return (
     <div className="flex flex-col h-screen w-full md:w-[60%] md:m-auto bg-black text-white items-center justify-center">
       <motion.div 
@@ -39,21 +72,39 @@ const Home = () => {
       >
         Line
       </motion.div>
-      <div className="flex flex-col">
-        <CustomInput 
-            placeholder="Your Nickname..."
-            value={name}
-            onChange={setName}
-            containerStyle="my-4"
-            inputStyle="text-lg"
-        />
-        <CustomButton 
-            text="Continue"
-            textStyle="ubuntu-bold w-full h-full flex items-center justify-center"
-            buttonStyle="w-1/2 h-12 m-auto"
-            onClick={doOnClick}
-        />
-      </div>
+      {
+        loading ? 
+        <div>
+          <img src={icons.Gear} alt="WIP..." className='w-12 h-12 animate-spin'/>
+        </div>
+        :
+        <div className="flex flex-col">
+          {/* <CustomInput 
+              placeholder="Your Nickname..."
+              value={name}
+              onChange={setName}
+              containerStyle="my-4"
+              inputStyle="text-lg"
+          />
+          <CustomButton 
+              text="Continue"
+              textStyle="ubuntu-bold w-full h-full flex items-center justify-center"
+              buttonStyle="w-1/2 h-12 m-auto"
+              onClick={doOnClick}
+          /> */}
+          Initializing...
+        </div>
+      }
+      <Toaster 
+        position="bottom-center"
+        toastOptions={{
+          className: 'ubuntu-medium',
+          style: {
+            background: '#1d1d1e',
+            color: 'white',
+          }
+        }}
+      />
     </div>
   )
 }

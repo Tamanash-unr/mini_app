@@ -34,11 +34,6 @@ const BoostPage = () => {
         if(coins < dummy.boostLevels[level]){
             return toast.error("Not enough Coins", {
                 duration: 2500,
-                position: 'bottom-center',
-                style: {
-                    background: '#1d1d1e',
-                    color: 'white',
-                }
             })
         }
 

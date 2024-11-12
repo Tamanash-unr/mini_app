@@ -19,6 +19,11 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+        initUserData: (state, action) => {
+            state.nickname = action.payload.nickname
+            state.friendsCount = action.payload.friendsCount
+            state.boostLevel = action.payload.boostLevel
+        },
         setNickname: (state, action) => {
             state.nickname = action.payload
         },
@@ -34,6 +39,6 @@ export const userSlice = createSlice({
     }
 })
 
-export const { setNickname, setId, setUserData, updateBoostLevel } = userSlice.actions
+export const { setNickname, setId, setUserData, updateBoostLevel, initUserData } = userSlice.actions
 
 export default userSlice.reducer

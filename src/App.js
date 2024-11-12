@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Home, LineGame, Overlay } from "./pages";
 import { setUserData } from "./lib/userSlice";
-import { updateBoostRate, updateMineState, updateMinedCoins } from "./lib/appSlice";
+import { updateMineState, updateMinedCoins } from "./lib/appSlice";
 
 function App() {
   const dispatch = useDispatch()
