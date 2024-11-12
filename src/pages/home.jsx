@@ -19,6 +19,10 @@ const Home = () => {
   const loading = useSelector(state => state.app.isLoading)
 
   const doOnInit = async () => {
+    if(!user.id){
+      return
+    }
+
     dispatch(setLoading(true))
 
     const appData = await validateUser(user.id)
@@ -60,7 +64,7 @@ const Home = () => {
 
   useEffect(()=>{
     doOnInit()
-  },[])
+  },[user])
 
   return (
     <div className="flex flex-col h-screen w-full md:w-[60%] md:m-auto bg-black text-white items-center justify-center">
