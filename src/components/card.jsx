@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
 import CustomButton from './customButton'
@@ -6,6 +6,7 @@ import CustomButton from './customButton'
 const Card = ({ cardSyle, cardIcon, contentStyle, title, titleStyle, subtitle, subtitleStyle, subIcon, subIconStyle, btnStyle, btnTxt, btnDisabled, txtStyle, onExecute, childIndex = 1 }) => {
   
   const cardRef = useRef(null)
+  const [loading, setLoading] = useState(false)
 
   // const elementIsVisibleInViewport = (elem, partiallyVisible = false) => {
   //   const { top, left, bottom, right } = elem.getBoundingClientRect();
@@ -50,8 +51,9 @@ const Card = ({ cardSyle, cardIcon, contentStyle, title, titleStyle, subtitle, s
             buttonStyle={btnStyle}
             text={btnTxt}
             textStyle={txtStyle}
-            onClick={onExecute}
+            onClick={() => onExecute(setLoading)}
             disabled={btnDisabled}
+            isLoading={loading}
         />
     </motion.div>
   )

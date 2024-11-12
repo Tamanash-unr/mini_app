@@ -1,6 +1,6 @@
 import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 
-import { db, auth } from "./firebaseConfig";
+import { db } from "./firebaseConfig";
 
 export const validateUser = async (userId) => {
     try {
@@ -87,6 +87,7 @@ export const updateDailyClaim = async (id, data) => {
             'appData.dailyStreak': data.dailyStreak,
             'appData.coinsEarned': data.coinsEarned,
             'appData.lastLoggedIn': Date().toString(),
+            updatedAt: Date().toString(),
         })
 
         return {
@@ -110,6 +111,32 @@ export const updateEarnedCoins = async (id, coinsEarned) => {
 
         await updateDoc(docRef, {
             'appData.coinsEarned': coinsEarned,
+            updatedAt: Date().toString(),
+        })
+
+        return {
+            status: true
+        }
+    } catch (error) {
+        return {
+            status: false,
+            message: error.message
+        }
+    }
+}
+
+export const updateBoostLevel = async (id, data) => {
+    try {
+        if(!id){
+            throw new Error("Invalid User")
+        }
+
+        const docRef = doc(db, 'users', (id).toString())
+
+        await updateDoc(docRef, {
+            'appData.coinsEarned': data.coins,
+            'appData.boostLevel': data.boost,
+            updatedAt: Date().toString(),
         })
 
         return {

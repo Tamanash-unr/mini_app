@@ -6,9 +6,11 @@ import { Card } from '../components'
 import { dummy, icons } from '../constants'
 import { setModalOpen, updateBoostRate, updateCoins, updateMineState } from '../lib/appSlice'
 import { updateBoostLevel } from '../lib/userSlice'
+import { updateBoostLevel as api_BoostLevel } from '../lib/firebase/firebase_api'
 
 const BoostPage = () => { 
     const currentBoost = useSelector(state => state.user.boostLevel)
+    const uid = useSelector(state => state.user.data.id)
     const coins = useSelector(state => state.app.coinValue)
     const dispatch = useDispatch()
 
@@ -30,22 +32,33 @@ const BoostPage = () => {
         return 'Unlock Previous'
     }
 
-    const onBoostLevelActivate = (level) =>{
+    const onBoostLevelActivate = async (level, loading) =>{
         if(coins < dummy.boostLevels[level]){
             return toast.error("Not enough Coins", {
                 duration: 2500,
             })
         }
 
-        if(parseInt(level) > 0){
-            const rate = parseFloat((1 + (0.15 * parseInt(level))).toFixed(2))
+        loading(true)
 
-            dispatch(updateBoostRate(rate))
-            dispatch(updateMineState(1))
-            dispatch(updateCoins(-(dummy.boostLevels[level])))
+        if(parseInt(level) > 0){            
+            const result = await api_BoostLevel(uid, {boost: level, coins: coins - dummy.boostLevels[level]})
+
+            if(result.status){
+                const rate = parseFloat((1 + (0.15 * parseInt(level))).toFixed(2))
+
+                dispatch(updateBoostRate(rate))
+                dispatch(updateMineState(1))
+                dispatch(updateCoins(-(dummy.boostLevels[level])))
+                dispatch(updateBoostLevel(parseInt(level)))
+            } else {
+                return toast.error(result.message, {
+                    duration: 2500,
+                })
+            }
         }
 
-        dispatch(updateBoostLevel(parseInt(level)))
+        loading(false)
         onClose()
     }
 
@@ -72,7 +85,7 @@ const BoostPage = () => {
                         txtStyle="flex justify-center items-center m-0 ubuntu-bold text-sm"
                         childIndex={index + 1}
                         btnDisabled={getBtnText(level) !== 'Activate' ? true : false}
-                        onExecute={() => onBoostLevelActivate(level)}
+                        onExecute={(loading) => onBoostLevelActivate(level, loading)}
                     />
                 ))
             }

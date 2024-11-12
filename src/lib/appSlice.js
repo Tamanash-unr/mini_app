@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     currentTab: 'dashboard',
-    coinValue: 150,
+    coinValue: 0,
     earnTab: 'tasks',
     minedCoins: 0,
     mineState: 0,
