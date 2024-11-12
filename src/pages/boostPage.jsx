@@ -42,7 +42,7 @@ const BoostPage = () => {
         loading(true)
 
         if(parseInt(level) > 0){            
-            const result = await api_BoostLevel(uid, {boost: level, coins: coins - dummy.boostLevels[level]})
+            const result = await api_BoostLevel(uid, {boost: parseInt(level), coins: coins - dummy.boostLevels[level]})
 
             if(result.status){
                 const rate = parseFloat((1 + (0.15 * parseInt(level))).toFixed(2))
