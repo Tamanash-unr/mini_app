@@ -34,7 +34,14 @@ export const createUser = async (data) => {
     try {
         if(!data.id){
             throw new Error("Invalid User Data")
-        }        
+        }    
+        
+        const docRef = doc(db, 'users', data.id)
+        const docSnapshot = await getDoc(docRef)
+
+        if(docSnapshot.exists()){
+            throw new Error("User Already Exists!")
+        }
 
         const docData = {
             firstName: data.first_name,

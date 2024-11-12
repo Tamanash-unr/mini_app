@@ -31,7 +31,13 @@ export const userSlice = createSlice({
             state.id = action.payload
         },
         setUserData: (state, action) => {
-            state.data = {...action.payload}
+            state.data.id = (action.payload.id).toString()
+            state.data.first_name = action.payload.first_name
+            state.data.last_name = action.payload.last_name
+            state.data.is_premium = action.payload.is_premium
+            state.data.username = action.payload.username
+            state.data.photo_url = action.payload.photo_url
+            state.data.language_code = action.payload.language_code
         },
         updateBoostLevel: (state, action) => {
             state.boostLevel = action.payload
