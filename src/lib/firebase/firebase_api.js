@@ -1,6 +1,6 @@
 import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 
-import { db } from "./firebaseConfig";
+import { db, auth } from "./firebaseConfig";
 
 export const validateUser = async (userId) => {
     try {
@@ -8,7 +8,7 @@ export const validateUser = async (userId) => {
             throw Error("Invalid User Id")
         }
 
-        const docRef = doc(db, 'users', userId)
+        const docRef = doc(db, 'users', (userId).toString())
         const docSnapshot = await getDoc(docRef)
 
         if(!docSnapshot.exists()){
@@ -36,7 +36,7 @@ export const createUser = async (data) => {
             throw new Error("Invalid User Data")
         }    
         
-        const docRef = doc(db, 'users', data.id)
+        const docRef = doc(db, 'users', (data.id).toString())
         const docSnapshot = await getDoc(docRef)
 
         if(docSnapshot.exists()){
@@ -62,7 +62,7 @@ export const createUser = async (data) => {
             }
         }
 
-        await setDoc(doc(db, "users", data.id), docData)
+        await setDoc(doc(db, "users", (data.id).toString()), docData)
 
         return {
             status: true
@@ -81,7 +81,7 @@ export const updateDailyClaim = async (id, data) => {
             throw new Error("Invalid User")
         }
 
-        const docRef = doc(db, 'users', id)
+        const docRef = doc(db, 'users', (id).toString())
 
         await updateDoc(docRef, {
             'appData.dailyStreak': data.dailyStreak,
@@ -90,7 +90,7 @@ export const updateDailyClaim = async (id, data) => {
         })
 
         return {
-            staus: true
+            status: true
         }
     } catch (error) {
         return {
@@ -106,14 +106,14 @@ export const updateEarnedCoins = async (id, coinsEarned) => {
             throw new Error("Invalid User")
         }
 
-        const docRef = doc(db, 'users', id)
+        const docRef = doc(db, 'users', (id).toString())
 
         await updateDoc(docRef, {
             'appData.coinsEarned': coinsEarned,
         })
 
         return {
-            staus: true
+            status: true
         }
     } catch (error) {
         return {

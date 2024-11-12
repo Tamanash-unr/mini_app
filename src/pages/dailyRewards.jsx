@@ -11,6 +11,7 @@ import toast from 'react-hot-toast'
 
 const DailyRewards = ({  }) => {
     const [showConfetti, setShowConfetti] = useState(false)
+    const [disabled, setDisabled] = useState(false)
     const dailyStreak = useSelector(state => state.app.dailyStreak)
     const dailyClaim = useSelector(state => state.app.dailyClaimed)
     const loading = useSelector(state => state.app.isLoading)
@@ -21,23 +22,25 @@ const DailyRewards = ({  }) => {
     const dispatch = useDispatch();
 
     const doOnClaim = async () => {
-        const coins = dailyStreak > 0 ? dailyStreak * 50 : 25;
-
-        const result = await updateDailyClaim(uid, {dailyStreak: dailyStreak+1, coinsEarned: coinsEarned+coins})
         dispatch(setLoading(true))
+        setDisabled(true)
 
+        const coins = dailyStreak > 0 ? dailyStreak * 50 : 25;
+        const result = await updateDailyClaim(uid, {dailyStreak: dailyStreak+1, coinsEarned: coinsEarned+coins})
+        
         if(result.status){
             setShowConfetti(true);
             dispatch(updateCoins(coins))
-            dispatch(setDailyClaimed(true))
         } else {
-            toast.error("Failed to Update", {duration: 2500})
+            toast.error(result.message, {duration: 2500})
+            setDisabled(false)
         }
         
         dispatch(setLoading(false))
     }
 
     const onClaimComplete = () => {
+        dispatch(setDailyClaimed(true))
         setShowConfetti(false)
         dispatch(setModalOpen({isOpen: false, modalChild: null}))
     }
@@ -107,7 +110,7 @@ const DailyRewards = ({  }) => {
                     buttonStyle='mt-4'
                     onClick={doOnClaim}
                     isLoading={loading}
-                    disabled={dailyClaim}
+                    disabled={disabled}
                 />
             </div>
         </div>

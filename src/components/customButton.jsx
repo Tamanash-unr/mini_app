@@ -5,7 +5,7 @@ const CustomButton = ({ buttonStyle, textStyle, text, subtext, onClick, isLoadin
     <button 
         className={`min-w-[150px] min-h-[20px] rounded-full bg-sky-500 hover:bg-green-500 p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-sky-500 ${buttonStyle ?? ''}`} 
         onClick={() => onClick()}
-        disabled={isLoading || disabled}
+        disabled={isLoading || disabled ? true : false}
     >
     {
       isLoading ? 
