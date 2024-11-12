@@ -13,7 +13,6 @@ const DailyRewards = ({  }) => {
     const [showConfetti, setShowConfetti] = useState(false)
     const [disabled, setDisabled] = useState(false)
     const dailyStreak = useSelector(state => state.app.dailyStreak)
-    const dailyClaim = useSelector(state => state.app.dailyClaimed)
     const loading = useSelector(state => state.app.isLoading)
 
     const uid = useSelector(state => state.user.data.id)

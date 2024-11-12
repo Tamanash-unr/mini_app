@@ -37,12 +37,17 @@ const Home = () => {
         duration: 5000
       })
 
-      // const init = toast.loading("Creating User")
-      // const newUser = await createUser(user)
+      if(appData.message === "User does not Exist!"){
+        const init = toast.loading("Creating User")
+        const newUser = await createUser(user)
 
-      // newUser.status ? 
-      // toast.success("User Created", {id: init, duration:5000}) : 
-      // toast.error(`Failed: ${newUser.message}`, {id: init, duration:5000})
+        if(newUser.status) {
+          toast.success("User Created", {id: init, duration:5000})
+          navigate('/main')
+        } else {
+          toast.error(`Failed: ${newUser.message}`, {id: init, duration:5000})
+        } 
+      }
     }
 
     dispatch(setLoading(false))
