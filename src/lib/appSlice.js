@@ -34,6 +34,9 @@ export const appSlice = createSlice({
             }
 
             state.dailyStreak = action.payload.dailyStreak
+
+            const rate = parseFloat((1 + (0.15 * parseInt(action.payload.boostLevel))).toFixed(2))
+            state.boostRate = rate
         },
         setCurrentTab: (state, action) => {
             state.currentTab = action.payload
