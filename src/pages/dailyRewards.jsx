@@ -2,12 +2,12 @@ import React, {useState} from 'react'
 import Confetti from 'react-confetti'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
 
 import { CustomButton } from '../components'
 import { icons } from '../constants'
 import { setDailyClaimed, setModalOpen, updateCoins, setLoading } from '../lib/appSlice'
 import { updateDailyClaim } from '../lib/firebase/firebase_api'
-import toast from 'react-hot-toast'
 
 const DailyRewards = ({  }) => {
     const [showConfetti, setShowConfetti] = useState(false)

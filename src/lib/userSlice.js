@@ -11,7 +11,10 @@ const initialState = {
         username: '',
         is_premium: false,
         photo_url: '',
-        language_code: ''
+        language_code: '',
+        referredBy: '',
+        referralId: '',
+        referrals: [],
     },
 }
 
@@ -23,6 +26,9 @@ export const userSlice = createSlice({
             state.nickname = action.payload.nickname
             state.friendsCount = action.payload.friendsCount
             state.boostLevel = action.payload.boostLevel
+            state.data.referralId = action.payload.referralId
+            state.data.referrals = action.payload.referrals
+            state.data.referredBy = action.payload.referredBy
         },
         setNickname: (state, action) => {
             state.nickname = action.payload

@@ -1,4 +1,6 @@
 import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
+import aes from 'crypto-js/aes'
+import enc from 'crypto-js/enc-utf8'
 
 import { db } from "./firebaseConfig";
 
@@ -38,16 +40,17 @@ export const createUser = async (data) => {
         
         const docRef = doc(db, 'users', (data.id).toString())
         const docSnapshot = await getDoc(docRef)
+        const referral = aes.encrypt((data.id).toString(), process.env.REACT_APP_SECRET_KEY).toString()
 
         if(docSnapshot.exists()){
             throw new Error("User Already Exists!")
         }
 
         const docData = {
-            firstName: data.first_name,
-            lastName: data.last_name,
-            username: data.username,
-            languageCode: data.language_code,
+            firstName: data.first_name ?? `${(data.id).toString()}`,
+            lastName: data.last_name ?? '',
+            username: data.username ?? `User#${(data.id).toString()}`,
+            languageCode: data.language_code ?? '',
             createdAt: Date().toString(),
             updatedAt: Date().toString(),
             appData: {
@@ -58,7 +61,10 @@ export const createUser = async (data) => {
                 friendsCount: 0,
                 isMining: false,
                 lastLoggedIn: "",
-                miningStartedAt: ""
+                miningStartedAt: "",
+                referrals: [],
+                referredBy: '',
+                referralId: referral,
             }
         }
 
@@ -147,5 +153,15 @@ export const updateBoostLevel = async (id, data) => {
             status: false,
             message: error.message
         }
+    }
+}
+
+export const getReferredData = async (id) => {
+    try {
+        if(!id){
+            throw new Error("Invalid ID")
+        }
+    } catch (error) {
+        return error.message
     }
 }
