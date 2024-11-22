@@ -1,13 +1,40 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import aes from 'crypto-js/aes'
+import enc from 'crypto-js/enc-utf8'
+import toast from 'react-hot-toast'
 
 import { CustomButton } from '../components'
 import { icons } from '../constants'
 
-
-
 const Friends = () => {
   const count = useSelector(state => state.user.friendsCount)
+  const referralId = useSelector(state => state.user.data.referralId)
+  const appUrl = "http://t.me/tm_miniapp_bot/tm_webapp"
+
+  const testEncrypt = () => {
+      const data = aes.encrypt('test', process.env.REACT_APP_SECRET_KEY).toString()
+      console.log("encrypted :", data)
+
+      const dec_Data = aes.decrypt(data, process.env.REACT_APP_SECRET_KEY)
+      const decryptedData = dec_Data.toString(enc)
+      console.log("decrypted :", decryptedData)
+  }
+
+  const handleInviteFriend = () => {
+    const tg = window.Telegram.WebApp;
+    const inviteLink = `${appUrl}?startapp=${referralId}`
+    const shareText = "Join me on Line Crypto!"
+    const fullUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(shareText)}`
+
+    tg.openTelegramLink(fullUrl)
+  }
+
+  const handleCopyLink = () => {
+    const inviteLink = `${appUrl}?startapp=${referralId}`
+    navigator.clipboard.writeText(inviteLink)
+    toast.success("Copied to Clipboard", {duration: 2500})
+  }
 
   return (
     <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
@@ -27,7 +54,7 @@ const Friends = () => {
         text="Invite Friends"
         textStyle="m-0 ubuntu-bold text-xl md:text-[28px]"
         buttonStyle="min-w-[80%] md:min-w-[40%] mt-10 md:mt-20 py-4"
-        onClick={() => false}
+        onClick={handleInviteFriend}
       />
     </div>
   )

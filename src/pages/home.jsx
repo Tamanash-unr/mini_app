@@ -16,6 +16,7 @@ const Home = () => {
   const navigate = useNavigate()
 
   const user = useSelector(state => state.user.data)
+  const startParam = useSelector(state => state.app.startParam)
   const loading = useSelector(state => state.app.isLoading)
 
   const doOnInit = async () => {
@@ -39,7 +40,7 @@ const Home = () => {
 
       if(appData.message === "User does not Exist!"){
         const init = toast.loading("Creating User")
-        const newUser = await createUser(user)
+        const newUser = await createUser(user, startParam)
 
         if(newUser.status) {
           toast.success("User Created", {id: init, duration:5000})

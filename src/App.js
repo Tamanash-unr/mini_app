@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Home, LineGame, Overlay } from "./pages";
 import { setUserData } from "./lib/userSlice";
-import { updateMineState, updateMinedCoins } from "./lib/appSlice";
+import { updateMineState, updateMinedCoins, setStartParam } from "./lib/appSlice";
 
 function App() {
   const dispatch = useDispatch()
@@ -18,6 +18,10 @@ function App() {
 
     if(tg.initDataUnsafe.user) {
       dispatch(setUserData(tg.initDataUnsafe.user))
+    }
+
+    if(tg.initDataUnsafe.start_param){
+      dispatch(setStartParam(tg.initDataUnsafe.start_param))
     }
   },[dispatch])
   

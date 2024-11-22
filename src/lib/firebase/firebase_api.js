@@ -32,7 +32,7 @@ export const validateUser = async (userId) => {
     }
 }
 
-export const createUser = async (data) => {
+export const createUser = async (data, referredBy) => {
     try {
         if(!data.id){
             throw new Error("Invalid User Data")
@@ -41,6 +41,11 @@ export const createUser = async (data) => {
         const docRef = doc(db, 'users', (data.id).toString())
         const docSnapshot = await getDoc(docRef)
         const referral = aes.encrypt((data.id).toString(), process.env.REACT_APP_SECRET_KEY).toString()
+        let referData = ''
+
+        if(referredBy){
+            referData = await getReferredData(referredBy);
+        }
 
         if(docSnapshot.exists()){
             throw new Error("User Already Exists!")
@@ -63,7 +68,7 @@ export const createUser = async (data) => {
                 lastLoggedIn: "",
                 miningStartedAt: "",
                 referrals: [],
-                referredBy: '',
+                referredBy: referData,
                 referralId: referral,
             }
         }
@@ -161,6 +166,20 @@ export const getReferredData = async (id) => {
         if(!id){
             throw new Error("Invalid ID")
         }
+
+        const dec_Data = aes.decrypt(id, process.env.REACT_APP_SECRET_KEY)
+        const decryptedId = dec_Data.toString(enc)
+
+        const docRef = doc(db, 'users', (decryptedId).toString())
+        const docSnapshot = await getDoc(docRef)
+
+        if(!docSnapshot.exists()){
+            throw new Error("Invalid Referral ID")
+        }
+
+        const data = docSnapshot.data()
+
+        return data.firstName
     } catch (error) {
         return error.message
     }

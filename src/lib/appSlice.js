@@ -13,6 +13,7 @@ const initialState = {
     dailyClaimed: false,
     dailyStreak: 0,
     isLoading: false,
+    startParam: null,
 }
 
 export const appSlice = createSlice({
@@ -37,6 +38,9 @@ export const appSlice = createSlice({
 
             const rate = parseFloat((1 + (0.15 * parseInt(action.payload.boostLevel))).toFixed(2))
             state.boostRate = rate
+        },
+        setStartParam: (state, action) => {
+            state.startParam = action.payload
         },
         setCurrentTab: (state, action) => {
             state.currentTab = action.payload
@@ -94,7 +98,8 @@ export const {
     setModalOpen, 
     setDailyClaimed,
     setLoading,
-    initAppData 
+    initAppData,
+    setStartParam 
 } = appSlice.actions
 
 export default appSlice.reducer

@@ -1,21 +1,10 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import aes from 'crypto-js/aes'
-import enc from 'crypto-js/enc-utf8'
 
 import { Card } from '../../components'
 import { dummy } from '../../constants'
 
 const DailyTasks = () => {
-
-    const testEncrypt = () => {
-        const data = aes.encrypt('aabcd', process.env.REACT_APP_SECRET_KEY).toString()
-        console.log("encrypted :", data)
-
-        const dec_Data = aes.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-        const decryptedData = dec_Data.toString(enc)
-        console.log("decrypted :", decryptedData)
-    }
 
   return (
     <div className='flex flex-col items-center w-full overflow-y-scroll mt-4 mb-20'>
@@ -39,7 +28,7 @@ const DailyTasks = () => {
                         btnTxt="Start"
                         btnStyle="min-w-[90px] md:min-w-[100px]"
                         txtStyle="flex justify-center items-center m-0 ubuntu-medium text-sm md:text-lg"
-                        onExecute={testEncrypt}
+                        onExecute={() => console.log("test")}
                         childIndex={index + 1}
                     />
                 ))
