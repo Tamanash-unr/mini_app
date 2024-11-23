@@ -1,4 +1,4 @@
-import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
+import { getDoc, doc, setDoc, updateDoc, arrayUnion, increment } from "firebase/firestore";
 import aes from 'crypto-js/aes'
 import enc from 'crypto-js/enc-utf8'
 
@@ -44,7 +44,7 @@ export const createUser = async (data, referredBy) => {
         let referData = ''
 
         if(referredBy){
-            referData = await getReferredData(referredBy);
+            referData = await getReferredData(referredBy, data.first_name);
         }
 
         if(docSnapshot.exists()){
@@ -161,7 +161,7 @@ export const updateBoostLevel = async (id, data) => {
     }
 }
 
-export const getReferredData = async (id) => {
+export const getReferredData = async (id, userName) => {
     try {
         if(!id){
             throw new Error("Invalid ID")
@@ -177,9 +177,15 @@ export const getReferredData = async (id) => {
             throw new Error("Invalid Referral ID")
         }
 
+        await updateDoc(docRef, {
+            'appData.referrals': arrayUnion(userName),
+            'appData.friendsCount': increment(1),
+            updatedAt: Date().toString(),
+        })
+
         const data = docSnapshot.data()
 
-        return data.firstName
+        return data.firstName ?? ''
     } catch (error) {
         return error.message
     }
