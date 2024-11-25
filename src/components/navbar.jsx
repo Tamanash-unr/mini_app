@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import TabButton from "./tabButton"
 import { icons } from "../constants"
-import { setCurrentTab } from "../lib/appSlice"
+import { setCurrentTab } from "../lib/redux/appSlice"
 
 const Navbar = () => {
     const navigate = useNavigate()

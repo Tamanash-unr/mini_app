@@ -12,7 +12,7 @@ import Wip from "./wip"
 import DailyRewards from "./dailyRewards"
 import BoostPage from "./boostPage"
 import { gifs } from "../constants"
-import { setModalOpen } from "../lib/appSlice"
+import { setModalOpen } from "../lib/redux/appSlice"
 
 const Overlay = () => {
     const currentTab = useSelector(state => state.app.currentTab)

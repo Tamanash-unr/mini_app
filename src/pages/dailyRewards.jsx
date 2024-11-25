@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 
 import { CustomButton } from '../components'
 import { icons } from '../constants'
-import { setDailyClaimed, setModalOpen, updateCoins, setLoading } from '../lib/appSlice'
+import { setDailyClaimed, setModalOpen, updateCoins, setLoading } from '../lib/redux/appSlice'
 import { updateDailyClaim } from '../lib/firebase/firebase_api'
 
 const DailyRewards = ({  }) => {

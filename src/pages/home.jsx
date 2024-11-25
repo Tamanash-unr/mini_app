@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
 
 import { CustomButton, CustomInput } from "../components";
-import { setLoading, initAppData } from "../lib/appSlice";
-import { setNickname, initUserData } from "../lib/userSlice";
+import { setLoading, initAppData } from "../lib/redux/appSlice";
+import { setNickname, initUserData, setReferralId } from "../lib/redux/userSlice";
 import { validateUser, createUser } from "../lib/firebase/firebase_api";
 import { icons } from "../constants"; 
 
@@ -44,6 +44,7 @@ const Home = () => {
 
         if(newUser.status) {
           toast.success("User Created", {id: init, duration:5000})
+          dispatch(setReferralId(newUser.referralID))
           navigate('/main')
         } else {
           toast.error(`Failed: ${newUser.message}`, {id: init, duration:5000})

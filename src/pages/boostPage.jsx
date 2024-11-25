@@ -4,8 +4,8 @@ import toast from 'react-hot-toast'
 
 import { Card } from '../components'
 import { dummy, icons } from '../constants'
-import { setModalOpen, updateBoostRate, updateCoins, updateMineState } from '../lib/appSlice'
-import { updateBoostLevel } from '../lib/userSlice'
+import { setModalOpen, updateBoostRate, updateCoins, updateMineState } from '../lib/redux/appSlice'
+import { updateBoostLevel } from '../lib/redux/userSlice'
 import { updateBoostLevel as api_BoostLevel } from '../lib/firebase/firebase_api'
 
 const BoostPage = () => { 

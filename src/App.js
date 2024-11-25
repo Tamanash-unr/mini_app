@@ -3,8 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Home, LineGame, Overlay } from "./pages";
-import { setUserData } from "./lib/userSlice";
-import { updateMineState, updateMinedCoins, setStartParam } from "./lib/appSlice";
+import { setUserData } from "./lib/redux/userSlice";
+import { updateMineState, updateMinedCoins, setStartParam } from "./lib/redux/appSlice";
 
 function App() {
   const dispatch = useDispatch()

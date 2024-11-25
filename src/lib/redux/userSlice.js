@@ -42,9 +42,12 @@ export const userSlice = createSlice({
         updateBoostLevel: (state, action) => {
             state.boostLevel = action.payload
         },
+        setReferralId: (state, action) => {
+            state.data.referralId = action.payload
+        }
     }
 })
 
-export const { setNickname, setId, setUserData, updateBoostLevel, initUserData } = userSlice.actions
+export const { setNickname, setId, setUserData, updateBoostLevel, initUserData, setReferralId } = userSlice.actions
 
 export default userSlice.reducer

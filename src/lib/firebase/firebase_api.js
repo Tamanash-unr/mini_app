@@ -3,6 +3,7 @@ import aes from 'crypto-js/aes'
 import enc from 'crypto-js/enc-utf8'
 
 import { db } from "./firebaseConfig";
+import { base64UrlEncode, base64UrlDecode } from "../helper";
 
 export const validateUser = async (userId) => {
     try {
@@ -40,9 +41,12 @@ export const createUser = async (data, referredBy) => {
         
         const docRef = doc(db, 'users', (data.id).toString())
         const docSnapshot = await getDoc(docRef)
-        const referral = aes.encrypt((data.id).toString(), process.env.REACT_APP_SECRET_KEY).toString()
-        let referData = ''
 
+        //Creating Referral ID
+        const base64Referral = aes.encrypt((data.id).toString(), process.env.REACT_APP_SECRET_KEY).toString()
+        const referral = base64UrlEncode(base64Referral)
+        
+        let referData = ''
         if(referredBy){
             referData = await getReferredData(referredBy, data.first_name);
         }
@@ -76,7 +80,8 @@ export const createUser = async (data, referredBy) => {
         await setDoc(doc(db, "users", (data.id).toString()), docData)
 
         return {
-            status: true
+            status: true,
+            referralID: referData
         }
     } catch (error) {
         return {
@@ -167,7 +172,8 @@ export const getReferredData = async (id, userName) => {
             throw new Error("Invalid ID")
         }
 
-        const dec_Data = aes.decrypt(id, process.env.REACT_APP_SECRET_KEY)
+        const base64Referral = base64UrlDecode(id)
+        const dec_Data = aes.decrypt(base64Referral, process.env.REACT_APP_SECRET_KEY)
         const decryptedId = dec_Data.toString(enc)
 
         const docRef = doc(db, 'users', (decryptedId).toString())

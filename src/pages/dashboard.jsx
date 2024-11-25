@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { icons, gifs } from '../constants'
 import { CustomButton } from '../components'
-import { updateCoins, updateMineState, updateMinedCoins, updateEarnedFromGame, setModalOpen, setLoading } from '../lib/appSlice'
+import { updateCoins, updateMineState, updateMinedCoins, updateEarnedFromGame, setModalOpen, setLoading } from '../lib/redux/appSlice'
 import { updateEarnedCoins } from '../lib/firebase/firebase_api'
 import toast from 'react-hot-toast'
 

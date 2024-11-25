@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { CustomButton } from '../components';
 import { icons } from '../constants';
-import { updateEarnedFromGame } from '../lib/appSlice';
+import { updateEarnedFromGame } from '../lib/redux/appSlice';
 
 const LineGame = () => {
     const { unityProvider, unload, addEventListener, removeEventListener, isLoaded, loadingProgression } = useUnityContext({

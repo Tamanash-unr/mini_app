@@ -1,11 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import aes from 'crypto-js/aes'
-import enc from 'crypto-js/enc-utf8'
+import utf8 from 'crypto-js/enc-utf8'
 import toast from 'react-hot-toast'
 
 import { CustomButton } from '../components'
 import { icons } from '../constants'
+import { base64UrlEncode, base64UrlDecode } from '../lib/helper'
 
 const Friends = () => {
   const count = useSelector(state => state.user.friendsCount)
@@ -13,12 +14,16 @@ const Friends = () => {
   const appUrl = "http://t.me/tm_miniapp_bot/tm_webapp"
 
   const testEncrypt = () => {
-      const data = aes.encrypt('test', process.env.REACT_APP_SECRET_KEY).toString()
-      console.log("encrypted :", data)
-
-      const dec_Data = aes.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-      const decryptedData = dec_Data.toString(enc)
-      console.log("decrypted :", decryptedData)
+      // const data = aes.encrypt('1897626681', process.env.REACT_APP_SECRET_KEY).toString()
+      // const urlSafeData = base64UrlEncode(data)
+      // console.log("base64 :", data)
+      // console.log("urlSafe :", urlSafeData)
+      
+      // const dec_urlSafe = base64UrlDecode(urlSafeData)
+      // const dec_Data = aes.decrypt(dec_urlSafe, process.env.REACT_APP_SECRET_KEY)
+      // const decryptedData = dec_Data.toString(utf8)
+      // console.log("dec_urlSafe :", dec_urlSafe)
+      // console.log("decrypted :", decryptedData)
   }
 
   const handleInviteFriend = () => {

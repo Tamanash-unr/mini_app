@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { setEarnTab } from '../lib/appSlice'
+import { setEarnTab } from '../lib/redux/appSlice'
 import { TabButton } from '../components'
 
 import { DailyTasks, Achievements, Redeem  } from './tabs'
