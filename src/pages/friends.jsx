@@ -59,7 +59,7 @@ const Friends = () => {
                 onClick={handleCopyLink}
               />
             </div>
-            <div className='w-full flex justify-between items-center'>
+            <div className='w-[90%] md:w-full flex justify-between items-center'>
               <h3 className='ubuntu-bold text-xl md:text-2xl'>Your Referrals</h3>
               <div className='flex items-center bg-black/75 rounded-xl px-4 py-2 ubuntu-bold text-2xl'>
                 <img src={icons.User} alt="userIcon.." className='w-5 h-5 mr-2'/>
