@@ -1,30 +1,17 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import aes from 'crypto-js/aes'
-import utf8 from 'crypto-js/enc-utf8'
 import toast from 'react-hot-toast'
+import { motion } from 'framer-motion'
 
-import { CustomButton } from '../components'
+import { CustomButton, Card } from '../components'
 import { icons } from '../constants'
-import { base64UrlEncode, base64UrlDecode } from '../lib/helper'
 
 const Friends = () => {
   const count = useSelector(state => state.user.friendsCount)
+  const referrals = useSelector(state => state.user.data.referrals)
   const referralId = useSelector(state => state.user.data.referralId)
   const appUrl = "http://t.me/tm_miniapp_bot/tm_webapp"
 
-  const testEncrypt = () => {
-      // const data = aes.encrypt('1897626681', process.env.REACT_APP_SECRET_KEY).toString()
-      // const urlSafeData = base64UrlEncode(data)
-      // console.log("base64 :", data)
-      // console.log("urlSafe :", urlSafeData)
-      
-      // const dec_urlSafe = base64UrlDecode(urlSafeData)
-      // const dec_Data = aes.decrypt(dec_urlSafe, process.env.REACT_APP_SECRET_KEY)
-      // const decryptedData = dec_Data.toString(utf8)
-      // console.log("dec_urlSafe :", dec_urlSafe)
-      // console.log("decrypted :", decryptedData)
-  }
 
   const handleInviteFriend = () => {
     const tg = window.Telegram.WebApp;
@@ -36,31 +23,111 @@ const Friends = () => {
   }
 
   const handleCopyLink = () => {
-    const inviteLink = `${appUrl}?startapp=${referralId}`
-    navigator.clipboard.writeText(inviteLink)
-    toast.success("Copied to Clipboard", {duration: 2500})
+    try {
+      const inviteLink = `${appUrl}?startapp=${referralId}`
+      navigator.clipboard.writeText(inviteLink)
+      toast.success("Copied to Clipboard", {duration: 2500})
+    } catch (error) {
+      toast.error(error, {duration: 2500})
+    }
   }
 
   return (
-    <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
-      <h1 className='ubuntu-bold text-2xl md:text-4xl'>
-        <img src={icons.FriendsPortrait} alt='friendsPortrait..' className='mx-auto my-4 w-44 h-44 md:w-auto md:h-auto' />
-        Invite Friends. Earn Rewards
-      </h1>
-      <div className='self-start md:w-[60%] mx-auto '>
-        <p className='ubuntu-bold text-2xl md:text-3xl'>How it works?</p>
-        <ul className='px-4 ubuntu-medium space-y-2 text-lg md:text-2xl'>
-          <li>- Share your invitation Link.</li>
-          <li>- Your friends join Line with the Link.</li>
-          <li>- Score 10% for each friend who joins.</li>
-        </ul>
-      </div>
-      <CustomButton 
-        text="Invite Friends"
-        textStyle="m-0 ubuntu-bold text-xl md:text-[28px]"
-        buttonStyle="min-w-[80%] md:min-w-[40%] mt-10 md:mt-20 py-4"
-        onClick={handleInviteFriend}
-      />
+    <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center md:w-[60%] md:mx-auto'>
+      {
+        count > 0 ? 
+          <>
+            <h1 className='ubuntu-bold text-2xl md:text-4xl'>
+              <img src={icons.FriendsPortrait} alt='friendsPortrait..' className='mx-auto my-4 w-24 h-24 md:w-18 md:h-18' />
+              Invite Friends. Earn Rewards
+            </h1>
+            <div className='flex gap-2 mb-4'>
+              <CustomButton 
+                text="Invite Friends"
+                textStyle="m-0 ubuntu-bold text-sm md:text-xl"
+                buttonStyle="md:min-w-[40%] py-3 px-4 flex items-center"
+                btnIcon={icons.Friends}
+                btnIconStyle="w-6 h-6 mr-2"
+                onClick={handleInviteFriend}
+              />
+              <CustomButton 
+                text="Copy Invite Link"
+                textStyle="m-0 ubuntu-bold text-sm md:text-xl"
+                buttonStyle="md:min-w-[40%] py-3 px-4 flex items-center"
+                btnIcon={icons.Copy}
+                btnIconStyle="w-8 h-8"
+                onClick={handleCopyLink}
+              />
+            </div>
+            <div className='w-full flex justify-between items-center'>
+              <h3 className='ubuntu-bold text-xl md:text-2xl'>Your Referrals</h3>
+              <div className='flex items-center bg-black/75 rounded-xl px-4 py-2 ubuntu-bold text-2xl'>
+                <img src={icons.User} alt="userIcon.." className='w-5 h-5 mr-2'/>
+                {count}
+              </div>
+            </div>
+            <div className='flex flex-col items-center w-full overflow-y-scroll mb-20'>
+              <motion.div 
+                className='flex flex-col items-start w-[90%] my-1 py-6'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                    duration: 0.8,
+                    ease: "easeOut"
+                }}
+              >
+                {
+                  referrals.map((name, index) => (
+                    <Card 
+                      key={`referrals_${index}`}
+                      contentStyle="flex items-center"
+                      title={name}
+                      titleStyle="text-base md:text-xl"
+                      cardIcon={icons.User}
+                      cardIconStyle="w-8 h-8 mr-4"
+                      txtStyle="flex justify-center items-center m-0 ubuntu-medium text-sm md:text-lg"
+                      childIndex={index + 1}
+                      hideBtn={true}
+                    />
+                  ))
+                }
+              </motion.div>
+            </div>
+          </>
+        :
+          <>
+            <h1 className='ubuntu-bold text-2xl md:text-4xl'>
+              <img src={icons.FriendsPortrait} alt='friendsPortrait..' className='mx-auto my-4 w-44 h-44 md:w-auto md:h-auto' />
+              Invite Friends. Earn Rewards
+            </h1>
+            <div className='self-start md:w-[60%] mx-auto '>
+              <p className='ubuntu-bold text-2xl md:text-3xl'>How it works?</p>
+              <ul className='px-4 ubuntu-medium space-y-2 text-lg md:text-2xl'>
+                <li>- Share your invitation Link.</li>
+                <li>- Your friends join Line with the Link.</li>
+                <li>- Score 10% for each friend who joins.</li>
+              </ul>
+            </div>
+            <div className='flex gap-2 mb-2'>
+              <CustomButton 
+                text="Invite Friends"
+                textStyle="m-0 ubuntu-bold text-sm md:text-xl"
+                buttonStyle="md:min-w-[40%] mt-10 py-3 px-4 flex items-center"
+                btnIcon={icons.Friends}
+                btnIconStyle="w-6 h-6 mr-2"
+                onClick={handleInviteFriend}
+              />
+              <CustomButton 
+                text="Copy Invite Link"
+                textStyle="m-0 ubuntu-bold text-sm md:text-xl"
+                buttonStyle="md:min-w-[40%] mt-10 py-3 px-4 flex items-center"
+                btnIcon={icons.Copy}
+                btnIconStyle="w-8 h-8"
+                onClick={handleCopyLink}
+              />
+            </div>
+          </>
+      }
     </div>
   )
 }

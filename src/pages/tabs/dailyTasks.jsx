@@ -44,20 +44,9 @@ const DailyTasks = () => {
             }}
         >
             <p className='ubuntu-bold text-xl md:text-2xl'>Social Tasks</p>
-            {
-                dummy.dailyTasks.map((task, index) => (
-                    <Card 
-                        key={`socialTask_${index}`}
-                        title={task.title}
-                        titleStyle="text-base md:text-xl"
-                        btnTxt="Start"
-                        btnStyle="min-w-[90px] md:min-w-[100px]"
-                        txtStyle="flex justify-center items-center m-0 ubuntu-medium text-sm md:text-lg"
-                        onExecute={()=> alert("Test")}
-                        childIndex={index + 1}
-                    />
-                ))
-            }
+            <p className='ubuntu-bold text-sm md:text-lg'>
+                Coming Soon...
+            </p>
         </motion.div>
     </div>
   )

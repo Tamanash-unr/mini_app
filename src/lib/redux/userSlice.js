@@ -5,7 +5,7 @@ const initialState = {
     friendsCount: 0,
     boostLevel: 0,
     data: {
-        id: null,
+        id: 1897626681,
         first_name: '',
         last_name: '',
         username: '',

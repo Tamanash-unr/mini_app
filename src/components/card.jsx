@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 import CustomButton from './customButton'
 
-const Card = ({ cardSyle, cardIcon, contentStyle, title, titleStyle, subtitle, subtitleStyle, subIcon, subIconStyle, btnStyle, btnTxt, btnDisabled, txtStyle, onExecute, childIndex = 1 }) => {
+const Card = ({ cardSyle, cardIcon, cardIconStyle, contentStyle, title, titleStyle, subtitle, subtitleStyle, subIcon, subIconStyle, btnStyle, btnTxt, btnDisabled, txtStyle, onExecute, childIndex = 1, hideBtn = false }) => {
   
   const cardRef = useRef(null)
   const [loading, setLoading] = useState(false)
@@ -38,6 +38,10 @@ const Card = ({ cardSyle, cardIcon, contentStyle, title, titleStyle, subtitle, s
       }}
     >
         <div className={`ubuntu-medium text-xl ${contentStyle}`}>
+            {
+              cardIcon && 
+              <img src={cardIcon} alt="cardIcon.." className={`${cardIconStyle}`} />
+            }
             <h2 className={`${titleStyle}`}>{title}</h2>
             <h3 className={`${subtitleStyle}`}>
               {
@@ -47,14 +51,17 @@ const Card = ({ cardSyle, cardIcon, contentStyle, title, titleStyle, subtitle, s
               {subtitle}
             </h3>
         </div>
-        <CustomButton 
+        {
+          hideBtn ? <></> : 
+          <CustomButton 
             buttonStyle={btnStyle}
             text={btnTxt}
             textStyle={txtStyle}
             onClick={() => onExecute(setLoading)}
             disabled={btnDisabled}
             isLoading={loading}
-        />
+          />
+        }
     </motion.div>
   )
 }
