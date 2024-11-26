@@ -26,7 +26,6 @@ const Wallet = () => {
 
   const handleWalletDisconnect = useCallback(() => {
     setTonWalletAddress(null)
-    toast.success("Wallet Disconnected Successfully!", {duration: 2500})
     dispatch(setLoading(false))
   },[])
 
