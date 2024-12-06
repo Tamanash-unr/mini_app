@@ -4,10 +4,11 @@ import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
 
-import { CustomButton } from '../components'
-import { icons } from '../constants'
-import { setDailyClaimed, setModalOpen, updateCoins, setLoading } from '../lib/redux/appSlice'
-import { updateDailyClaim } from '../lib/firebase/firebase_api'
+import { CustomButton } from '../../components'
+import { icons } from '../../constants'
+import { setDailyClaimed, setModalOpen, updateCoins, setLoading } from '../../lib/redux/appSlice'
+import { updateCompletedTask } from '../../lib/redux/userSlice'
+import { updateDailyClaim } from '../../lib/firebase/firebase_api'
 
 const DailyRewards = ({  }) => {
     const [showConfetti, setShowConfetti] = useState(false)
@@ -25,13 +26,19 @@ const DailyRewards = ({  }) => {
         setDisabled(true)
 
         const coins = dailyStreak > 0 ? dailyStreak * 50 : 25;
-        const result = await updateDailyClaim(uid, {dailyStreak: dailyStreak+1, coinsEarned: coinsEarned+coins})
+        const taskData = {
+            completed: true,
+            claimed: false
+        }
+
+        const result = await updateDailyClaim(uid, {dailyStreak: dailyStreak+1, coinsEarned: coinsEarned+coins}, {id: "1866457923", data: taskData})
         
         if(result.status){
             setShowConfetti(true);
             dispatch(updateCoins(coins))
+            dispatch(updateCompletedTask({type: 'daily', taskId: "1866457923"}))
         } else {
-            toast.error(result.message, {duration: 2500})
+            toast.error(result.message, {duration: 5000})
             setDisabled(false)
         }
         
@@ -123,7 +130,6 @@ const DailyRewards = ({  }) => {
             />
         }
     </div>
-    
   )
 }
 

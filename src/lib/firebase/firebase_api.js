@@ -74,6 +74,11 @@ export const createUser = async (data, referredBy) => {
                 referrals: [],
                 referredBy: referData,
                 referralId: referral,
+                referralReward: 0,
+                tasks: {
+                    daily: {},
+                    social: {}
+                }
             }
         }
 
@@ -91,7 +96,7 @@ export const createUser = async (data, referredBy) => {
     }
 }
 
-export const updateDailyClaim = async (id, data) => {
+export const updateDailyClaim = async (id, data, task) => {
     try {
         if(!id){
             throw new Error("Invalid User")
@@ -103,6 +108,9 @@ export const updateDailyClaim = async (id, data) => {
             'appData.dailyStreak': data.dailyStreak,
             'appData.coinsEarned': data.coinsEarned,
             'appData.lastLoggedIn': Date().toString(),
+            'appData.tasks.daily': {
+                [task.id] : task.data
+            },
             updatedAt: Date().toString(),
         })
 
@@ -127,6 +135,31 @@ export const updateEarnedCoins = async (id, coinsEarned) => {
 
         await updateDoc(docRef, {
             'appData.coinsEarned': coinsEarned,
+            updatedAt: Date().toString(),
+        })
+
+        return {
+            status: true
+        }
+    } catch (error) {
+        return {
+            status: false,
+            message: error.message
+        }
+    }
+}
+
+export const claimReferralReward = async (id, reward) => {
+    try {
+        if(!id){
+            throw new Error("Invalid User")
+        }
+
+        const docRef = doc(db, 'users', (id).toString())
+
+        await updateDoc(docRef, {
+            'appData.coinsEarned': increment(reward),
+            'appData.referralReward': 0,
             updatedAt: Date().toString(),
         })
 
@@ -186,6 +219,7 @@ export const getReferredData = async (id, userName) => {
         await updateDoc(docRef, {
             'appData.referrals': arrayUnion(userName),
             'appData.friendsCount': increment(1),
+            'appData.referralReward': increment(50),
             updatedAt: Date().toString(),
         })
 
@@ -194,5 +228,96 @@ export const getReferredData = async (id, userName) => {
         return data.firstName ?? ''
     } catch (error) {
         return error.message
+    }
+}
+
+export const getTaskData = async () => {
+    try {
+        const docRef = doc(db, 'app', 'tasks');
+        const docSnapshot = await getDoc(docRef)
+
+        if(!docSnapshot.exists()){
+            throw Error("Failed to retrieve Tasks!")
+        }
+
+        const data = docSnapshot.data()
+        
+        return {
+            status: true,
+            tasks: data,
+        }
+    } catch (error) {
+        return {
+            status: true,
+            message: error.message,
+        }
+    }
+}
+
+export const updateTaskData = async (id, taskId, newTaskData, taskType, coinsEarned) => {
+    try {
+        if(!id){
+            throw new Error("Invalid User")
+        }
+
+        const docRef = doc(db, 'users', (id).toString())
+        const docSnapshot = await getDoc(docRef)
+
+        if(!docSnapshot.exists()){
+            throw Error("User does not Exist!")
+        }
+
+        const data = docSnapshot.data()
+        const appData = data.appData
+
+        const dailyTask = {
+            'appData.coinsEarned': coinsEarned ?? appData.coinsEarned,
+            'appData.tasks.daily': {...appData.tasks.daily,
+                [taskId]: newTaskData
+            },
+            updatedAt: Date().toString(),
+        }
+
+        const socialTask = {
+            'appData.coinsEarned': coinsEarned ?? appData.coinsEarned,
+            'appData.tasks.social': {...appData.tasks.daily,
+                [taskId]: newTaskData
+            },
+            updatedAt: Date().toString(),
+        }
+
+        await updateDoc(docRef, taskType === 'daily' ? dailyTask : socialTask)
+
+        return {
+            status: true
+        }
+    } catch (error) {
+        return {
+            status: false,
+            message: error.message
+        }
+    }
+}
+
+export const resetTasks = async (id) => {
+    try {
+        if(!id){
+            throw new Error("Invalid User")
+        }
+
+        const docRef = doc(db, 'users', (id).toString())
+
+        await updateDoc(docRef, {
+            'appData.tasks.daily': {}
+        })
+
+        return {
+            status: true
+        }
+    } catch (error) {
+        return {
+            status: false,
+            message: error.message
+        }
     }
 }

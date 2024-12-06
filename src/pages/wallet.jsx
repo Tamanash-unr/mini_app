@@ -22,12 +22,12 @@ const Wallet = () => {
     setTonWalletAddress(address)
     toast.success("Wallet Connected Successfully!", {duration: 2500})
     dispatch(setLoading(false))
-  },[])
+  },[dispatch])
 
   const handleWalletDisconnect = useCallback(() => {
     setTonWalletAddress(null)
     dispatch(setLoading(false))
-  },[])
+  },[dispatch])
 
   useEffect(() => {
     const checkWalletConnection = async () => {
@@ -80,7 +80,7 @@ const Wallet = () => {
         />
         {
           tonWalletAddress &&
-          <div className='my-2 ubuntu-bold text-lg px-4 py-2 rounded-full bg-black/75'>
+          <div className='my-2 max-w-[60%] ubuntu-bold text-lg px-4 py-2 rounded-full bg-black/75'>
             { formatAddress(tonWalletAddress) }
           </div>
         }

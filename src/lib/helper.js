@@ -21,7 +21,6 @@ export const base64UrlDecode = (urlBase64) => {
     return urlBase64 + padding;
 }
 
-
 const testEncrypt = () => {
     // const data = aes.encrypt('1897626681', process.env.REACT_APP_SECRET_KEY).toString()
     // const urlSafeData = base64UrlEncode(data)

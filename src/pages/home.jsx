@@ -5,9 +5,10 @@ import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
 
 import { CustomButton, CustomInput } from "../components";
+import { CLEAR_DAILY } from "../lib/redux/actionTypes";
 import { setLoading, initAppData } from "../lib/redux/appSlice";
-import { setNickname, initUserData, setReferralId } from "../lib/redux/userSlice";
-import { validateUser, createUser } from "../lib/firebase/firebase_api";
+import { setNickname, initUserData, setReferralId, populateTasks } from "../lib/redux/userSlice";
+import { validateUser, createUser, resetTasks } from "../lib/firebase/firebase_api";
 import { icons } from "../constants"; 
 
 const Home = () => {
@@ -31,6 +32,20 @@ const Home = () => {
     if(appData.status){
       dispatch(initAppData(appData.data))
       dispatch(initUserData(appData.data))
+
+      const today = new Date()
+      const lastLogin = new Date(appData.data.lastLoggedIn)
+      if(today.getDate() == lastLogin.getDate()){
+        dispatch(populateTasks({data: appData.data}))
+      } else {
+        const result = await resetTasks(user.id)
+
+        if(result.status){
+          dispatch(populateTasks({type: CLEAR_DAILY, data: appData.data }))
+        } else {
+          toast.error(result.message, { duration: 5000 })
+        }
+      }
 
       navigate('/main')
     } else {

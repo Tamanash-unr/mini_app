@@ -2,11 +2,11 @@ import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
 
-import { Card } from '../components'
-import { dummy, icons } from '../constants'
-import { setModalOpen, updateBoostRate, updateCoins, updateMineState } from '../lib/redux/appSlice'
-import { updateBoostLevel } from '../lib/redux/userSlice'
-import { updateBoostLevel as api_BoostLevel } from '../lib/firebase/firebase_api'
+import { Card } from '../../components'
+import { dummy, icons } from '../../constants'
+import { setModalOpen, updateBoostRate, updateCoins, updateMineState } from '../../lib/redux/appSlice'
+import { updateBoostLevel } from '../../lib/redux/userSlice'
+import { updateBoostLevel as api_BoostLevel } from '../../lib/firebase/firebase_api'
 
 const BoostPage = () => { 
     const currentBoost = useSelector(state => state.user.boostLevel)

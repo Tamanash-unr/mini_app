@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Toaster } from "react-hot-toast"
+import toast, { Toaster } from "react-hot-toast"
 
 import { Navbar, Modal } from "../components"
 
@@ -8,11 +8,13 @@ import Dashboard from "./dashboard"
 import CoinPage from "./coinPage"
 import Friends from "./friends"
 import Wallet from "./wallet"
+import GameCenter from "./gameCenter"
 import Wip from "./wip"
-import DailyRewards from "./dailyRewards"
-import BoostPage from "./boostPage"
+import { DailyRewards, BoostPage, ReferralRewards } from "./modals"
 import { gifs } from "../constants"
+import { getTaskData } from "../lib/firebase/firebase_api"
 import { setModalOpen } from "../lib/redux/appSlice"
+import { initTasks } from "../lib/redux/taskSlice"
 
 const Overlay = () => {
     const currentTab = useSelector(state => state.app.currentTab)
@@ -20,23 +22,39 @@ const Overlay = () => {
 
     const dispatch = useDispatch()
 
+    const retrieveTasks = async () => {
+      const data = await getTaskData();
+
+      if(data.status){
+        dispatch(initTasks(data.tasks))
+      } else {
+        toast.error(data.message, {duration: 2500})
+      }
+    }
+
     useEffect(() => {
       if(!daily){
         dispatch(setModalOpen({isOpen: true, modalChild: 'dailyRewards'}))
       }
     },[daily, dispatch])
 
+    useEffect(()=>{
+      retrieveTasks()
+    },[])
+
     const body = {
         dashboard: <Dashboard />,
         coins: <CoinPage />,
         friends: <Friends />,
         wallet: <Wallet />,
+        gameCenter: <GameCenter />,
         wip: <Wip />,
     }
 
     const modalBody = {
       dailyRewards: <DailyRewards />,
       boostPage: <BoostPage />,
+      referralRewards: <ReferralRewards />,
     }
 
   return (

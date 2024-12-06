@@ -5,5 +5,6 @@ import TabButton from "./tabButton";
 import Navbar from "./navbar";
 import Card from "./card";
 import Modal from "./modal";
+import Indicator from "./indicator";
 
-export {CustomButton, CustomInput, CustomToggle, TabButton, Navbar, Card, Modal}
+export {CustomButton, CustomInput, CustomToggle, TabButton, Navbar, Card, Modal, Indicator}

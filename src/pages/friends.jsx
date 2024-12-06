@@ -1,16 +1,20 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
 import { motion } from 'framer-motion'
 
-import { CustomButton, Card } from '../components'
+import { CustomButton, Card, Indicator } from '../components'
+import { setModalOpen } from '../lib/redux/appSlice'
 import { icons } from '../constants'
 
 const Friends = () => {
   const count = useSelector(state => state.user.friendsCount)
   const referrals = useSelector(state => state.user.data.referrals)
   const referralId = useSelector(state => state.user.data.referralId)
+  const referralReward = useSelector(state => state.user.data.referralReward)
   const appUrl = "http://t.me/tm_miniapp_bot/tm_webapp"
+
+  const dispatch = useDispatch()
 
 
   const handleInviteFriend = () => {
@@ -61,9 +65,15 @@ const Friends = () => {
             </div>
             <div className='w-[90%] md:w-full flex justify-between items-center'>
               <h3 className='ubuntu-bold text-xl md:text-2xl'>Your Referrals</h3>
-              <div className='flex items-center bg-black/75 rounded-xl px-4 py-2 ubuntu-bold text-2xl'>
-                <img src={icons.User} alt="userIcon.." className='w-5 h-5 mr-2'/>
-                {count}
+              <div className='flex gap-2'>
+                <div className='flex items-center bg-black/75 rounded-xl px-4 py-2 ubuntu-bold text-2xl'>
+                  <img src={icons.User} alt="userIcon.." className='w-5 h-5 mr-2'/>
+                  {count}
+                </div>
+                <div className='relative flex items-center bg-black/75 rounded-xl px-4 py-2 ubuntu-bold text-2xl hover:cursor-pointer hover:bg-white/25' onClick={() => dispatch(setModalOpen({isOpen: true, modalChild: 'referralRewards'}))}>
+                  <img src={icons.Gift} alt="userIcon.." className='w-7 h-7'/>
+                  { referralReward > 0 && <Indicator styleInner="bg-red-600" styleOuter="bg-red-600" /> }
+                </div>
               </div>
             </div>
             <div className='flex flex-col items-center w-full overflow-y-scroll mb-20'>
@@ -105,7 +115,7 @@ const Friends = () => {
               <ul className='px-4 ubuntu-medium space-y-2 text-lg md:text-2xl'>
                 <li>- Share your invitation Link.</li>
                 <li>- Your friends join Line with the Link.</li>
-                <li>- Score 10% for each friend who joins.</li>
+                <li>- Score 50 coins for each friend who joins.</li>
               </ul>
             </div>
             <div className='flex gap-2 mb-2'>

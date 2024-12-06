@@ -62,7 +62,7 @@ const Navbar = () => {
                 icon={icons.Gamepad} 
                 iconStyle="w-[38px] md:w-[65px] h-[38px] md:h-[65px]"
                 buttonStyle="absolute w-[70px] md:w-auto p-4 md:p-5 flex justify-center items-center rounded-full bottom-5 md:bottom-2 gradient-purple shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f]"
-                onClick={() => dispatch(setCurrentTab("wip"))}
+                onClick={() => dispatch(setCurrentTab("gameCenter"))}
             />
         </motion.div>
         <TabButton 
