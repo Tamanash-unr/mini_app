@@ -80,7 +80,7 @@ const Wallet = () => {
         />
         {
           tonWalletAddress &&
-          <div className='my-2 min-w-[60%] mx-auto ubuntu-bold text-lg px-4 py-2 rounded-full bg-black/75'>
+          <div className='my-2 min-w-[75%] md:min-w-[60%] mx-auto ubuntu-bold text-lg px-4 py-2 rounded-full bg-black/75'>
             { formatAddress(tonWalletAddress) }
           </div>
         }
