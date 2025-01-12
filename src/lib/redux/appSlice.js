@@ -13,7 +13,10 @@ const initialState = {
     dailyClaimed: false,
     dailyStreak: 0,
     isLoading: false,
-    startParam: null,
+    startParam: null,    
+    miningDuration: 4,
+    miningStartedAt: null,
+    currentMiningDuration: 0
 }
 
 export const appSlice = createSlice({
@@ -54,6 +57,10 @@ export const appSlice = createSlice({
         },
         updateMineState: (state, action) => {
             state.mineState = action.payload
+
+            if(action.payload === 1){
+                state.miningStartedAt = new Date().toString()
+            }
         },
         updateMinedCoins: (state, action) => {
             const value = action.payload;
@@ -83,6 +90,9 @@ export const appSlice = createSlice({
         },
         setLoading: (state, action) => {
             state.isLoading = action.payload
+        },
+        updateCurrentMiningDuration: (state, action) => {
+            state.currentMiningDuration += action.payload
         }
     } 
 })
@@ -99,7 +109,8 @@ export const {
     setDailyClaimed,
     setLoading,
     initAppData,
-    setStartParam 
+    setStartParam,
+    updateCurrentMiningDuration 
 } = appSlice.actions
 
 export default appSlice.reducer

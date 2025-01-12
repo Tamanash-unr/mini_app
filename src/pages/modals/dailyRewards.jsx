@@ -54,9 +54,8 @@ const DailyRewards = ({  }) => {
   return (
     <div className='flex justify-center items-center h-full'>
         <div className='ubuntu-bold bg-zinc-900 p-8 rounded-lg w-[85%] md:w-[40%]'>
-            <h1 className='text-2xl md:text-4xl flex items-center'>
+            <h1 className='text-2xl md:text-4xl flex items-center justify-center'>
                 Daily Rewards
-                <img src={icons.Bolt} alt="bolt.." className='h-10 md:h-12 w-10 md:w-12' />
             </h1>
             <div className='flex flex-col items-center'>
                 <div className='text-xl my-2'>

@@ -87,7 +87,7 @@ const Wallet = () => {
       </div>
       <div className='flex w-[95%] md:w-[60%] items-center justify-between ubuntu-bold text-2xl md:text-3xl'>
         <p className='m-0'>Points</p>
-        <div className='flex items-center justify-center bg-slate-400/50 w-32 rounded-full py-2 px-4'>
+        <div className='flex items-center justify-center bg-slate-400/50 min-w-32 rounded-full py-2 px-4'>
           <img src={icons.Placeholder} alt="lineCoin.." className='w-7 mr-2' />
           {coins}
         </div>

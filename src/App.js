@@ -1,16 +1,42 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useTimer } from "react-timer-hook";
 
 import { Home, LineGame, Overlay } from "./pages";
 import { setUserData } from "./lib/redux/userSlice";
-import { updateMineState, updateMinedCoins, setStartParam } from "./lib/redux/appSlice";
+import { updateMineState, updateMinedCoins, setStartParam, updateCurrentMiningDuration } from "./lib/redux/appSlice";
 
 function App() {
   const dispatch = useDispatch()
 
   const mineState = useSelector(state => state.app.mineState);
-  const boostRate = useSelector(state => state.app.boostRate)
+  const boostRate = useSelector(state => state.app.boostRate);
+  const miningDuration = useSelector(state => state.app.miningDuration);
+  let miningInterval = null
+
+  const {
+    totalSeconds,
+    seconds,
+    minutes,
+    hours,
+    days,
+    isRunning,
+    start,
+    pause,
+    restart
+  } = useTimer({
+    autoStart: false,
+    expiryTimestamp: new Date().getTime() + ((miningDuration * 60) * 1000 ), // Duration in milliseconds
+    onExpire: () => handleTimerCompletion(),
+});
+
+const handleTimerCompletion = () => {
+  clearInterval(miningInterval)
+  miningInterval = null
+  dispatch(updateMineState(3))
+  restart(new Date().getTime() + (miningDuration * 60 * 60 * 1000 ), false)
+}
 
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -27,18 +53,22 @@ function App() {
   
   useEffect(()=> {
     if(mineState === 1){
-      const timer = setInterval(() => {
+      start()
+      
+      miningInterval = setInterval(() => {
         dispatch(updateMinedCoins(0.1))
+        dispatch(updateCurrentMiningDuration(1))
       }, 1000)
 
-      const timeOutId = setTimeout(() => {
-        clearInterval(timer)
-        dispatch(updateMineState(3))
-      }, 60000)
+      // const timeOutId = setTimeout(() => {
+      //   clearInterval(timer)
+      //   dispatch(updateMineState(3))
+      // }, 480000)
 
       return () => {
-        clearInterval(timer)
-        clearTimeout(timeOutId)
+        // clearInterval(timer)
+        // clearTimeout(timeOutId)
+        clearInterval(miningInterval)
       }
     }
   }, [mineState, boostRate, dispatch])

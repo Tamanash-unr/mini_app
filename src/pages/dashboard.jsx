@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { motion } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 import SlotCounter from 'react-slot-counter'
@@ -17,9 +17,13 @@ const Dashboard = () => {
     const coins = useSelector(state => state.app.coinValue)
     const minedCoins = useSelector(state => state.app.minedCoins)
     const mineState = useSelector(state => state.app.mineState)
-    const boostRate = useSelector(state => state.app.boostRate)
+    const miningDuration = useSelector(state => state.app.miningDuration)
+    const currentMiningDuration = useSelector(state => state.app.currentMiningDuration)
+    const boostLevel = useSelector(state => state.user.boostLevel)
     const loading = useSelector(state => state.app.isLoading)
     const earned = useSelector(state => state.app.earnedFromGame)
+
+    const [miningProgress, setMiningProgress] = useState(0)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -41,6 +45,17 @@ const Dashboard = () => {
     useEffect(()=>{
       hasEarnedFromGame(earned)
     }, [hasEarnedFromGame, earned])
+
+    useEffect(() => {
+      const progressStatus = () => {
+        const progress = Math.floor((currentMiningDuration / (miningDuration * 60 * 60)) * 100)
+        console.log(progress, (miningDuration * 60 * 60), currentMiningDuration)
+
+        setMiningProgress(progress)
+      }
+
+      progressStatus()
+    }, [setMiningProgress, currentMiningDuration])
 
     const onStartMine = async () => {
       if(mineState === 0){
@@ -78,23 +93,29 @@ const Dashboard = () => {
 
   return (
     <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
-      <div className="flex items-center text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-2xl">
-          Welcome! {nickname === '' ? name : nickname}
+      <div className="flex items-center justify-between text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-2xl">
+          <div>
+            Welcome! {nickname === '' ? name : nickname}
+          </div>
+          <div className="relative w-[70px] md:h-16 md:w-16 p-4 md:p-5 text-2xl flex justify-center items-center rounded-full gradient-purple shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f]">
+            <img src={icons.Crown} alt='crown...' className='absolute -top-3 h-6 w-16'/>
+            {boostLevel}
+          </div>
       </div>
       <motion.div 
         className='flex w-full items-center justify-center mb-4'
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{
-          duration: 1.5,
+          duration: 2,
           delay: 0.3,
-          ease: [0, 0.71, 0.2, 1.01]
         }}
       >
           <img src={icons.Placeholder} alt='Coin_Placeholder' className='size-8 md:size-12 mx-2 md:mx-3'/>
           <SlotCounter 
             value={coins}
             numberClassName='ubuntu-bold text-3xl md:text-5xl'
+            separatorClassName='text-3xl md:text-5xl'
           />
       </motion.div>
       <img 
@@ -114,8 +135,12 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      <div className='flex items-center justify-between mt-5 w-[95%] md:w-[60%] bg-slate-400/50 py-2 px-3 rounded-full'> 
-        <div className='ubuntu-bold flex items-center'>
+      <div className='relative flex items-center justify-between mt-5 w-[95%] md:w-[60%] bg-slate-400/50 py-2 px-3 rounded-full overflow-hidden'>
+        <div
+          className="absolute z-0 h-full left-0 bg-indigo-400/75 rounded-full transition-all duration-500"
+          style={{ width: `${miningProgress}%` }}
+        />
+        <div className='relative z-10 ubuntu-bold flex items-center'>
           <motion.img 
             src={icons.Pickaxe} 
             alt='pickaxe..' 
@@ -133,18 +158,21 @@ const Dashboard = () => {
             value={minedCoins}
             numberClassName='text-2xl md:text-3xl'
             containerClassName='mx-4'
+            charClassName='mx-[0.5px]'
+            separatorClassName='text-xl md:text-3xl'
           />
         </div>
         <CustomButton 
           text={mineTxt[mineState]}
           textStyle="ubuntu-bold mb-0 text-sm md:text-base"
-          buttonStyle="flex items-center justify-center min-w-[90px] px-4"
+          buttonStyle="relative z-10 flex items-center justify-center min-w-[90px] px-4"
           onClick={onStartMine}
           isLoading={loading}
         />
       </div>
       <p className='ubuntu-bold my-1.5 md:my-4 md:text-lg'>
-          Mining Rate: &nbsp; 0.1/sec  &nbsp; Boost Rate: &nbsp; x{boostRate}
+          Mining Rate: &nbsp; 360/hr
+          {/* &nbsp; Boost Rate: &nbsp; x{boostRate} */}
       </p>       
     </div>
   )
