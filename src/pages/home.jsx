@@ -105,7 +105,7 @@ const Home = () => {
         <div>
           <img src={icons.Gear} alt="WIP..." className='w-12 h-12 animate-spin'/>
         </div> :
-        <>Loading..</>
+        <>Failed to Load: Please Check your internet connection..</>
       }
       <Toaster 
         position="bottom-center"

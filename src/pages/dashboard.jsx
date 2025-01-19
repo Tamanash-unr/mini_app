@@ -68,7 +68,7 @@ const Dashboard = () => {
         } else {
           dispatch(updateMineState(1))
         }
-        
+
         dispatch(setLoading(false))
       }
 
@@ -107,8 +107,8 @@ const Dashboard = () => {
           <div>
             Welcome! {nickname === '' ? name : nickname}
           </div>
-          <div className="relative w-[70px] md:h-16 md:w-16 p-4 md:p-5 text-2xl flex justify-center items-center rounded-full gradient-purple shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f]">
-            <img src={icons.Crown} alt='crown...' className='absolute -top-3 h-6 w-16'/>
+          <div className="relative h-[50px] w-[50px] sm:w-[70px] sm:h-[70px] p-4 md:p-5 text-xl sm:text-2xl flex justify-center items-center rounded-full gradient-purple shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f]">
+            <img src={icons.Crown} alt='crown...' className='absolute -top-3 h-5 w-12 sm:h-6 sm:w-16'/>
             {boostLevel}
           </div>
       </div>
