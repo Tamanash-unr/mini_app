@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { icons, gifs } from '../constants'
 import { CustomButton } from '../components'
 import { updateCoins, updateMineState, updateMinedCoins, updateEarnedFromGame, setModalOpen, setLoading } from '../lib/redux/appSlice'
-import { updateEarnedCoins } from '../lib/firebase/firebase_api'
+import { updateEarnedCoins, serverUpdateMining } from '../lib/firebase/firebase_api'
 import toast from 'react-hot-toast'
 
 const Dashboard = () => {
@@ -48,8 +48,8 @@ const Dashboard = () => {
 
     useEffect(() => {
       const progressStatus = () => {
-        const progress = Math.floor((currentMiningDuration / (miningDuration * 60 * 60)) * 100)
-        console.log(progress, (miningDuration * 60 * 60), currentMiningDuration)
+        const progress = Math.floor((currentMiningDuration / (miningDuration * 60)) * 100)
+        console.log(progress, (miningDuration * 60), currentMiningDuration)
 
         setMiningProgress(progress)
       }
@@ -59,7 +59,17 @@ const Dashboard = () => {
 
     const onStartMine = async () => {
       if(mineState === 0){
-        dispatch(updateMineState(1))
+        dispatch(setLoading(true))
+
+        const result = await serverUpdateMining(uid, true)
+
+        if(!result.status){ 
+          toast.error(result.message, {duration: 2500})
+        } else {
+          dispatch(updateMineState(1))
+        }
+        
+        dispatch(setLoading(false))
       }
 
       if(mineState === 1){

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTimer } from "react-timer-hook";
@@ -13,29 +13,32 @@ function App() {
   const mineState = useSelector(state => state.app.mineState);
   const boostRate = useSelector(state => state.app.boostRate);
   const miningDuration = useSelector(state => state.app.miningDuration);
-  let miningInterval = null
+  const currentElapsed = useSelector(state => state.app.currentMiningDuration);
+  const finalDuration = (miningDuration * 60 * 1000);
 
-  const {
-    totalSeconds,
-    seconds,
-    minutes,
-    hours,
-    days,
-    isRunning,
-    start,
-    pause,
-    restart
-  } = useTimer({
-    autoStart: false,
-    expiryTimestamp: new Date().getTime() + ((miningDuration * 60) * 1000 ), // Duration in milliseconds
-    onExpire: () => handleTimerCompletion(),
-});
+  // let miningInterval = null
+
+  // const {
+  //   totalSeconds,
+  //   seconds,
+  //   minutes,
+  //   hours,
+  //   days,
+  //   isRunning,
+  //   start,
+  //   pause,
+  //   restart,
+  // } = useTimer({
+  //   autoStart: false,
+  //   expiryTimestamp: new Date().getTime() + ((miningDuration * 60) * 1000 ), // Duration in milliseconds
+  //   onExpire: () => handleTimerCompletion(),
+  // });
 
 const handleTimerCompletion = () => {
-  clearInterval(miningInterval)
-  miningInterval = null
+  // clearInterval(miningInterval)
+  // miningInterval = null
   dispatch(updateMineState(3))
-  restart(new Date().getTime() + (miningDuration * 60 * 60 * 1000 ), false)
+  // restart(new Date().getTime() + (miningDuration * 60 * 1000 ), false)
 }
 
   useEffect(() => {
@@ -51,14 +54,33 @@ const handleTimerCompletion = () => {
     }
   },[dispatch])
   
+  // const [currentElapsed, setCurrentElapsed] = useState(0)
+
   useEffect(()=> {
     if(mineState === 1){
-      start()
-      
-      miningInterval = setInterval(() => {
+      // start()
+
+      let remainingTime = currentElapsed > 0 ? finalDuration - (currentElapsed * 1000) : finalDuration;
+
+      const updateTimer = () => {
+        if(remainingTime <= 0){
+          handleTimerCompletion();
+          return
+        }
+
         dispatch(updateMinedCoins(0.1))
         dispatch(updateCurrentMiningDuration(1))
-      }, 1000)
+
+        remainingTime -= 1000;
+        setTimeout(updateTimer, 1000)
+      }
+
+      updateTimer()
+
+      // miningInterval = setInterval(() => {
+      //   dispatch(updateMinedCoins(0.1))
+      //   dispatch(updateCurrentMiningDuration(1))
+      // }, 1000)
 
       // const timeOutId = setTimeout(() => {
       //   clearInterval(timer)
@@ -68,7 +90,7 @@ const handleTimerCompletion = () => {
       return () => {
         // clearInterval(timer)
         // clearTimeout(timeOutId)
-        clearInterval(miningInterval)
+        clearTimeout(updateTimer)
       }
     }
   }, [mineState, boostRate, dispatch])

@@ -138,6 +138,8 @@ export const updateEarnedCoins = async (id, coinsEarned) => {
             updatedAt: Date().toString(),
         })
 
+        await serverUpdateMining(id, false)
+
         return {
             status: true
         }
@@ -309,6 +311,30 @@ export const resetTasks = async (id) => {
 
         await updateDoc(docRef, {
             'appData.tasks.daily': {}
+        })
+
+        return {
+            status: true
+        }
+    } catch (error) {
+        return {
+            status: false,
+            message: error.message
+        }
+    }
+}
+
+export const serverUpdateMining =  async (id, start) => {
+    try {
+        if(!id){
+            throw new Error("Invalid User")
+        }
+
+        const docRef = doc(db, 'users', (id).toString())
+
+        await updateDoc(docRef, {
+            'appData.isMining': start,
+            'appData.miningStartedAt': start ? Date().toString() : ''
         })
 
         return {

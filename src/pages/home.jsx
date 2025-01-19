@@ -104,24 +104,8 @@ const Home = () => {
         loading ? 
         <div>
           <img src={icons.Gear} alt="WIP..." className='w-12 h-12 animate-spin'/>
-        </div>
-        :
-        <div className="flex flex-col">
-          {/* <CustomInput 
-              placeholder="Your Nickname..."
-              value={name}
-              onChange={setName}
-              containerStyle="my-4"
-              inputStyle="text-lg"
-          />
-          <CustomButton 
-              text="Continue"
-              textStyle="ubuntu-bold w-full h-full flex items-center justify-center"
-              buttonStyle="w-1/2 h-12 m-auto"
-              onClick={doOnClick}
-          /> */}
-          Initializing...
-        </div>
+        </div> :
+        <>Loading..</>
       }
       <Toaster 
         position="bottom-center"

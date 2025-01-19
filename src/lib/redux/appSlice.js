@@ -6,6 +6,7 @@ const initialState = {
     earnTab: 'tasks',
     minedCoins: 0,
     mineState: 0,
+    miningStartedAt: '',
     boostRate: 0,
     earnedFromGame: 0,
     modalOpen: false,
@@ -14,8 +15,7 @@ const initialState = {
     dailyStreak: 0,
     isLoading: false,
     startParam: null,    
-    miningDuration: 4,
-    miningStartedAt: null,
+    miningDuration: 10,
     currentMiningDuration: 0
 }
 
@@ -27,13 +27,22 @@ export const appSlice = createSlice({
             state.coinValue = action.payload.coinsEarned
 
             if(action.payload.isMining){
-                state.mineState = 1
+                const currentTime = new Date()
+                const startedAt = new Date(action.payload.miningStartedAt)
+
+                const elapsed = Math.floor((currentTime - startedAt) / 1000)
+                const totalTime = (state.miningDuration * 60)
+                const finalElapsed = elapsed > totalTime ? totalTime : elapsed
+
+                state.minedCoins = finalElapsed * 0.1;
+                state.currentMiningDuration = finalElapsed;
+                state.mineState = 1;
             }
 
             const today = new Date()
             const lastLogin = new Date(action.payload.lastLoggedIn)
 
-            if(today.getDate() == lastLogin.getDate()){
+            if(today.getDate() === lastLogin.getDate()){
                 state.dailyClaimed = true
             }
 
@@ -58,8 +67,15 @@ export const appSlice = createSlice({
         updateMineState: (state, action) => {
             state.mineState = action.payload
 
-            if(action.payload === 1){
-                state.miningStartedAt = new Date().toString()
+            switch(action.payload){
+                case 0:
+                    state.currentMiningDuration = 0; // Reset current mining duration
+                    break;
+                case 1:
+                    state.miningStartedAt = new Date().toString()
+                    break;
+                default:
+                    return
             }
         },
         updateMinedCoins: (state, action) => {
