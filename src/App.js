@@ -14,7 +14,7 @@ function App() {
   const boostRate = useSelector(state => state.app.boostRate);
   const miningDuration = useSelector(state => state.app.miningDuration);
   const currentElapsed = useSelector(state => state.app.currentMiningDuration);
-  const finalDuration = (miningDuration * 60 * 1000);
+  const finalDuration = ((miningDuration * 60 * 60) * 1000);
 
   // let miningInterval = null
 

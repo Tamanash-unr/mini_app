@@ -48,8 +48,8 @@ const Dashboard = () => {
 
     useEffect(() => {
       const progressStatus = () => {
-        const progress = Math.floor((currentMiningDuration / (miningDuration * 60)) * 100)
-        console.log(progress, (miningDuration * 60), currentMiningDuration)
+        const progress = Math.floor((currentMiningDuration / (miningDuration * 60 * 60)) * 100)
+        console.log(progress, (miningDuration * 60 * 60), currentMiningDuration)
 
         setMiningProgress(progress)
       }
@@ -107,9 +107,9 @@ const Dashboard = () => {
           <div>
             Welcome! {nickname === '' ? name : nickname}
           </div>
-          <div className="relative h-[50px] w-[50px] sm:w-[70px] sm:h-[70px] p-4 md:p-5 text-xl sm:text-2xl flex justify-center items-center rounded-full gradient-purple shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f]">
-            <img src={icons.Crown} alt='crown...' className='absolute -top-3 h-5 w-12 sm:h-6 sm:w-16'/>
-            {boostLevel}
+          <div className="relative h-[50px] w-[50px] sm:w-[70px] sm:h-[70px] p-8 md:p-10 text-xl sm:text-2xl flex justify-center items-center">
+            <img src={icons.FullCrown} alt='crown...' className='absolute bottom-0.5 h-full w-full'/>
+            <span className='relative z-10'>{boostLevel}</span>
           </div>
       </div>
       <motion.div 

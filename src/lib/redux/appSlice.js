@@ -15,7 +15,7 @@ const initialState = {
     dailyStreak: 0,
     isLoading: false,
     startParam: null,    
-    miningDuration: 10,
+    miningDuration: 4,
     currentMiningDuration: 0
 }
 
@@ -46,7 +46,7 @@ export const appSlice = createSlice({
                 state.dailyClaimed = true
             }
 
-            state.dailyStreak = action.payload.dailyStreak
+            state.dailyStreak = today.getDate() === 1 ? 1 : action.payload.dailyStreak
 
             const rate = parseFloat((1 + (0.15 * parseInt(action.payload.boostLevel))).toFixed(2))
             state.boostRate = rate
