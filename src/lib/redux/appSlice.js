@@ -31,7 +31,7 @@ export const appSlice = createSlice({
                 const startedAt = new Date(action.payload.miningStartedAt)
 
                 const elapsed = Math.floor((currentTime - startedAt) / 1000)
-                const totalTime = (state.miningDuration * 60)
+                const totalTime = (state.miningDuration * 60 * 60)
                 const finalElapsed = elapsed > totalTime ? totalTime : elapsed
 
                 state.minedCoins = finalElapsed * 0.1;
