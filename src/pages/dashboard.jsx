@@ -103,11 +103,11 @@ const Dashboard = () => {
 
   return (
     <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
-      <div className="flex items-center justify-between text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-2xl">
+      <div className="relative flex items-center justify-between text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-2xl mt-2 md:mt-6">
           <div>
             Welcome! {nickname === '' ? name : nickname}
           </div>
-          <div className="relative h-[50px] w-[50px] sm:w-[70px] sm:h-[70px] p-8 md:p-10 text-xl sm:text-2xl flex justify-center items-center">
+          <div className="absolute right-2 h-[50px] w-[50px] sm:w-[70px] sm:h-[70px] p-8 md:p-10 text-xl sm:text-2xl flex justify-center items-center">
             <img src={icons.FullCrown} alt='crown...' className='absolute bottom-0.5 h-full w-full'/>
             <span className='relative z-10'>{boostLevel}</span>
           </div>
