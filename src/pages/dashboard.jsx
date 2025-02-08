@@ -12,14 +12,16 @@ import toast from 'react-hot-toast'
 
 const Dashboard = () => {
     const nickname = useSelector(state => state.user.nickname)
-    const name = useSelector(state => state.user.data.first_name)
+    const fname = useSelector(state => state.user.data.first_name)
+    const lname = useSelector(state => state.user.data.last_name)
     const uid = useSelector(state => state.user.data.id)
+    const profilePic = useSelector(state => state.user.data.photo_url)
     const coins = useSelector(state => state.app.coinValue)
     const minedCoins = useSelector(state => state.app.minedCoins)
     const mineState = useSelector(state => state.app.mineState)
     const miningDuration = useSelector(state => state.app.miningDuration)
     const currentMiningDuration = useSelector(state => state.app.currentMiningDuration)
-    const boostLevel = useSelector(state => state.user.boostLevel)
+    // const boostLevel = useSelector(state => state.user.boostLevel)
     const loading = useSelector(state => state.app.isLoading)
     const earned = useSelector(state => state.app.earnedFromGame)
 
@@ -105,11 +107,22 @@ const Dashboard = () => {
     <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
       <div className="relative flex items-center justify-between text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-2xl mt-2 md:mt-6">
           <div>
-            Welcome! {nickname === '' ? name : nickname}
+            Welcome! {nickname === '' ? fname : nickname}
           </div>
-          <div className="absolute right-2 h-[50px] w-[50px] sm:w-[70px] sm:h-[70px] p-8 md:p-10 text-xl sm:text-2xl flex justify-center items-center">
+          {/* <div className="absolute right-2 h-[50px] w-[50px] sm:w-[70px] sm:h-[70px] p-8 md:p-10 text-xl sm:text-2xl flex justify-center items-center">
             <img src={icons.FullCrown} alt='crown...' className='absolute bottom-0.5 h-full w-full'/>
             <span className='relative z-10'>{boostLevel}</span>
+          </div> */}
+          <div className='absolute right-4 md:right-10'>
+            {
+              profilePic !== '' ?
+              <img src={profilePic} alt='profilePic...' className='rounded-full size-16 object-cover border-4 border-indigo-600'/> :
+              <div className='bg-white rounded-full size-12 flex items-center justify-center border-4 border-indigo-600'>
+                <p className='text-black text-xl m-0'>
+                  {`${fname !== '' ? fname[0].toUpperCase() : 'U'}${lname !== '' ? lname[0].toUpperCase() : ''}`}
+                </p>
+              </div>
+            }
           </div>
       </div>
       <motion.div 

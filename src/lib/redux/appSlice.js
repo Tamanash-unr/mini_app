@@ -15,7 +15,7 @@ const initialState = {
     dailyStreak: 0,
     isLoading: false,
     startParam: null,    
-    miningDuration: 4,
+    miningDuration: 8,
     currentMiningDuration: 0
 }
 
