@@ -15,6 +15,9 @@ const Copy = "/assets/icons/copy.png";
 const Gift = "/assets/icons/gift.png";
 const Crown = "/assets/icons/crown.png";
 const FullCrown = "/assets/icons/full_crown.png";
+const Nft = "/assets/icons/nft.png";
+const Rocket = "/assets/icons/blue_rocket.png";
+const Ticket = "/assets/icons/ticket.png";
 
 const gcenterStock = "/assets/icons/stockImg.jpg";
 
@@ -23,5 +26,5 @@ const attribute = {
     pixkaxe: <a href="https://www.flaticon.com/free-icons/pickaxe" title="pickaxe icons">Pickaxe icons created by Iconjam - Flaticon</a>,
 }
 
-export default {Home, Store, Coins, Wallet, Placeholder, Gamepad, Friends, Gear, Pickaxe, FriendsPortrait, Game, Bolt, User, Copy, Gift, Crown, FullCrown, gcenterStock}
+export default {Home, Store, Coins, Wallet, Placeholder, Gamepad, Friends, Gear, Pickaxe, FriendsPortrait, Game, Bolt, User, Copy, Gift, Crown, FullCrown, gcenterStock, Nft, Rocket, Ticket}
 

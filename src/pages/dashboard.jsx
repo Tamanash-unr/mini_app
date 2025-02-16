@@ -22,6 +22,7 @@ const Dashboard = () => {
     const miningDuration = useSelector(state => state.app.miningDuration)
     const currentMiningDuration = useSelector(state => state.app.currentMiningDuration)
     // const boostLevel = useSelector(state => state.user.boostLevel)
+    const boostRate = useSelector(state => state.app.boostRate);
     const loading = useSelector(state => state.app.isLoading)
     const earned = useSelector(state => state.app.earnedFromGame)
 
@@ -104,16 +105,47 @@ const Dashboard = () => {
 
 
   return (
-    <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
-      <div className="relative flex items-center justify-between text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-2xl mt-2 md:mt-6">
-          <div>
-            Welcome! {nickname === '' ? fname : nickname}
+    <div className='relative w-full h-full z-10 flex flex-col items-center mb-20'>
+      <div className="relative bg-black flex flex-col items-center justify-between text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-[18px] md:text-2xl mb-40 md:mb-48 h-6">
+          <div className='trapezoid w-[90%] md:w-[35%] h-[90px] flex flex-col items-center justify-center -mt-3 md:-mt-2 bg-inherit'>
+            <div className='flex items-center justify-center w-full gap-x-2'>
+              {
+                profilePic !== '' ?
+                <img src={profilePic} alt='profilePic...' className='rounded-full size-16 object-cover border-4 border-indigo-600'/> :
+                <div className='bg-white rounded-full size-10 md:size-12 flex items-center justify-center border-4 border-indigo-600'>
+                  <p className='text-black text-xl m-0'>
+                    {`${fname !== '' ? fname[0].toUpperCase() : 'U'}${lname !== '' ? lname[0].toUpperCase() : ''}`}
+                  </p>
+                </div>
+              }
+              <p className='m-0 max-w-[60%] truncate'>{nickname === '' ? fname : nickname}</p>
+            </div>
+            <p className='m-0'>Epic</p>
           </div>
-          {/* <div className="absolute right-2 h-[50px] w-[50px] sm:w-[70px] sm:h-[70px] p-8 md:p-10 text-xl sm:text-2xl flex justify-center items-center">
-            <img src={icons.FullCrown} alt='crown...' className='absolute bottom-0.5 h-full w-full'/>
-            <span className='relative z-10'>{boostLevel}</span>
+          <div className='flex flex-col w-2/4 md:w-1/4 text-center my-0.5'>
+              Level 7/10
+              <div className='w-full h-4 bg-black rounded-full'>
+                <div className='w-[70%] h-4 bg-sky-400 rounded-full'/>
+              </div>
+          </div>
+          <div className='flex items-center justify-between my-2 w-full md:w-3/4'>
+              <div className='bg-black rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center gap-x-2'>
+                <img src={icons.Nft} alt="Nft.." className='size-7 md:size-8'/>
+                NFT
+              </div>
+              <div className='bg-black rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center gap-x-2'>
+                <img src={icons.Rocket} alt="Rocket.." className='size-7 md:size-8'/>
+                x{boostRate}
+              </div>
+              <div className='bg-black rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center gap-x-2'>
+                <img src={icons.Ticket} alt="Ticket.." className='size-6 md:size-8'/>
+                Tickets
+              </div>
+          </div>
+          {/* <div>
+            Welcome! {nickname === '' ? fname : nickname}
           </div> */}
-          <div className='absolute right-4 md:right-10'>
+          {/* <div className='absolute right-4 md:right-10'>
             {
               profilePic !== '' ?
               <img src={profilePic} alt='profilePic...' className='rounded-full size-16 object-cover border-4 border-indigo-600'/> :
@@ -123,8 +155,9 @@ const Dashboard = () => {
                 </p>
               </div>
             }
-          </div>
+          </div> */}
       </div>
+      {/* Coins Display */}
       <motion.div 
         className='flex w-full items-center justify-center mb-4'
         initial={{ opacity: 0 }}
@@ -141,11 +174,13 @@ const Dashboard = () => {
             separatorClassName='text-3xl md:text-5xl'
           />
       </motion.div>
+      {/* Tech Image */}
       <img 
         src={gifs.tech} 
         alt='tech..' 
         className='w-[300px] h-[180px] md:w-[500px] md:h-[250px] rounded-xl border-2 border-indigo-600 shadow-[0px_4px_24px_#4f46e5] object-cover' 
       />
+      {/* Line Game */}
       <div className='relative w-[300px] h-[180px] md:w-[500px] md:h-[250px] mt-4 md:mt-2 mb-2 rounded-xl border-2 border-indigo-600 shadow-[0px_4px_24px_#4f46e5] overflow-hidden'>
         <img src={icons.Game} alt="game.." className='w-full h-full'/>
         <div className='absolute bottom-0 px-3 pb-2 pt-5 w-full bg-gradient-to-t from-slate-600 flex justify-between items-center'>
@@ -158,6 +193,7 @@ const Dashboard = () => {
           />
         </div>
       </div>
+      {/* Mining Progress Bar */}
       <div className='relative flex items-center justify-between mt-5 w-[95%] md:w-[60%] bg-slate-400/50 py-2 px-3 rounded-full overflow-hidden'>
         <div
           className="absolute z-0 h-full left-0 bg-indigo-400/75 rounded-full transition-all duration-500"
@@ -193,6 +229,7 @@ const Dashboard = () => {
           isLoading={loading}
         />
       </div>
+      {/* Mining Info Text */}
       <p className='ubuntu-bold my-1.5 md:my-4 md:text-lg'>
           Mining Rate: &nbsp; 360/hr
           {/* &nbsp; Boost Rate: &nbsp; x{boostRate} */}
