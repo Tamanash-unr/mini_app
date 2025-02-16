@@ -106,13 +106,13 @@ const Dashboard = () => {
 
   return (
     <div className='relative w-full h-full z-10 flex flex-col items-center mb-20'>
-      <div className="relative bg-black flex flex-col items-center justify-between text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-[18px] md:text-2xl mb-40 md:mb-48 h-6">
-          <div className='trapezoid w-[90%] md:w-[35%] h-[90px] flex flex-col items-center justify-center -mt-3 md:-mt-2 bg-inherit'>
+      <div className="relative bg-black flex flex-col items-center justify-between text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-[16px] md:text-2xl mb-36 md:mb-48 h-6">
+          <div className='trapezoid w-[90%] md:w-[35%] h-[75px] md:h-[90px] flex flex-col items-center justify-center -mt-3 md:-mt-2 bg-inherit hover:cursor-pointer'>
             <div className='flex items-center justify-center w-full gap-x-2'>
               {
                 profilePic !== '' ?
-                <img src={profilePic} alt='profilePic...' className='rounded-full size-16 object-cover border-4 border-indigo-600'/> :
-                <div className='bg-white rounded-full size-10 md:size-12 flex items-center justify-center border-4 border-indigo-600'>
+                <img src={profilePic} alt='profilePic...' className='rounded-full size-10 md:size-16 object-cover border-2 border-indigo-600'/> :
+                <div className='bg-white rounded-full size-10 md:size-12 flex items-center justify-center border-2 border-indigo-600'>
                   <p className='text-black text-xl m-0'>
                     {`${fname !== '' ? fname[0].toUpperCase() : 'U'}${lname !== '' ? lname[0].toUpperCase() : ''}`}
                   </p>
@@ -128,7 +128,7 @@ const Dashboard = () => {
                 <div className='w-[70%] h-4 bg-sky-400 rounded-full'/>
               </div>
           </div>
-          <div className='flex items-center justify-between my-2 w-full md:w-3/4'>
+          <div className='flex items-center justify-between mt-2 mb-6 w-full md:w-3/4'>
               <div className='bg-black rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center gap-x-2'>
                 <img src={icons.Nft} alt="Nft.." className='size-7 md:size-8'/>
                 NFT
