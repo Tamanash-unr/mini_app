@@ -103,11 +103,15 @@ const Dashboard = () => {
       3: 'Claim',
     }
 
+    const onShowProfile = () => {
+      dispatch(setModalOpen({isOpen: true, modalChild: 'profileInfo'}))
+    }
+
 
   return (
     <div className='relative w-full h-full z-10 flex flex-col items-center mb-20'>
       <div className="relative bg-black flex flex-col items-center justify-between text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-[16px] md:text-2xl mb-36 md:mb-48 h-6">
-          <div className='trapezoid w-[90%] md:w-[35%] h-[75px] md:h-[90px] flex flex-col items-center justify-center -mt-3 md:-mt-2 bg-inherit hover:cursor-pointer'>
+          <div className='trapezoid w-[90%] md:w-[35%] h-[75px] md:h-[90px] flex flex-col items-center justify-center -mt-3 md:-mt-2 bg-inherit hover:cursor-pointer' onClick={onShowProfile}>
             <div className='flex items-center justify-center w-full gap-x-2'>
               {
                 profilePic !== '' ?
@@ -124,8 +128,8 @@ const Dashboard = () => {
           </div>
           <div className='flex flex-col w-2/4 md:w-1/4 text-center my-0.5'>
               Level 7/10
-              <div className='w-full h-4 bg-black rounded-full'>
-                <div className='w-[70%] h-4 bg-sky-400 rounded-full'/>
+              <div className='w-full h-2 my-0.5 bg-black rounded-full'>
+                <div className='w-[70%] h-2 my-0.5 bg-sky-400 rounded-full'/>
               </div>
           </div>
           <div className='flex items-center justify-between mt-2 mb-6 w-full md:w-3/4'>

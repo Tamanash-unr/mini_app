@@ -10,7 +10,7 @@ import Friends from "./friends"
 import Wallet from "./wallet"
 import GameCenter from "./gameCenter"
 import Wip from "./wip"
-import { DailyRewards, BoostPage, ReferralRewards } from "./modals"
+import { DailyRewards, BoostPage, ReferralRewards, ProfileInfo } from "./modals"
 import { gifs } from "../constants"
 import { getTaskData } from "../lib/firebase/firebase_api"
 import { setModalOpen } from "../lib/redux/appSlice"
@@ -55,6 +55,7 @@ const Overlay = () => {
       dailyRewards: <DailyRewards />,
       boostPage: <BoostPage />,
       referralRewards: <ReferralRewards />,
+      profileInfo: <ProfileInfo />,
     }
 
   return (
