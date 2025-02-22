@@ -84,7 +84,7 @@ const Dashboard = () => {
         dispatch(setLoading(true))
 
         const total = parseFloat((coins + minedCoins).toFixed(2))
-        const result = await updateEarnedCoins(uid, total)
+        const result = await updateEarnedCoins(uid, total, tickets)
 
         if(!result.status){
           toast.error(result.message, {duration: 2500})
