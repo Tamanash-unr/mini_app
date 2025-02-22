@@ -66,6 +66,7 @@ export const createUser = async (data, referredBy) => {
                 nickname: "",
                 boostLevel: 0,
                 coinsEarned: 0,
+                tickets: 0,
                 dailyStreak: 0,
                 friendsCount: 0,
                 isMining: false,
@@ -107,6 +108,7 @@ export const updateDailyClaim = async (id, data, task) => {
         await updateDoc(docRef, {
             'appData.dailyStreak': data.dailyStreak,
             'appData.coinsEarned': data.coinsEarned,
+            'appData.tickets': data.tickets,
             'appData.lastLoggedIn': Date().toString(),
             'appData.tasks.daily': {
                 [task.id] : task.data
@@ -125,7 +127,7 @@ export const updateDailyClaim = async (id, data, task) => {
     }
 }
 
-export const updateEarnedCoins = async (id, coinsEarned) => {
+export const updateEarnedCoins = async (id, coinsEarned, ticketsRemaining) => {
     try {
         if(!id){
             throw new Error("Invalid User")
@@ -135,6 +137,7 @@ export const updateEarnedCoins = async (id, coinsEarned) => {
 
         await updateDoc(docRef, {
             'appData.coinsEarned': coinsEarned,
+            'appData.tickets': ticketsRemaining,
             updatedAt: Date().toString(),
         })
 

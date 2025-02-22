@@ -12,6 +12,7 @@ const ProfileInfo = () => {
     const currentBoost = useSelector(state => state.user.boostLevel);
     const uid = useSelector(state => state.user.data.id);
     const coins = useSelector(state => state.app.coinValue);
+    const tickets = useSelector(state => state.app.tickets);
     const profilePic = useSelector(state => state.user.data.photo_url);
     const boostRate = useSelector(state => state.app.boostRate);
     const fname = useSelector(state => state.user.data.first_name);
@@ -50,12 +51,12 @@ const ProfileInfo = () => {
                     <div className='flex items-center justify-center'>
                         <div className='w-full flex items-center justify-center gap-x-2'>
                             <img src={icons.Ticket} alt="ticket.." className='size-8' />
-                            Tickets Left: 10
+                            Tickets : {tickets}
                         </div>
                         <div className='h-[50px] border-[0.5px] border-white mx-2'/>
                         <div className='w-full flex items-center justify-center gap-x-1'>
                             <img src={icons.Rocket} alt="rocket.." className='size-10' />            
-                            Boost Rate: x{boostRate}
+                            Boost : x{boostRate}
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { icons, gifs } from '../constants'
 import { CustomButton } from '../components'
-import { updateCoins, updateMineState, updateMinedCoins, updateEarnedFromGame, setModalOpen, setLoading } from '../lib/redux/appSlice'
+import { updateCoins, updateMineState, updateMinedCoins, updateEarnedFromGame, setModalOpen, setLoading, updateTickets } from '../lib/redux/appSlice'
 import { updateEarnedCoins, serverUpdateMining } from '../lib/firebase/firebase_api'
 import toast from 'react-hot-toast'
 
@@ -17,6 +17,7 @@ const Dashboard = () => {
     const uid = useSelector(state => state.user.data.id)
     const profilePic = useSelector(state => state.user.data.photo_url)
     const coins = useSelector(state => state.app.coinValue)
+    const tickets = useSelector(state => state.app.tickets)
     const minedCoins = useSelector(state => state.app.minedCoins)
     const mineState = useSelector(state => state.app.mineState)
     const miningDuration = useSelector(state => state.app.miningDuration)
@@ -34,7 +35,7 @@ const Dashboard = () => {
     const hasEarnedFromGame = useCallback(async (value) => {
       if (value > 0) {
         const total = parseFloat((coins + value).toFixed(2))
-        const result = await updateEarnedCoins(uid, total)
+        const result = await updateEarnedCoins(uid, total, tickets)
 
         if(!result.status){
           toast.error(result.message, {duration: 2500})
@@ -107,6 +108,16 @@ const Dashboard = () => {
       dispatch(setModalOpen({isOpen: true, modalChild: 'profileInfo'}))
     }
 
+    const onPlay = () => {
+      if(tickets <= 0){
+        toast.error('You have no tickets to play', {duration: 2500})
+        return;
+      }
+
+      dispatch(updateTickets(-1)); 
+      navigate('/game');
+    }
+
 
   return (
     <div className='relative w-full h-full z-10 flex flex-col items-center mb-20'>
@@ -133,17 +144,17 @@ const Dashboard = () => {
               </div>
           </div>
           <div className='flex items-center justify-between mt-2 mb-6 w-full md:w-3/4'>
-              <div className='bg-black rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center gap-x-2'>
+              <div className='bg-black min-w-[90px] rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center justify-center gap-x-2'>
                 <img src={icons.Nft} alt="Nft.." className='size-7 md:size-8'/>
                 NFT
               </div>
-              <div className='bg-black rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center gap-x-2'>
+              <div className='bg-black min-w-[90px] rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center justify-center gap-x-2'>
                 <img src={icons.Rocket} alt="Rocket.." className='size-7 md:size-8'/>
                 x{boostRate}
               </div>
-              <div className='bg-black rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center gap-x-2'>
-                <img src={icons.Ticket} alt="Ticket.." className='size-6 md:size-8'/>
-                Tickets
+              <div className='bg-black min-w-[90px] rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center justify-center gap-x-2'>
+                <img src={icons.Ticket} alt="Ticket.." className='size-5 md:size-6'/>
+                {tickets}
               </div>
           </div>
           {/* <div>
@@ -189,11 +200,15 @@ const Dashboard = () => {
         <img src={icons.Game} alt="game.." className='w-full h-full'/>
         <div className='absolute bottom-0 px-3 pb-2 pt-5 w-full bg-gradient-to-t from-slate-600 flex justify-between items-center'>
           <p className='m-0 ubuntu-bold text-xl md:text-2xl'>Line Game</p>
-          <CustomButton 
+          <CustomButton
+            btnIcon={icons.Ticket}
+            btnIconStyle="size-5"
+            preText="1"
+            preTextStyle="ubuntu-bold ml-1 mr-2" 
             text="Play"
             textStyle="m-0 ubuntu-bold"
-            buttonStyle="p-1 min-w-[100px]"
-            onClick={() => navigate('/game')}
+            buttonStyle="p-1 min-w-[100px] flex items-center justify-center"
+            onClick={onPlay}
           />
         </div>
       </div>

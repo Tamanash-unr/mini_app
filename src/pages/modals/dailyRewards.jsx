@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 
 import { CustomButton } from '../../components'
 import { icons } from '../../constants'
-import { setDailyClaimed, setModalOpen, updateCoins, setLoading } from '../../lib/redux/appSlice'
+import { setDailyClaimed, setModalOpen, updateCoins, setLoading, updateTickets } from '../../lib/redux/appSlice'
 import { updateCompletedTask } from '../../lib/redux/userSlice'
 import { updateDailyClaim } from '../../lib/firebase/firebase_api'
 
@@ -15,9 +15,12 @@ const DailyRewards = ({  }) => {
     const [disabled, setDisabled] = useState(false)
     const dailyStreak = useSelector(state => state.app.dailyStreak)
     const loading = useSelector(state => state.app.isLoading)
+    
+    const dailyTickets = 4;
 
     const uid = useSelector(state => state.user.data.id)
     const coinsEarned = useSelector(state => state.app.coinValue)
+    const tickets = useSelector(state => state.app.tickets)
 
     const dispatch = useDispatch();
 
@@ -31,11 +34,12 @@ const DailyRewards = ({  }) => {
             claimed: false
         }
 
-        const result = await updateDailyClaim(uid, {dailyStreak: dailyStreak+1, coinsEarned: coinsEarned+coins}, {id: "1866457923", data: taskData})
+        const result = await updateDailyClaim(uid, {dailyStreak: dailyStreak+1, coinsEarned: coinsEarned+coins, tickets: tickets+dailyTickets}, {id: "1866457923", data: taskData})
         
         if(result.status){
             setShowConfetti(true);
             dispatch(updateCoins(coins))
+            dispatch(updateTickets(dailyTickets));
             dispatch(updateCompletedTask({type: 'daily', taskId: "1866457923"}))
         } else {
             toast.error(result.message, {duration: 5000})
@@ -84,31 +88,58 @@ const DailyRewards = ({  }) => {
                 <div className='text-xl my-2'>
                     Streak
                 </div>
-                <motion.div 
-                    className='flex items-center text-4xl my-4 bg-gray-400 bg-opacity-50 py-2 px-8 rounded-lg'
-                    initial={{
-                        y: 100,
-                        opacity: 0,
-                        scale: 0.2
-                    }}
-                    animate={{
-                        y: 0,
-                        opacity: 1,
-                        scale: 1,
-                        transition: {
-                            delay: 1,
-                            duration: 0.85,
-                            ease: [0, 0.71, 0.2, 1.01],
-                        }
-                    }}
-                >
-                    <img src={icons.Placeholder} alt="coin.." className='h-8 w-8 mr-2'/>
-                    {
-                        dailyStreak > 0 ?
-                        dailyStreak * 50 :
-                        25
-                    }
-                </motion.div>
+                <div className='flex items-center gap-x-3'>
+                    <motion.div 
+                        className='flex flex-col items-center text-4xl my-4 bg-gray-400 bg-opacity-50 py-2 px-6 rounded-lg'
+                        initial={{
+                            y: 100,
+                            opacity: 0,
+                            scale: 0.2
+                        }}
+                        animate={{
+                            y: 0,
+                            opacity: 1,
+                            scale: 1,
+                            transition: {
+                                delay: 1,
+                                duration: 0.85,
+                                ease: [0, 0.71, 0.2, 1.01],
+                            }
+                        }}
+                    >
+                        <div className='flex items-center'>
+                            <img src={icons.Placeholder} alt="coin.." className='h-8 w-8 mr-2'/>
+                            {
+                                dailyStreak > 0 ?
+                                dailyStreak * 50 :
+                                25
+                            }
+                        </div>
+                    </motion.div>
+                    <motion.div 
+                        className='flex flex-col items-center text-4xl my-4 bg-gray-400 bg-opacity-50 py-2 px-6 rounded-lg'
+                        initial={{
+                            y: 100,
+                            opacity: 0,
+                            scale: 0.2
+                        }}
+                        animate={{
+                            y: 0,
+                            opacity: 1,
+                            scale: 1,
+                            transition: {
+                                delay: 1,
+                                duration: 0.85,
+                                ease: [0, 0.71, 0.2, 1.01],
+                            }
+                        }}
+                    >
+                        <div className='flex items-center'>
+                            <img src={icons.Ticket} alt="coin.." className='h-8 w-8 mr-2'/>
+                            {dailyTickets}
+                        </div> 
+                    </motion.div>
+                </div>
                 <CustomButton 
                     text="Claim Bonus"
                     textStyle="m-0 ubuntu-bold"

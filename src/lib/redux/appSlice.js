@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     currentTab: 'dashboard',
     coinValue: 0,
+    tickets: 0,
     earnTab: 'tasks',
     minedCoins: 0,
     mineState: 0,
@@ -25,6 +26,7 @@ export const appSlice = createSlice({
     reducers: {
         initAppData: (state, action) => {
             state.coinValue = action.payload.coinsEarned
+            state.tickets = action.payload.tickets ?? 0
 
             if(action.payload.isMining){
                 const currentTime = new Date()
@@ -60,6 +62,9 @@ export const appSlice = createSlice({
         updateCoins: (state, action) => {
             const coin = parseFloat((state.coinValue + action.payload).toFixed(2))
             state.coinValue = coin
+        },
+        updateTickets: (state, action) => {
+            state.tickets += action.payload
         },
         setEarnTab: (state, action) => {
             state.earnTab = action.payload
@@ -115,7 +120,8 @@ export const appSlice = createSlice({
 
 export const { 
     setCurrentTab, 
-    updateCoins, 
+    updateCoins,
+    updateTickets, 
     setEarnTab, 
     updateMineState, 
     updateMinedCoins, 
