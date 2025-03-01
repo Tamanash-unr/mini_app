@@ -19,7 +19,7 @@ const Nft = "/assets/icons/nft.png";
 const Rocket = "/assets/icons/blue_rocket.png";
 const Ticket = "/assets/icons/ticket.png";
 
-const gcenterStock = "/assets/icons/stockImg.jpg";
+const gcenterStock = "/assets/icons/comingSoon.jpg";
 
 const attribute = {
     friendsPortrait: <a href="https://www.flaticon.com/free-icons/friends" title="friends icons">Friends icons created by Freepik - Flaticon</a>,

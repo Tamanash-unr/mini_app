@@ -1,12 +1,18 @@
 import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import toast from 'react-hot-toast'
 
-import { Card } from '../../components'
-import { dummy, icons } from '../../constants'
-import { setModalOpen, updateBoostRate, updateCoins, updateMineState } from '../../lib/redux/appSlice'
-import { updateBoostLevel } from '../../lib/redux/userSlice'
-import { updateBoostLevel as api_BoostLevel } from '../../lib/firebase/firebase_api'
+import { icons } from '../../constants'
+import { setModalOpen } from '../../lib/redux/appSlice'
+
+const AppCard = ({ AppName }) => {
+    return (
+        <div className='flex flex-col items-center'>
+            {/* <div className='size-12 rounded-xl bg-neutral-800'/> */}
+            <img src={icons.gcenterStock} alt="appImage.." className='w-[50px] h-[50px] object-contain bg-gray-950 rounded-xl' />
+            {AppName}
+        </div>
+    )
+}
 
 const ProfileInfo = () => { 
     const currentBoost = useSelector(state => state.user.boostLevel);
@@ -33,8 +39,8 @@ const ProfileInfo = () => {
                 <div className='my-3 flex flex-col items-center'>
                 {
                     profilePic !== '' ?
-                    <img src={profilePic} alt='profilePic...' className='rounded-full size-16 md:size-16 object-cover border-2 border-indigo-600'/> :
-                    <div className='bg-white rounded-full size-16 md:size-16 flex items-center justify-center border-2 border-indigo-600'>
+                    <img src={profilePic} alt='profilePic...' className='rounded-full size-16 md:size-16 object-cover'/> :
+                    <div className='bg-white rounded-full size-16 md:size-16 flex items-center justify-center'>
                     <p className='text-black text-xl m-0'>
                         {`${fname !== '' ? fname[0].toUpperCase() : 'U'}${lname !== '' ? lname[0].toUpperCase() : ''}`}
                     </p>
@@ -63,43 +69,19 @@ const ProfileInfo = () => {
                 <div className='my-2'>
                     <h2 className='text-xl mb-1'>Recent</h2>
                     <div className='flex gap-x-4'>
-                        <div className='flex flex-col'>
-                            <div className='size-12 rounded-xl bg-neutral-800'/>
-                            App 1
-                        </div>
-                        <div className='flex flex-col'>
-                            <div className='size-12 rounded-xl bg-neutral-800'/>
-                            App 2
-                        </div>
-                        <div className='flex flex-col'>
-                            <div className='size-12 rounded-xl bg-neutral-800'/>
-                            App 3
-                        </div>
-                        <div className='flex flex-col'>
-                            <div className='size-12 rounded-xl bg-neutral-800'/>
-                            App 4
-                        </div>
+                        <AppCard key="recent_1" AppName="App 1"/>
+                        <AppCard key="recent_2" AppName="App 2"/>
+                        <AppCard key="recent_3" AppName="App 3"/>
+                        <AppCard key="recent_4" AppName="App 4"/>
                     </div>
                 </div>
                 <div className='my-2'>
                     <h2 className='text-xl mb-1'>Favorites</h2>
                     <div className='flex gap-x-4'>
-                        <div className='flex flex-col'>
-                            <div className='size-12 rounded-xl bg-neutral-800'/>
-                            App 1
-                        </div>
-                        <div className='flex flex-col'>
-                            <div className='size-12 rounded-xl bg-neutral-800'/>
-                            App 2
-                        </div>
-                        <div className='flex flex-col'>
-                            <div className='size-12 rounded-xl bg-neutral-800'/>
-                            App 3
-                        </div>
-                        <div className='flex flex-col'>
-                            <div className='size-12 rounded-xl bg-neutral-800'/>
-                            App 4
-                        </div>
+                        <AppCard key="favorites_1" AppName="App 1"/>
+                        <AppCard key="favorites_2" AppName="App 2"/>
+                        <AppCard key="favorites_3" AppName="App 3"/>
+                        <AppCard key="favorites_4" AppName="App 4"/>
                     </div>
                 </div>
             </div>

@@ -121,13 +121,13 @@ const Dashboard = () => {
 
   return (
     <div className='relative w-full h-full z-10 flex flex-col items-center mb-20'>
-      <div className="relative bg-black flex flex-col items-center justify-between text-xl py-3 px-3 md:px-8 top-0 w-full ubuntu-bold text-[16px] md:text-2xl mb-36 md:mb-48 h-6">
-          <div className='trapezoid w-[90%] md:w-[35%] h-[75px] md:h-[90px] flex flex-col items-center justify-center -mt-3 md:-mt-2 bg-inherit hover:cursor-pointer' onClick={onShowProfile}>
-            <div className='flex items-center justify-center w-full gap-x-2'>
+      <div className="relative bg-black flex flex-col items-center justify-between text-xl py-3 px-0 top-0 w-full ubuntu-bold text-[16px] md:text-2xl mb-36 md:mb-48 h-6">
+          <div className='w-full rounded-b-3xl md:rounded-b-full flex flex-col items-center justify-center -mt-3 md:-mt-2 bg-inherit hover:cursor-pointer' onClick={onShowProfile}>
+            <div className='flex items-center justify-center w-full gap-x-2 pt-1.5'>
               {
                 profilePic !== '' ?
-                <img src={profilePic} alt='profilePic...' className='rounded-full size-10 md:size-16 object-cover border-2 border-indigo-600'/> :
-                <div className='bg-white rounded-full size-10 md:size-12 flex items-center justify-center border-2 border-indigo-600'>
+                <img src={profilePic} alt='profilePic...' className='rounded-full size-10 md:size-16 object-cover'/> :
+                <div className='bg-white rounded-full size-10 md:size-12 flex items-center justify-center'>
                   <p className='text-black text-xl m-0'>
                     {`${fname !== '' ? fname[0].toUpperCase() : 'U'}${lname !== '' ? lname[0].toUpperCase() : ''}`}
                   </p>
@@ -135,7 +135,7 @@ const Dashboard = () => {
               }
               <p className='m-0 max-w-[60%] truncate'>{nickname === '' ? fname : nickname}</p>
             </div>
-            <p className='m-0'>Epic</p>
+            <p className='m-0 pb-1.5'>Epic</p>
           </div>
           <div className='flex flex-col w-2/4 md:w-1/4 text-center my-0.5'>
               Level 7/10
@@ -143,7 +143,7 @@ const Dashboard = () => {
                 <div className='w-[70%] h-2 my-0.5 bg-sky-400 rounded-full'/>
               </div>
           </div>
-          <div className='flex items-center justify-between mt-2 mb-6 w-full md:w-3/4'>
+          <div className='flex items-center justify-between mt-2 mb-6 w-[90%] md:w-3/4'>
               <div className='bg-black min-w-[90px] rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center justify-center gap-x-2'>
                 <img src={icons.Nft} alt="Nft.." className='size-7 md:size-8'/>
                 NFT
