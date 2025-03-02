@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import Confetti from 'react-confetti'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,6 +15,7 @@ const DailyRewards = ({  }) => {
     const [disabled, setDisabled] = useState(false)
     const dailyStreak = useSelector(state => state.app.dailyStreak)
     const loading = useSelector(state => state.app.isLoading)
+    const svgRef = useRef([]);
     
     const dailyTickets = 4;
 
@@ -55,6 +56,54 @@ const DailyRewards = ({  }) => {
         dispatch(setModalOpen({isOpen: false, modalChild: null}))
     }
 
+    useEffect(() => {
+        const svgFiles = [icons.svgCoin];
+        let loadedCount = 0;
+        
+        // Create Image objects for each SVG
+        svgFiles.forEach((svgSrc) => {
+        const img = new Image();
+        
+        img.onload = () => {
+            loadedCount++;
+            // When all images are loaded, set imagesLoaded to true
+            // if (loadedCount === svgFiles.length) {
+            // setImagesLoaded(true);
+            // }
+        };
+        
+        img.src = svgSrc;
+        svgRef.current.push(img);
+        });
+    },[])
+    
+    const drawSvgConfetti = (ctx, colors) => {
+        if (svgRef.current.length === 0){
+            console.error("Failed to load Images");
+            return false;
+        };
+
+        const svgImage = svgRef.current[0];
+        
+        ctx.save();
+
+        const aspectRatio = svgImage.naturalWidth / svgImage.naturalHeight;
+        let drawWidth, drawHeight;
+
+        if (aspectRatio > 1) {
+            drawWidth = 50;
+            drawHeight = 50 / aspectRatio;
+          } else {
+            drawHeight = 50;
+            drawWidth = 50 * aspectRatio;
+          }
+
+        ctx.drawImage(svgImage, -drawWidth/2, -drawHeight/2, drawWidth, drawHeight);
+
+        ctx.restore();
+
+        return true;
+    }
   return (
     <div className='flex justify-center items-center h-full'>
         <div className='ubuntu-bold bg-zinc-900 p-8 rounded-lg w-[85%] md:w-[40%]'>
@@ -155,8 +204,9 @@ const DailyRewards = ({  }) => {
             <Confetti
                 className='w-full h-full'
                 recycle={false}
-                numberOfPieces={500}
+                numberOfPieces={150}
                 onConfettiComplete={onClaimComplete}
+                drawShape={drawSvgConfetti}
             />
         }
     </div>
