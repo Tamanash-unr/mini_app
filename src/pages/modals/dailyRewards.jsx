@@ -91,11 +91,11 @@ const DailyRewards = ({  }) => {
         let drawWidth, drawHeight;
 
         if (aspectRatio > 1) {
-            drawWidth = 50;
-            drawHeight = 50 / aspectRatio;
+            drawWidth = 30;
+            drawHeight = 30 / aspectRatio;
           } else {
-            drawHeight = 50;
-            drawWidth = 50 * aspectRatio;
+            drawHeight = 30;
+            drawWidth = 30 * aspectRatio;
           }
 
         ctx.drawImage(svgImage, -drawWidth/2, -drawHeight/2, drawWidth, drawHeight);
