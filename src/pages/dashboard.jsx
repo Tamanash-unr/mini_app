@@ -22,10 +22,11 @@ const Dashboard = () => {
     const mineState = useSelector(state => state.app.mineState)
     const miningDuration = useSelector(state => state.app.miningDuration)
     const currentMiningDuration = useSelector(state => state.app.currentMiningDuration)
-    // const boostLevel = useSelector(state => state.user.boostLevel)
+    const boostLevel = useSelector(state => state.user.boostLevel)
     const boostRate = useSelector(state => state.app.boostRate);
     const loading = useSelector(state => state.app.isLoading)
     const earned = useSelector(state => state.app.earnedFromGame)
+    const userRank = useSelector(state => state.app.userRank);
 
     const [miningProgress, setMiningProgress] = useState(0)
 
@@ -118,6 +119,25 @@ const Dashboard = () => {
       navigate('/game');
     }
 
+    const getRankTxt = () => {
+      const rank = Math.floor(boostLevel/5)
+
+      return (
+        <p className={`m-0 pb-1.5 ${userRank[rank > 3 ? 3 : rank].style} text-transparent bg-clip-text`}>
+          <i class={userRank[rank > 3 ? 3 : rank].icon} />
+          {userRank[rank > 3 ? 3 : rank].name}
+          <i class={userRank[rank > 3 ? 3 : rank].icon} />
+        </p>
+      )
+    }
+
+    const getRankProgress = () => {
+      const progress = ((boostLevel%5)/5)*100
+
+      return (
+        <div className={`h-2 my-0.5 bg-sky-400 rounded-full transition-all duration-500`} style={{ width: `${progress}%` }}/>
+      )
+    }
 
   return (
     <div className='relative w-full h-full z-10 flex flex-col items-center mb-20'>
@@ -135,12 +155,14 @@ const Dashboard = () => {
               }
               <p className='m-0 max-w-[60%] truncate'>{nickname === '' ? fname : nickname}</p>
             </div>
-            <p className='m-0 pb-1.5'>Epic</p>
+            {
+              getRankTxt()
+            }
           </div>
           <div className='flex flex-col w-2/4 md:w-1/4 text-center my-0.5'>
-              Level 7/10
+              Level {Math.floor(boostLevel%5)}/5<br/>
               <div className='w-full h-2 my-0.5 bg-black rounded-full'>
-                <div className='w-[70%] h-2 my-0.5 bg-sky-400 rounded-full'/>
+                {getRankProgress()}
               </div>
           </div>
           <div className='flex items-center justify-between mt-2 mb-6 w-[90%] md:w-3/4'>

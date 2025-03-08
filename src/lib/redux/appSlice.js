@@ -17,7 +17,29 @@ const initialState = {
     isLoading: false,
     startParam: null,    
     miningDuration: 8,
-    currentMiningDuration: 0
+    currentMiningDuration: 0,
+    userRank: [
+        {
+            name: "Beginner",
+            style: "bg-gradient-to-br from-green-300 to-green-700",
+            icon: "fa-solid fa-chess-pawn mx-2"
+        },
+        {
+            name: "Pro",
+            style: "bg-gradient-to-br from-yellow-50 to-yellow-400",
+            icon: "fa-solid fa-chess-rook mx-2"
+        },
+        {
+            name: "Epic",
+            style: "bg-gradient-to-br from-indigo-400 to-indigo-700",
+            icon: "fa-solid fa-chess-knight mx-2"
+        },
+        {
+            name: "Legendary",
+            style: "bg-gradient-to-br from-amber-300 to-amber-600",
+            icon: "fa-solid fa-chess-king mx-2"
+        }
+    ]
 }
 
 export const appSlice = createSlice({
