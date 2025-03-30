@@ -52,8 +52,6 @@ const handleTimerCompletion = () => {
     if(tg.initDataUnsafe.start_param){
       dispatch(setStartParam(tg.initDataUnsafe.start_param))
     }
-
-    dispatch(setSessionId(randomUUID()))
   },[dispatch])
   
   // const [currentElapsed, setCurrentElapsed] = useState(0)

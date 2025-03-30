@@ -40,7 +40,7 @@ const initialState = {
             icon: "fa-solid fa-chess-king mx-2"
         }
     ],
-    sessionId: ''
+    sessionId: crypto.randomUUID()
 }
 
 export const appSlice = createSlice({
@@ -137,9 +137,6 @@ export const appSlice = createSlice({
         },
         updateCurrentMiningDuration: (state, action) => {
             state.currentMiningDuration += action.payload
-        },
-        setSessionId: (state, action) => {
-            state.sessionId = action.payload
         }
     }
 })
@@ -159,7 +156,6 @@ export const {
     initAppData,
     setStartParam,
     updateCurrentMiningDuration,
-    setSessionId
 } = appSlice.actions
 
 export default appSlice.reducer
