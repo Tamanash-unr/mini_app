@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useTimer } from "react-timer-hook";
+import { randomUUID } from "crypto";
 
 import { Home, LineGame, Overlay } from "./pages";
 import { setUserData } from "./lib/redux/userSlice";
-import { updateMineState, updateMinedCoins, setStartParam, updateCurrentMiningDuration } from "./lib/redux/appSlice";
+import { updateMineState, updateMinedCoins, setStartParam, updateCurrentMiningDuration, setSessionId } from "./lib/redux/appSlice";
 
 function App() {
   const dispatch = useDispatch()
@@ -52,6 +52,8 @@ const handleTimerCompletion = () => {
     if(tg.initDataUnsafe.start_param){
       dispatch(setStartParam(tg.initDataUnsafe.start_param))
     }
+
+    dispatch(setSessionId(randomUUID()))
   },[dispatch])
   
   // const [currentElapsed, setCurrentElapsed] = useState(0)

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { randomUUID } from "crypto";
 
 const initialState = {
     currentTab: 'dashboard',
@@ -16,7 +15,7 @@ const initialState = {
     dailyClaimed: false,
     dailyStreak: 0,
     isLoading: false,
-    startParam: null,    
+    startParam: null,
     miningDuration: 8,
     currentMiningDuration: 0,
     userRank: [
@@ -41,7 +40,7 @@ const initialState = {
             icon: "fa-solid fa-chess-king mx-2"
         }
     ],
-    sessionId: randomUUID()
+    sessionId: ''
 }
 
 export const appSlice = createSlice({
@@ -52,7 +51,7 @@ export const appSlice = createSlice({
             state.coinValue = action.payload.coinsEarned
             state.tickets = action.payload.tickets ?? 0
 
-            if(action.payload.isMining){
+            if (action.payload.isMining) {
                 const currentTime = new Date()
                 const startedAt = new Date(action.payload.miningStartedAt)
 
@@ -68,7 +67,7 @@ export const appSlice = createSlice({
             const today = new Date()
             const lastLogin = new Date(action.payload.lastLoggedIn)
 
-            if(today.getDate() === lastLogin.getDate()){
+            if (today.getDate() === lastLogin.getDate()) {
                 state.dailyClaimed = true
             }
 
@@ -96,7 +95,7 @@ export const appSlice = createSlice({
         updateMineState: (state, action) => {
             state.mineState = action.payload
 
-            switch(action.payload){
+            switch (action.payload) {
                 case 0:
                     state.currentMiningDuration = 0; // Reset current mining duration
                     break;
@@ -110,16 +109,16 @@ export const appSlice = createSlice({
         updateMinedCoins: (state, action) => {
             const value = action.payload;
 
-            if(value < 0){
+            if (value < 0) {
                 state.minedCoins = 0
             } else {
                 let coin = state.boostRate > 0 ? value * state.boostRate : value;
                 let final = state.minedCoins + coin
-                
+
                 state.minedCoins = parseFloat(final.toFixed(2));
             }
         },
-        updateBoostRate: (state, action) => { 
+        updateBoostRate: (state, action) => {
             state.boostRate = action.payload
         },
         updateEarnedFromGame: (state, action) => {
@@ -138,25 +137,29 @@ export const appSlice = createSlice({
         },
         updateCurrentMiningDuration: (state, action) => {
             state.currentMiningDuration += action.payload
+        },
+        setSessionId: (state, action) => {
+            state.sessionId = action.payload
         }
-    } 
+    }
 })
 
-export const { 
-    setCurrentTab, 
+export const {
+    setCurrentTab,
     updateCoins,
-    updateTickets, 
-    setEarnTab, 
-    updateMineState, 
-    updateMinedCoins, 
-    updateBoostRate, 
-    updateEarnedFromGame, 
-    setModalOpen, 
+    updateTickets,
+    setEarnTab,
+    updateMineState,
+    updateMinedCoins,
+    updateBoostRate,
+    updateEarnedFromGame,
+    setModalOpen,
     setDailyClaimed,
     setLoading,
     initAppData,
     setStartParam,
-    updateCurrentMiningDuration 
+    updateCurrentMiningDuration,
+    setSessionId
 } = appSlice.actions
 
 export default appSlice.reducer
