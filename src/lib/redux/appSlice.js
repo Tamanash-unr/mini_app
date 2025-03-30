@@ -40,6 +40,7 @@ const initialState = {
             icon: "fa-solid fa-chess-king mx-2"
         }
     ],
+    sessionId: crypto.randomUUID()
 }
 
 export const appSlice = createSlice({

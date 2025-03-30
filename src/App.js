@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { randomUUID } from "crypto";
+import TelegramAnalytics from '@telegram-apps/analytics';
 
 import { Home, LineGame, Overlay } from "./pages";
 import { setUserData } from "./lib/redux/userSlice";
@@ -52,6 +52,11 @@ const handleTimerCompletion = () => {
     if(tg.initDataUnsafe.start_param){
       dispatch(setStartParam(tg.initDataUnsafe.start_param))
     }
+
+    TelegramAnalytics.init({
+        token: process.env.REACT_APP_ANALYTICS_RECORDING_TOKEN,
+        appName: process.env.REACT_APP_ANALYTICS_IDENTIFIER,
+    });
   },[dispatch])
   
   // const [currentElapsed, setCurrentElapsed] = useState(0)
