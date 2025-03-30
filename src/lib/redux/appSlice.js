@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { randomUUID } from "crypto";
 
 const initialState = {
     currentTab: 'dashboard',
@@ -39,7 +40,8 @@ const initialState = {
             style: "bg-gradient-to-br from-amber-300 to-amber-600",
             icon: "fa-solid fa-chess-king mx-2"
         }
-    ]
+    ],
+    sessionId: randomUUID()
 }
 
 export const appSlice = createSlice({

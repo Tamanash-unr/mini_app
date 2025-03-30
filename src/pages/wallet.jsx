@@ -12,6 +12,8 @@ const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
   const loading = useSelector(state => state.app.isLoading)
   const coins = useSelector(state => state.app.coinValue)
+  const userId = useSelector(state => state.user.data.id)
+  const sessionId = useSelector(state => state.app.sessionId)
 
   const dispatch = useDispatch()
 
@@ -21,8 +23,21 @@ const Wallet = () => {
   const handleWalletConnection = useCallback((address) => {
     setTonWalletAddress(address)
     toast.success("Wallet Connected Successfully!", {duration: 2500})
+    callTelegramAnalytics('connection-completed')
     dispatch(setLoading(false))
   },[dispatch])
+
+  const callTelegramAnalytics = async (eventName) => {
+    await fetch("https://tganalytics.xyz/events", {
+      method: 'POST',
+      body: {
+          user_id: userId,
+          event_name: eventName,
+          session_id: sessionId,
+          app_name: process.env.REACT_APP_ANALYTICS_IDENTIFIER,
+      }
+    });
+  }
 
   const handleWalletDisconnect = useCallback(() => {
     setTonWalletAddress(null)
@@ -57,7 +72,9 @@ const Wallet = () => {
     if(tonConnectUI.connected){
       dispatch(setLoading(true))
       await tonConnectUI.disconnect()
+      callTelegramAnalytics('disconnection')
     } else {
+      callTelegramAnalytics('connection-started')
       await tonConnectUI.openModal()
     }
   }
