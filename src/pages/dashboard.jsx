@@ -27,6 +27,7 @@ const Dashboard = () => {
     const loading = useSelector(state => state.app.isLoading)
     const earned = useSelector(state => state.app.earnedFromGame)
     const userRank = useSelector(state => state.app.userRank);
+    const error = useSelector(state => state.app.errorLog);
 
     const [miningProgress, setMiningProgress] = useState(0)
 
@@ -124,9 +125,9 @@ const Dashboard = () => {
 
       return (
         <p className={`m-0 pb-1.5 ${userRank[rank > 3 ? 3 : rank].style} text-transparent bg-clip-text`}>
-          <i class={userRank[rank > 3 ? 3 : rank].icon} />
+          <i className={userRank[rank > 3 ? 3 : rank].icon} />
           {userRank[rank > 3 ? 3 : rank].name}
-          <i class={userRank[rank > 3 ? 3 : rank].icon} />
+          <i className={userRank[rank > 3 ? 3 : rank].icon} />
         </p>
       )
     }
@@ -160,6 +161,9 @@ const Dashboard = () => {
               getRankTxt()
             }
           </div>
+          <p>
+            {error}
+          </p>
           {/* Level Indicator */}
           <div className='flex flex-col w-2/4 md:w-1/4 text-center my-2.5'>
               Level {Math.floor(boostLevel%5)}/5<br/>

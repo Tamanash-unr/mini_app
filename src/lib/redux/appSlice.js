@@ -40,7 +40,8 @@ const initialState = {
             icon: "fa-solid fa-chess-king mx-2"
         }
     ],
-    sessionId: crypto.randomUUID()
+    sessionId: crypto.randomUUID(),
+    errorLog: []
 }
 
 export const appSlice = createSlice({
@@ -137,6 +138,9 @@ export const appSlice = createSlice({
         },
         updateCurrentMiningDuration: (state, action) => {
             state.currentMiningDuration += action.payload
+        },
+        updateErrorLog: (state, action) => {
+            state.errorLog.push(action.payload)
         }
     }
 })
@@ -156,6 +160,7 @@ export const {
     initAppData,
     setStartParam,
     updateCurrentMiningDuration,
+    updateErrorLog
 } = appSlice.actions
 
 export default appSlice.reducer
