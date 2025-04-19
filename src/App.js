@@ -7,7 +7,7 @@ import { Home, LineGame, Overlay } from "./pages";
 import { setUserData } from "./lib/redux/userSlice";
 import { updateMineState, updateMinedCoins, setStartParam, updateCurrentMiningDuration, setSessionId, updateErrorLog } from "./lib/redux/appSlice";
 
-function App({ test }) {
+function App() {
   const dispatch = useDispatch()
 
   const mineState = useSelector(state => state.app.mineState);
@@ -16,7 +16,6 @@ function App({ test }) {
   const currentElapsed = useSelector(state => state.app.currentMiningDuration);
   const finalDuration = ((miningDuration * 60 * 60) * 1000);
 
-  dispatch(updateErrorLog(test))
   // let miningInterval = null
 
   // const {
