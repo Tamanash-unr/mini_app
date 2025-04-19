@@ -22,10 +22,38 @@ const svgCoin = "/assets/icons/lineCoin.svg";
 
 const gcenterStock = "/assets/icons/comingSoon.jpg";
 
+const Blum = "/assets/icons/blumCrypto.png";
+const Tomarket = "/assets/icons/tomarket.png";
+
 const attribute = {
     friendsPortrait: <a href="https://www.flaticon.com/free-icons/friends" title="friends icons">Friends icons created by Freepik - Flaticon</a>,
     pixkaxe: <a href="https://www.flaticon.com/free-icons/pickaxe" title="pickaxe icons">Pickaxe icons created by Iconjam - Flaticon</a>,
 }
 
-export default {Home, Store, Coins, Wallet, Placeholder, Gamepad, Friends, Gear, Pickaxe, FriendsPortrait, Game, Bolt, User, Copy, Gift, Crown, FullCrown, gcenterStock, Nft, Rocket, Ticket, svgCoin}
+export default {
+    Home, 
+    Store, 
+    Coins, 
+    Wallet, 
+    Placeholder, 
+    Gamepad, 
+    Friends, 
+    Gear, 
+    Pickaxe, 
+    FriendsPortrait, 
+    Game, 
+    Bolt, 
+    User, 
+    Copy, 
+    Gift, 
+    Crown, 
+    FullCrown, 
+    gcenterStock, 
+    Nft, 
+    Rocket, 
+    Ticket, 
+    svgCoin,
+    Blum,
+    Tomarket
+}
 

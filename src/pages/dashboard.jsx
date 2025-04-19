@@ -141,8 +141,9 @@ const Dashboard = () => {
 
   return (
     <div className='relative w-full h-full z-10 flex flex-col items-center mb-20'>
-      <div className="relative bg-black flex flex-col items-center justify-between text-xl py-3 px-0 top-0 w-full ubuntu-bold text-[16px] md:text-2xl mb-36 md:mb-48 h-6">
+      <div className="relative bg-black flex flex-col items-center justify-between text-xl py-3 px-0 top-0 w-full ubuntu-bold text-[16px] md:text-2xl mb-32 md:mb-36 h-6">
           <div className='w-full rounded-b-3xl md:rounded-b-full flex flex-col items-center justify-center -mt-3 md:-mt-2 bg-inherit hover:cursor-pointer' onClick={onShowProfile}>
+            {/* User Profile */}
             <div className='flex items-center justify-center w-full gap-x-2 pt-1.5'>
               {
                 profilePic !== '' ?
@@ -159,13 +160,15 @@ const Dashboard = () => {
               getRankTxt()
             }
           </div>
-          <div className='flex flex-col w-2/4 md:w-1/4 text-center my-0.5'>
+          {/* Level Indicator */}
+          <div className='flex flex-col w-2/4 md:w-1/4 text-center my-2.5'>
               Level {Math.floor(boostLevel%5)}/5<br/>
               <div className='w-full h-2 my-0.5 bg-black rounded-full'>
                 {getRankProgress()}
               </div>
           </div>
-          <div className='flex items-center justify-between mt-2 mb-6 w-[90%] md:w-3/4'>
+          {/* Info Badges */}
+          {/* <div className='flex items-center justify-between mt-2 mb-6 w-[90%] md:w-3/4'>
               <div className='bg-black min-w-[90px] rounded-full px-3 md:px-6 py-1 md:py-2 flex items-center justify-center gap-x-2'>
                 <img src={icons.Nft} alt="Nft.." className='size-7 md:size-8'/>
                 NFT
@@ -178,7 +181,7 @@ const Dashboard = () => {
                 <img src={icons.Ticket} alt="Ticket.." className='size-5 md:size-6'/>
                 {tickets}
               </div>
-          </div>
+          </div> */}
           {/* <div>
             Welcome! {nickname === '' ? fname : nickname}
           </div> */}
@@ -220,16 +223,18 @@ const Dashboard = () => {
       {/* Line Game */}
       <div className='relative w-[300px] h-[180px] md:w-[500px] md:h-[250px] mt-4 md:mt-2 mb-2 rounded-xl border-2 border-indigo-600 shadow-[0px_4px_24px_#4f46e5] overflow-hidden'>
         <img src={icons.Game} alt="game.." className='w-full h-full'/>
-        <div className='absolute bottom-0 px-3 pb-2 pt-5 w-full bg-gradient-to-t from-slate-600 flex justify-between items-center'>
-          <p className='m-0 ubuntu-bold text-xl md:text-2xl'>Line Game</p>
+        <div className='absolute bottom-0 px-3 pb-2 pt-5 w-full bg-gradient-to-t from-indigo-600 flex justify-between items-center'>
+          <p className='m-0 ubuntu-bold text-xl md:text-2xl'>
+            <span className='block md:inline'>Play</span> Line Game
+          </p>
           <CustomButton
             btnIcon={icons.Ticket}
             btnIconStyle="size-5"
-            preText="1"
-            preTextStyle="ubuntu-bold ml-1 mr-2" 
-            text="Play"
+            preText={`${tickets}`}
+            preTextStyle="ubuntu-bold ml-1 mr-2 text-lg md:text-xl" 
+            text=""
             textStyle="m-0 ubuntu-bold"
-            buttonStyle="p-1 min-w-[100px] flex items-center justify-center"
+            buttonStyle="p-1 min-w-28 flex items-center justify-center"
             onClick={onPlay}
           />
         </div>
@@ -271,10 +276,17 @@ const Dashboard = () => {
         />
       </div>
       {/* Mining Info Text */}
-      <p className='ubuntu-bold my-1.5 md:my-4 md:text-lg'>
-          Mining Rate: &nbsp; 360/hr
-          {/* &nbsp; Boost Rate: &nbsp; x{boostRate} */}
-      </p>       
+      <div className='flex items-center gap-x-3 ubuntu-bold my-1.5 md:my-4 md:text-lg'>
+          {/* Mining Rate: &nbsp; 360/hr */}
+          <div className='bg-black/75 rounded-lg px-3 md:px-6 py-2 md:py-2 flex items-center justify-center gap-x-2'>
+            <img src={icons.Pickaxe} alt="Rocket.." className='size-6 md:size-8'/>
+            {(360 * boostRate).toFixed(0)}/hr
+          </div>
+          <div className='bg-black/75 rounded-lg px-3 md:px-6 py-1.5 md:py-2 flex items-center justify-center gap-x-2'>
+            <img src={icons.Rocket} alt="Rocket.." className='size-7 md:size-8'/>
+            x{boostRate}
+          </div>
+      </div>       
     </div>
   )
 }

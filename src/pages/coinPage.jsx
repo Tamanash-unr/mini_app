@@ -18,10 +18,10 @@ const CoinPage = () => {
 
   return (
     <div className='relative flex flex-col items-center w-full h-dvh z-10'>
-      <p className='w-full text-white my-8 text-center denver-regular text-6xl'>
+      <p className='w-full text-white mt-16 mb-1 text-center denver-regular text-6xl'>
         EARN
       </p>
-      <div className='flex w-full px-4 md:w-[60%] space-x-3'>
+      {/* <div className='flex w-full px-4 md:w-[60%] space-x-3'>
           <TabButton
               buttonStyle="p-2 w-full h-full rounded-full bg-black/75 hover:bg-black flex justify-center items-center"
               onClick={() => dispatch(setEarnTab("tasks"))}
@@ -40,7 +40,7 @@ const CoinPage = () => {
               text="Code"
               textStyle="ubuntu-bold text-sm md:text-xl my-1"
           />
-      </div>
+      </div> */}
       {
         content[tab]
       }

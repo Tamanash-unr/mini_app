@@ -103,13 +103,13 @@ const Wallet = () => {
         }
       </div>
       <div className='flex w-[95%] md:w-[60%] items-center justify-between ubuntu-bold text-2xl md:text-3xl'>
-        <p className='m-0'>Points</p>
+        <p className='m-0'>Total Coins</p>
         <div className='flex items-center justify-center bg-slate-400/50 min-w-32 rounded-full py-2 px-4'>
           <img src={icons.Placeholder} alt="lineCoin.." className='w-7 mr-2' />
           {coins}
         </div>
       </div>
-      <div className='flex items-center justify-center bg-zinc-900 rounded-full p-2 my-5'>
+      {/* <div className='flex items-center justify-center bg-zinc-900 rounded-full p-2 my-5'>
         <button 
           className={`py-2 md:w-[280px] px-8 text-lg ubuntu-bold rounded-full transition-colors duration-500 ${currentTab === 0 ? 'bg-gray-500' : ''}`}
           onClick={() => setCurrentTab(0)}
@@ -122,7 +122,7 @@ const Wallet = () => {
         >
           History
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }

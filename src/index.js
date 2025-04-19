@@ -8,6 +8,12 @@ import { Buffer } from 'buffer';
 
 import './index.css';
 import App from './App';
+import telegramAnalytics from '@telegram-apps/analytics';
+
+telegramAnalytics.init({
+    token: process.env.REACT_APP_ANALYTICS_RECORDING_TOKEN, // SDK Auth token received via @DataChief_bot
+    appName: process.env.REACT_APP_ANALYTICS_IDENTIFIER, // The analytics identifier you entered in @DataChief_bot
+});
 
 //Add buffer for Ton Core
 window.Buffer = Buffer;
