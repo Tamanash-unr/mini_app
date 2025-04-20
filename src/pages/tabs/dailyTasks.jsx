@@ -104,7 +104,7 @@ const DailyTasks = () => {
     }
 
     const checkXPage = async (taskData, btnLoading) => {
-        const externalUrl = 'https://x.com/LineCryptoCoin?t=RXk686JHj0MC807gTFk_Aw&s=09';
+        const externalUrl = 'https://x.com/LineCryptoCoin';
         if (window.Telegram?.WebApp?.openLink) {
             try {
                 btnLoading(true);
