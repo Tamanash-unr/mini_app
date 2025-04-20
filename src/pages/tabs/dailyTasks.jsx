@@ -105,10 +105,12 @@ const DailyTasks = () => {
 
     const checkXPage = async (taskData, btnLoading) => {
         const externalUrl = 'https://x.com/LineCryptoCoin';
+        toast.success(`MM Attempted to open: ${externalUrl}`, { duration: 1000 });
         if (window.Telegram?.WebApp?.openLink) {
             try {
                 btnLoading(true);
 
+                // 3. Update the component's state
                 if(!socialTaskData[taskData.id]){
                     dispatch(updateCompletedTask({type: 'social', taskId: taskData.id}))
                 } else if(socialTaskData[taskData.id] && socialTaskData[taskData.id].completed) {
@@ -119,8 +121,6 @@ const DailyTasks = () => {
                 // 2. Open the external link
                 window.Telegram.WebApp.openLink(externalUrl, { try_instant_view: false }); // try_instant_view is optional
         
-                // 3. Update the component's state
-                
                 // This happens immediately after initiating the link opening
                 toast.success(`Attempted to open: ${externalUrl}`, { duration: 1000 });
               } catch (error) {
