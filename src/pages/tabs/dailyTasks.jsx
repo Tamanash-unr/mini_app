@@ -76,26 +76,56 @@ const DailyTasks = () => {
 
     const checkIgPage = async (taskData, btnLoading) => {
         const externalUrl = 'https://www.instagram.com/linecryptocoin/'
-        // if(!socialTaskData[taskData.id]){
-        //     dispatch(updateCompletedTask({type: 'social', taskId: taskData.id}))
-        // } else if(socialTaskData[taskData.id] && socialTaskData[taskData.id].completed) {
-        //     btnLoading(true)
-
-        //     await claimTask('social', taskData.id, taskData.reward)
-
-        //     btnLoading(false)
-        // }
         if (window.Telegram?.WebApp?.openLink) {
             try {
                 btnLoading(true);
-                
+
                 // 2. Open the external link
                 window.Telegram.WebApp.openLink(externalUrl, { try_instant_view: false }); // try_instant_view is optional
         
                 // 3. Update the component's state
+                if(!socialTaskData[taskData.id]){
+                    dispatch(updateCompletedTask({type: 'social', taskId: taskData.id}))
+                } else if(socialTaskData[taskData.id] && socialTaskData[taskData.id].completed) {
+                    btnLoading(true)
+
+                    await claimTask('social', taskData.id, taskData.reward)
+
+                    btnLoading(false)
+                }
                 // This happens immediately after initiating the link opening
                 toast.success(`Attempted to open: ${externalUrl}`);
-                window.Telegram.WebApp.showAlert('Link opening initiated and status updated.');
+              } catch (error) {
+                toast.error("Error calling openLink:", error);
+                // Use showAlert for user feedback within Telegram if needed
+                window.Telegram.WebApp.showAlert('Could not open the link.');
+              } finally {
+                btnLoading(false); // Optional: Reset loading state
+              }
+        }
+    }
+
+    const checkXPage = async (taskData, btnLoading) => {
+        const externalUrl = 'https://x.com/LineCryptoCoin?t=RXk686JHj0MC807gTFk_Aw&s=09'
+        if (window.Telegram?.WebApp?.openLink) {
+            try {
+                btnLoading(true);
+
+                // 2. Open the external link
+                window.Telegram.WebApp.openLink(externalUrl, { try_instant_view: false }); // try_instant_view is optional
+        
+                // 3. Update the component's state
+                if(!socialTaskData[taskData.id]){
+                    dispatch(updateCompletedTask({type: 'social', taskId: taskData.id}))
+                } else if(socialTaskData[taskData.id] && socialTaskData[taskData.id].completed) {
+                    btnLoading(true)
+
+                    await claimTask('social', taskData.id, taskData.reward)
+
+                    btnLoading(false)
+                }
+                // This happens immediately after initiating the link opening
+                toast.success(`Attempted to open: ${externalUrl}`);
               } catch (error) {
                 toast.error("Error calling openLink:", error);
                 // Use showAlert for user feedback within Telegram if needed
@@ -136,7 +166,7 @@ const DailyTasks = () => {
       'checkDailyLogin': checkDaily,
       'checkVisitChannel': checkVisitChannel,
       'checkIgPage': checkIgPage,
-      'checkXPage': '',
+      'checkXPage': checkXPage,
       'checkCommunity': ''
     }
 
