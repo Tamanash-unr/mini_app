@@ -75,28 +75,26 @@ const DailyTasks = () => {
     }
 
     const checkIgPage = async (taskData, btnLoading) => {
-        const externalUrl = 'https://www.instagram.com/linecryptocoin/'
+        const externalUrl = 'https://www.instagram.com/linecryptocoin/';
         if (window.Telegram?.WebApp?.openLink) {
             try {
                 btnLoading(true);
 
-                // 2. Open the external link
-                window.Telegram.WebApp.openLink(externalUrl, { try_instant_view: false }); // try_instant_view is optional
-        
                 // 3. Update the component's state
                 if(!socialTaskData[taskData.id]){
                     dispatch(updateCompletedTask({type: 'social', taskId: taskData.id}))
                 } else if(socialTaskData[taskData.id] && socialTaskData[taskData.id].completed) {
-                    btnLoading(true)
-
                     await claimTask('social', taskData.id, taskData.reward)
-
-                    btnLoading(false)
+                    return
                 }
+
+                // 2. Open the external link
+                window.Telegram.WebApp.openLink(externalUrl, { try_instant_view: false }); // try_instant_view is optional
+        
                 // This happens immediately after initiating the link opening
-                toast.success(`Attempted to open: ${externalUrl}`);
+                toast.success(`Attempted to open: ${externalUrl}`, { duration: 1000 });
               } catch (error) {
-                toast.error("Error calling openLink:", error);
+                toast.error(`Error calling openLink: ${error}`, { duration: 1500 });
                 // Use showAlert for user feedback within Telegram if needed
                 window.Telegram.WebApp.showAlert('Could not open the link.');
               } finally {
@@ -106,28 +104,57 @@ const DailyTasks = () => {
     }
 
     const checkXPage = async (taskData, btnLoading) => {
-        const externalUrl = 'https://x.com/LineCryptoCoin?t=RXk686JHj0MC807gTFk_Aw&s=09'
+        const externalUrl = 'https://x.com/LineCryptoCoin?t=RXk686JHj0MC807gTFk_Aw&s=09';
         if (window.Telegram?.WebApp?.openLink) {
             try {
                 btnLoading(true);
+
+                if(!socialTaskData[taskData.id]){
+                    dispatch(updateCompletedTask({type: 'social', taskId: taskData.id}))
+                } else if(socialTaskData[taskData.id] && socialTaskData[taskData.id].completed) {
+                    await claimTask('social', taskData.id, taskData.reward)
+                    return
+                }
 
                 // 2. Open the external link
                 window.Telegram.WebApp.openLink(externalUrl, { try_instant_view: false }); // try_instant_view is optional
         
                 // 3. Update the component's state
+                
+                // This happens immediately after initiating the link opening
+                toast.success(`Attempted to open: ${externalUrl}`, { duration: 1000 });
+              } catch (error) {
+                toast.error(`Error calling openLink: ${error}`, { duration: 1500 });
+                // Use showAlert for user feedback within Telegram if needed
+                window.Telegram.WebApp.showAlert('Could not open the link.');
+              } finally {
+                btnLoading(false); // Optional: Reset loading state
+              }
+        }
+    }
+
+    const checkCommunity = async (taskData, btnLoading) => {
+        const externalUrl = 'https://t.me/LineCommunity';
+        if (window.Telegram?.WebApp?.openTelegramLink) {
+            try {
+                btnLoading(true);
+
                 if(!socialTaskData[taskData.id]){
                     dispatch(updateCompletedTask({type: 'social', taskId: taskData.id}))
                 } else if(socialTaskData[taskData.id] && socialTaskData[taskData.id].completed) {
-                    btnLoading(true)
-
                     await claimTask('social', taskData.id, taskData.reward)
-
-                    btnLoading(false)
+                    return
                 }
+
+                // 2. Open the external link
+                window.Telegram.WebApp.openTelegramLink(externalUrl); // try_instant_view is optional
+        
+                // 3. Update the component's state
+                
                 // This happens immediately after initiating the link opening
-                toast.success(`Attempted to open: ${externalUrl}`);
+                toast.success(`Attempted to open: ${externalUrl}`, { duration: 1000 });
               } catch (error) {
-                toast.error("Error calling openLink:", error);
+                toast.error(`Error calling openLink: ${error}`, { duration: 1500 });
                 // Use showAlert for user feedback within Telegram if needed
                 window.Telegram.WebApp.showAlert('Could not open the link.');
               } finally {
@@ -151,11 +178,19 @@ const DailyTasks = () => {
         }
     }
 
-    const getBtnText = (id) => {
-        if(dailyTaskData[id] && dailyTaskData[id].completed){
-            return 'Claim'
-        } else if(dailyTaskData[id] && dailyTaskData[id].claimed){
-            return 'Claimed'
+    const getBtnText = (id, type) => {
+        if(type === 'daily'){
+            if(dailyTaskData[id] && dailyTaskData[id].completed){
+                return 'Claim'
+            } else if(dailyTaskData[id] && dailyTaskData[id].claimed){
+                return 'Claimed'
+            }
+        } else {
+            if(socialTaskData[id] && socialTaskData[id].completed){
+                return 'Claim'
+            } else if(socialTaskData[id] && socialTaskData[id].claimed){
+                return 'Claimed'
+            }
         }
 
         return 'Start'
@@ -167,7 +202,7 @@ const DailyTasks = () => {
       'checkVisitChannel': checkVisitChannel,
       'checkIgPage': checkIgPage,
       'checkXPage': checkXPage,
-      'checkCommunity': ''
+      'checkCommunity': checkCommunity
     }
 
     return (
@@ -189,7 +224,7 @@ const DailyTasks = () => {
                             key={`dailyTask_${index}`} 
                             title={task.title}
                             titleStyle="text-base md:text-xl"
-                            btnTxt={getBtnText(task.id)}
+                            btnTxt={getBtnText(task.id, 'daily')}
                             btnStyle="min-w-[90px] md:min-w-[100px]"
                             txtStyle="flex justify-center items-center m-0 ubuntu-medium text-sm md:text-lg"
                             subtitle={`${task.reward}`}
@@ -243,7 +278,7 @@ const DailyTasks = () => {
                             cardIconStyle="w-6 h-6 mr-2"
                             title={task.title}
                             titleStyle="flex items-center text-base md:text-xl"
-                            btnTxt={getBtnText(task.id)}
+                            btnTxt={getBtnText(task.id, 'social')}
                             btnStyle="min-w-[90px] md:min-w-[100px]"
                             txtStyle="flex justify-center items-center m-0 ubuntu-medium text-sm md:text-lg"
                             subtitle={`${task.reward}`}
