@@ -38,11 +38,13 @@ const Card = ({ cardSyle, cardIcon, cardIconStyle, contentStyle, title, titleSty
       }}
     >
         <div className={`ubuntu-medium text-xl ${contentStyle}`}>
-            {
-              cardIcon && 
-              <img src={cardIcon} alt="cardIcon.." className={`${cardIconStyle}`} />
-            }
-            <h2 className={`${titleStyle}`}>{title}</h2>
+            <h2 className={`${titleStyle}`}>
+              {
+                cardIcon && 
+                <img src={cardIcon} alt="cardIcon.." className={`${cardIconStyle}`} />
+              }
+              {title}
+            </h2>
             <h3 className={`${subtitleStyle}`}>
               {
                 subIcon && 

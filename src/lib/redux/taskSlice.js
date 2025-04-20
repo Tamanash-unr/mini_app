@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    dailyTasks: null
+    dailyTasks: null,
+    socialTasks: null
 }
 
 export const taskSlice = createSlice({
@@ -10,6 +11,7 @@ export const taskSlice = createSlice({
     reducers: {
         initTasks: (state, action) => {
             state.dailyTasks = action.payload.daily_tasks
+            state.socialTasks = action.payload.socialTasks
         },
     }
 })

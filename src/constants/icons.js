@@ -22,6 +22,10 @@ const svgCoin = "/assets/icons/lineCoin.svg";
 
 const gcenterStock = "/assets/icons/comingSoon.jpg";
 
+const Telegram = "/assets/icons/telegram.svg";
+const Instagram = "/assets/icons/instagram.svg";
+const Twitter = "/assets/icons/twitter.svg";
+
 const Blum = "/assets/icons/blumCrypto.png";
 const Tomarket = "/assets/icons/tomarket.png";
 
@@ -54,6 +58,9 @@ export default {
     Ticket, 
     svgCoin,
     Blum,
-    Tomarket
+    Tomarket,
+    Telegram,
+    Instagram,
+    Twitter
 }
 

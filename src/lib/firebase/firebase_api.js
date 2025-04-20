@@ -285,7 +285,7 @@ export const updateTaskData = async (id, taskId, newTaskData, taskType, coinsEar
 
         const socialTask = {
             'appData.coinsEarned': coinsEarned ?? appData.coinsEarned,
-            'appData.tasks.social': {...appData.tasks.daily,
+            'appData.tasks.social': {...appData.tasks.social,
                 [taskId]: newTaskData
             },
             updatedAt: Date().toString(),

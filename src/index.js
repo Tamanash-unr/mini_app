@@ -11,8 +11,6 @@ import App from './App';
 import telegramAnalytics from '@telegram-apps/analytics';
 // import { mockTelegramEnv, parseInitDataQuery } from '@telegram-apps/sdk-react';
 
-let err = "";
-
 try {
   telegramAnalytics.init({
       token: process.env.REACT_APP_ANALYTICS_RECORDING_TOKEN, // SDK Auth token received via @DataChief_bot
