@@ -105,7 +105,6 @@ const DailyTasks = () => {
 
     const checkXPage = async (taskData, btnLoading) => {
         const externalUrl = 'https://x.com/LineCryptoCoin';
-        toast.success(`MM Attempted to open: ${externalUrl}`, { duration: 1000 });
         if (window.Telegram?.WebApp?.openLink) {
             try {
                 btnLoading(true);
