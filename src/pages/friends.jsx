@@ -90,9 +90,8 @@ const Friends = () => {
                   referrals.map((name, index) => (
                     <Card 
                       key={`referrals_${index}`}
-                      contentStyle="flex items-center"
                       title={name}
-                      titleStyle="text-base md:text-xl"
+                      titleStyle="flex items-center text-base md:text-xl"
                       cardIcon={icons.User}
                       cardIconStyle="w-8 h-8 mr-4"
                       txtStyle="flex justify-center items-center m-0 ubuntu-medium text-sm md:text-lg"
