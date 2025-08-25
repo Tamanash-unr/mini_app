@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import TelegramAnalytics from '@telegram-apps/analytics';
+
+// Nitrolite Integration
+import useClearNodeConnection from "./hooks/useClearNodeConnection";
+import { ethers } from "ethers";
 
 import { Home, LineGame, Overlay } from "./pages";
 import { setUserData } from "./lib/redux/userSlice";
@@ -16,30 +19,29 @@ function App() {
   const currentElapsed = useSelector(state => state.app.currentMiningDuration);
   const finalDuration = ((miningDuration * 60 * 60) * 1000);
 
-  // let miningInterval = null
+  const stateWallet = new ethers.Wallet('0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'); // Initialize securely
+  const clearNodeUrl = 'wss://clearnet.yellow.com/ws';
 
-  // const {
-  //   totalSeconds,
-  //   seconds,
-  //   minutes,
-  //   hours,
-  //   days,
-  //   isRunning,
-  //   start,
-  //   pause,
-  //   restart,
-  // } = useTimer({
-  //   autoStart: false,
-  //   expiryTimestamp: new Date().getTime() + ((miningDuration * 60) * 1000 ), // Duration in milliseconds
-  //   onExpire: () => handleTimerCompletion(),
-  // });
+  const {
+    connectionStatus,
+    isAuthenticated,
+    error,
+    getChannels,
+    disconnect,
+  } = useClearNodeConnection(clearNodeUrl, stateWallet);
 
-const handleTimerCompletion = () => {
-  // clearInterval(miningInterval)
-  // miningInterval = null
-  dispatch(updateMineState(3))
-  // restart(new Date().getTime() + (miningDuration * 60 * 1000 ), false)
-}
+  const channels = useSelector((state) => state.clearNode.channels);
+
+  useEffect(() => {
+    console.info("NITROLITE Connection:\nConnection Status: ", connectionStatus, "\nAuthenticated: ", isAuthenticated, "\nChannels : ", channels)
+  }, [])
+
+  const handleTimerCompletion = () => {
+    // clearInterval(miningInterval)
+    // miningInterval = null
+    dispatch(updateMineState(3))
+    // restart(new Date().getTime() + (miningDuration * 60 * 1000 ), false)
+  }
 
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -52,11 +54,6 @@ const handleTimerCompletion = () => {
     if(tg.initDataUnsafe.start_param){
       dispatch(setStartParam(tg.initDataUnsafe.start_param))
     }
-
-    // TelegramAnalytics.init({
-    //     token: process.env.REACT_APP_ANALYTICS_RECORDING_TOKEN,
-    //     appName: process.env.REACT_APP_ANALYTICS_IDENTIFIER,
-    // });
   },[dispatch])
   
   // const [currentElapsed, setCurrentElapsed] = useState(0)

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useTonConnectUI } from '@tonconnect/ui-react'
-import { Address } from '@ton/core'
+// import { useTonConnectUI } from '@tonconnect/ui-react'
+// import { Address } from '@ton/core'
 import toast from 'react-hot-toast'
 
 import { CustomButton } from '../components'
@@ -9,7 +9,7 @@ import { setLoading } from '../lib/redux/appSlice'
 import { icons } from '../constants'
 
 const Wallet = () => {
-  const [tonConnectUI] = useTonConnectUI();
+  // const [tonConnectUI] = useTonConnectUI();
   const loading = useSelector(state => state.app.isLoading)
   const coins = useSelector(state => state.app.coinValue)
   const userId = useSelector(state => state.user.data.id)
@@ -18,7 +18,7 @@ const Wallet = () => {
   const dispatch = useDispatch()
 
   const [currentTab, setCurrentTab] = useState(0);
-  const [tonWalletAddress, setTonWalletAddress] = useState(null)
+  const [tonWalletAddress, setTonWalletAddress] = useState("")
 
   const handleWalletConnection = useCallback((address) => {
     setTonWalletAddress(address)
@@ -26,7 +26,7 @@ const Wallet = () => {
     callTelegramAnalytics('connection-completed')
     dispatch(setLoading(false))
   },[dispatch])
-
+  
   const callTelegramAnalytics = async (eventName) => {
     await fetch("https://tganalytics.xyz/events", {
       method: 'POST',
@@ -40,49 +40,49 @@ const Wallet = () => {
   }
 
   const handleWalletDisconnect = useCallback(() => {
-    setTonWalletAddress(null)
+    setTonWalletAddress("")
     dispatch(setLoading(false))
   },[dispatch])
 
-  useEffect(() => {
-    const checkWalletConnection = async () => {
-      if(tonConnectUI.account?.address){
-        handleWalletConnection(tonConnectUI.account?.address)
-      } else {
-        handleWalletDisconnect()
-      }
-    }
+  // useEffect(() => {
+  //   const checkWalletConnection = async () => {
+  //     if(tonConnectUI.account?.address){
+  //       handleWalletConnection(tonConnectUI.account?.address)
+  //     } else {
+  //       handleWalletDisconnect()
+  //     }
+  //   }
 
-    checkWalletConnection()
+  //   checkWalletConnection()
 
-    const unsubscribe = tonConnectUI.onStatusChange((wallet) => {
-      if(wallet){
-        handleWalletConnection(wallet.account.address)
-      } else {
-        handleWalletDisconnect()
-      }
-    })
+  //   const unsubscribe = tonConnectUI.onStatusChange((wallet) => {
+  //     if(wallet){
+  //       handleWalletConnection(wallet.account.address)
+  //     } else {
+  //       handleWalletDisconnect()
+  //     }
+  //   })
 
-    return () => {
-      unsubscribe()
-    }
-  },[tonConnectUI, handleWalletConnection, handleWalletDisconnect])
+  //   return () => {
+  //     unsubscribe()
+  //   }
+  // },[tonConnectUI, handleWalletConnection, handleWalletDisconnect])
 
-  const handleWalletAction = async () => {
-    if(tonConnectUI.connected){
-      dispatch(setLoading(true))
-      await tonConnectUI.disconnect()
-      callTelegramAnalytics('disconnection')
-    } else {
-      callTelegramAnalytics('connection-started')
-      await tonConnectUI.openModal()
-    }
-  }
+  // const handleWalletAction = async () => {
+  //   if(tonConnectUI.connected){
+  //     dispatch(setLoading(true))
+  //     await tonConnectUI.disconnect()
+  //     callTelegramAnalytics('disconnection')
+  //   } else {
+  //     callTelegramAnalytics('connection-started')
+  //     await tonConnectUI.openModal()
+  //   }
+  // }
 
-  const formatAddress = (address) => {
-    const tempAddress = Address.parse(address).toString()
-    return `${tempAddress.slice(0,4)}....${tempAddress.slice(-4)}`
-  }
+  // const formatAddress = (address) => {
+  //   const tempAddress = Address.parse(address).toString()
+  //   return `${tempAddress.slice(0,4)}....${tempAddress.slice(-4)}`
+  // }
 
   return (
     <div className='relative w-full h-screen z-10 p-2 flex flex-col items-center'>
@@ -92,13 +92,15 @@ const Wallet = () => {
           text={tonWalletAddress ? 'Disconnect Wallet' : 'Connect Wallet'} 
           textStyle="m-0 ubuntu-bold text-xl"
           buttonStyle="w-[80%] md:w-[60%] mx-auto my-10"
-          onClick={handleWalletAction}
+          // onClick={handleWalletAction}
+          onClick={() => console.log('connect wallet clicked')}
           isLoading={loading}
         />
         {
           tonWalletAddress &&
           <div className='my-2 min-w-[75%] md:min-w-[60%] mx-auto ubuntu-bold text-lg px-4 py-2 rounded-full bg-black/75'>
-            { formatAddress(tonWalletAddress) }
+            {/* { formatAddress(tonWalletAddress) } */}
+            { "Wallet Address here: ....." }
           </div>
         }
       </div>
