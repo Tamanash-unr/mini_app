@@ -19,7 +19,7 @@ function App() {
   const currentElapsed = useSelector(state => state.app.currentMiningDuration);
   const finalDuration = ((miningDuration * 60 * 60) * 1000);
 
-  const stateWallet = new ethers.Wallet('0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'); // Initialize securely
+  const stateWallet = new ethers.Wallet(process.env.REACT_APP_NITROLITE_KEY); // Initialize securely
   const clearNodeUrl = 'wss://clearnet.yellow.com/ws';
 
   const {

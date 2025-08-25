@@ -86,7 +86,7 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
           app_name: 'Line Crypto', // Replace with your app's domain
           expire: Math.floor(Date.now() / 1000) + 3600,
           scope: 'console',
-          application: '0x710d43…39809b', // From channel setup
+          application: process.env.REACT_APP_NITROLITE_CHANNEL_ID, // From channel setup
           allowances: [],
         });
         newWs.send(authRequest);
