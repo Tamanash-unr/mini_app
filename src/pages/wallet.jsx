@@ -38,7 +38,15 @@ const Wallet = () => {
     disconnect,
   } = useClearNodeConnection(clearNodeUrl, stateWallet);
 
-  const channels = useSelector((state) => state.clearNode.channels);
+  const channelData = useSelector((state) => state.clearNode.channels);
+
+  useEffect(() => {
+    if(connectionStatus == "connecting" || connectionStatus == "disconnecting") {
+      dispatch(setLoading(true))
+    } else {
+      dispatch(setLoading(false))
+    }
+  },[dispatch, connectionStatus, setLoading])
 
   // useEffect(() => {
   //   console.info(
@@ -151,9 +159,9 @@ const Wallet = () => {
           {coins}
         </div>
       </div>
-      <div className='w-3/4 bg-zinc-900/80 rounded-full px-2 py-6 my-5'>
+      <div className='w-[90%] md:w-3/4 bg-zinc-900/80 rounded-2xl px-2 py-6 my-5'>
         <p className='w-full text-center ubuntu-bold text-lg'>Nitrolite Status</p>
-        <ul className='w-3/4 mx-auto ubuntu-medium flex flex-col gap-y-2'>
+        <ul className='md:w-3/4 mx-auto ubuntu-medium flex flex-col items-center gap-y-2 text-sm md:text-base'>
           <li>
             Websocket Connection Status: {connectionStatus.toUpperCase()}
           </li>
@@ -161,11 +169,14 @@ const Wallet = () => {
             Auth Status: {isAuthenticated.toString()}
           </li>
           <li>
-            Channels Found: {channels.length}
+            Channels Found: {channelData.channels.length}
           </li>
-          <li>
-            Error: {error}
-          </li>
+          {
+            error && 
+            <li>
+              Error: {error}
+            </li>
+          }          
         </ul>
       </div>
       {/* <div className='flex items-center justify-center bg-zinc-900 rounded-full p-2 my-5'>

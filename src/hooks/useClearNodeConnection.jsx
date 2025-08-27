@@ -125,7 +125,7 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
       try {
         const message = parseAnyRPCResponse(event.data);
 
-        console.log("Message Method Received: ", message.method, " ====== ", message)
+        // console.log("Message Method Received: ", message.method, " ====== ", message)
 
         if (message.method === RPCMethod.AuthChallenge) {
           const challenge = message.params.challengeMessage; // use the exact field from broker
@@ -133,7 +133,7 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
 
           newWs.send(authVerify.replace("challenge", "challengeMessage"));
         } else if (message.method === RPCMethod.AuthVerify) {
-          console.log("Auth Verify Call : ", message)
+          // console.log("Auth Verify Call : ", message)
           if (message.params.success) {
             dispatch(setAuthenticated(true));
             localStorage.setItem('clearnode_jwt', message.params.jwtToken);
@@ -169,6 +169,7 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
 
     newWs.onclose = () => {
       dispatch(setConnectionStatus('disconnected'));
+      dispatch(setChannels({channels: []}))
       dispatch(setAuthenticated(false));
       // if (reconnectAttempts.current < maxReconnectAttempts) {
       //   reconnectAttempts.current += 1;
@@ -188,6 +189,7 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
   // Disconnect function
   const disconnect = useCallback(() => {
     if (wsRef.current) {
+      dispatch(setConnectionStatus('disconnecting'));
       wsRef.current.close();
       wsRef.current = null;
       reconnectAttempts.current = 0; // Reset attempts
