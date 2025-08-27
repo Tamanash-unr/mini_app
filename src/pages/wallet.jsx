@@ -8,6 +8,11 @@ import { CustomButton } from '../components'
 import { setLoading } from '../lib/redux/appSlice'
 import { icons } from '../constants'
 
+// Nitrolite Integration
+import useClearNodeConnection from "../hooks/useClearNodeConnection";
+import { ethers } from "ethers";
+
+
 const Wallet = () => {
   // const [tonConnectUI] = useTonConnectUI();
   const loading = useSelector(state => state.app.isLoading)
@@ -19,6 +24,40 @@ const Wallet = () => {
 
   const [currentTab, setCurrentTab] = useState(0);
   const [tonWalletAddress, setTonWalletAddress] = useState("")
+
+  /* ------------- Nitrolite ----------------- */
+  const stateWallet = new ethers.Wallet(process.env.REACT_APP_NITROLITE_KEY); // Initialize securely
+  const clearNodeUrl = 'wss://clearnet.yellow.com/ws';
+
+  const {
+    connectionStatus,
+    isAuthenticated,
+    error,
+    getChannels,
+    connect,
+    disconnect,
+  } = useClearNodeConnection(clearNodeUrl, stateWallet);
+
+  const channels = useSelector((state) => state.clearNode.channels);
+
+  // useEffect(() => {
+  //   console.info(
+  //     'NITROLITE Connection:\nConnection Status:',
+  //     connectionStatus,
+  //     '\nAuthenticated:',
+  //     isAuthenticated,
+  //     '\nChannels:',
+  //     channels,
+  //     '\nError:',
+  //     error
+  //   );
+  //   if (isAuthenticated) {
+  //     getChannels(); // Auto-fetch channels when authenticated
+  //   }
+  // }, [connectionStatus, isAuthenticated, channels, error]);
+/* ---------------------------------------------------------- */
+
+  
 
   const handleWalletConnection = useCallback((address) => {
     setTonWalletAddress(address)
@@ -89,11 +128,12 @@ const Wallet = () => {
       <div className='flex flex-col ubuntu-bold text-3xl md:text-4xl my-10 md:my-20 text-center'>
         Get Real Crypto. Earn and Buy Tokens
         <CustomButton 
-          text={tonWalletAddress ? 'Disconnect Wallet' : 'Connect Wallet'} 
+          // text={tonWalletAddress ? 'Disconnect Wallet' : 'Connect Wallet'} 
+          text={connectionStatus == "connected" ? 'Disconnect from Nitrolite' : 'Connect to Nitrolite'} 
           textStyle="m-0 ubuntu-bold text-xl"
           buttonStyle="w-[80%] md:w-[60%] mx-auto my-10"
           // onClick={handleWalletAction}
-          onClick={() => console.log('connect wallet clicked')}
+          onClick={() => connectionStatus == "connected" ? disconnect() : connect()}
           isLoading={loading}
         />
         {
@@ -110,6 +150,23 @@ const Wallet = () => {
           <img src={icons.Placeholder} alt="lineCoin.." className='w-7 mr-2' />
           {coins}
         </div>
+      </div>
+      <div className='w-3/4 bg-zinc-900/80 rounded-full px-2 py-6 my-5'>
+        <p className='w-full text-center ubuntu-bold text-lg'>Nitrolite Status</p>
+        <ul className='w-3/4 mx-auto ubuntu-medium flex flex-col gap-y-2'>
+          <li>
+            Websocket Connection Status: {connectionStatus.toUpperCase()}
+          </li>
+          <li>
+            Auth Status: {isAuthenticated.toString()}
+          </li>
+          <li>
+            Channels Found: {channels.length}
+          </li>
+          <li>
+            Error: {error}
+          </li>
+        </ul>
       </div>
       {/* <div className='flex items-center justify-center bg-zinc-900 rounded-full p-2 my-5'>
         <button 

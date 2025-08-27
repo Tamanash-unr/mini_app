@@ -2,13 +2,9 @@ import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-// Nitrolite Integration
-import useClearNodeConnection from "./hooks/useClearNodeConnection";
-import { ethers } from "ethers";
-
 import { Home, LineGame, Overlay } from "./pages";
 import { setUserData } from "./lib/redux/userSlice";
-import { updateMineState, updateMinedCoins, setStartParam, updateCurrentMiningDuration, setSessionId, updateErrorLog } from "./lib/redux/appSlice";
+import { updateMineState, updateMinedCoins, setStartParam, updateCurrentMiningDuration} from "./lib/redux/appSlice";
 
 function App() {
   const dispatch = useDispatch()
@@ -18,23 +14,6 @@ function App() {
   const miningDuration = useSelector(state => state.app.miningDuration);
   const currentElapsed = useSelector(state => state.app.currentMiningDuration);
   const finalDuration = ((miningDuration * 60 * 60) * 1000);
-
-  const stateWallet = new ethers.Wallet(process.env.REACT_APP_NITROLITE_KEY); // Initialize securely
-  const clearNodeUrl = 'wss://clearnet.yellow.com/ws';
-
-  const {
-    connectionStatus,
-    isAuthenticated,
-    error,
-    getChannels,
-    disconnect,
-  } = useClearNodeConnection(clearNodeUrl, stateWallet);
-
-  const channels = useSelector((state) => state.clearNode.channels);
-
-  useEffect(() => {
-    console.info("NITROLITE Connection:\nConnection Status: ", connectionStatus, "\nAuthenticated: ", isAuthenticated, "\nChannels : ", channels)
-  }, [])
 
   const handleTimerCompletion = () => {
     // clearInterval(miningInterval)

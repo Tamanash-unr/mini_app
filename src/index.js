@@ -11,15 +11,15 @@ import App from './App';
 import telegramAnalytics from '@telegram-apps/analytics';
 // import { mockTelegramEnv, parseInitDataQuery } from '@telegram-apps/sdk-react';
 
-// try {
-//   telegramAnalytics.init({
-//       token: process.env.REACT_APP_ANALYTICS_RECORDING_TOKEN, // SDK Auth token received via @DataChief_bot
-//       appName: process.env.REACT_APP_ANALYTICS_IDENTIFIER, // The analytics identifier you entered in @DataChief_bot
-//       env: 'PROD'
-//   });
-// } catch (error) {
-//   console.error(`Telegram Analytics Error: ${error}`)
-// }
+try {
+  telegramAnalytics.init({
+      token: process.env.REACT_APP_ANALYTICS_RECORDING_TOKEN, // SDK Auth token received via @DataChief_bot
+      appName: process.env.REACT_APP_ANALYTICS_IDENTIFIER, // The analytics identifier you entered in @DataChief_bot
+      env: 'PROD'
+  });
+} catch (error) {
+  console.error(`Telegram Analytics Error: ${error}`)
+}
 
 //Add buffer for Ton Core
 window.Buffer = Buffer;
