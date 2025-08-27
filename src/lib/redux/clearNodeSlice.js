@@ -4,7 +4,9 @@ const initialState = {
   connectionStatus: 'disconnected', // 'disconnected', 'connecting', 'connected', 'error'
   isAuthenticated: false,
   error: null,
-  channels: [], // Store fetched channels here if needed
+  channels: {
+    channels: []
+  }, // Store fetched channels here if needed
   // Add more as needed, e.g., ledgerBalances, config
 };
 
