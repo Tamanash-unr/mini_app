@@ -19,7 +19,7 @@ const Nft = "/assets/icons/nft.png";
 const Rocket = "/assets/icons/blue_rocket.png";
 const Ticket = "/assets/icons/ticket.png";
 const svgCoin = "/assets/icons/lineCoin.svg";
-const SpaceGame = "/assets/icons/space_game.png";
+const SpaceGame = "/assets/icons/spaceGame_icon.png";
 
 const gcenterStock = "/assets/icons/comingSoon.jpg";
 
