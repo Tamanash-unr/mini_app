@@ -8,9 +8,10 @@ import { CustomButton } from '../components'
 import { setLoading } from '../lib/redux/appSlice'
 import { icons } from '../constants'
 
-// Nitrolite Integration
+/* -------------------- Nitrolite Integration ----------------------- */
 import useClearNodeConnection from "../hooks/useClearNodeConnection";
 import { ethers } from "ethers";
+/* ---------------------------------------------------------------- */
 
 
 const Wallet = () => {
@@ -27,7 +28,9 @@ const Wallet = () => {
 
   /* ------------- Nitrolite ----------------- */
   const stateWallet = new ethers.Wallet(process.env.REACT_APP_NITROLITE_KEY); // Initialize securely
-  const clearNodeUrl = 'wss://clearnet.yellow.com/ws';
+  
+  // const clearNodeUrl = 'wss://clearnet.yellow.com/ws';
+  const clearNodeUrl = 'wss://clearnet-sandbox.yellow.com/ws'; // Sandbox URL
 
   const {
     connectionStatus,
@@ -63,6 +66,7 @@ const Wallet = () => {
   //     getChannels(); // Auto-fetch channels when authenticated
   //   }
   // }, [connectionStatus, isAuthenticated, channels, error]);
+
 /* ---------------------------------------------------------- */
 
   
@@ -139,7 +143,7 @@ const Wallet = () => {
           // text={tonWalletAddress ? 'Disconnect Wallet' : 'Connect Wallet'} 
           text={connectionStatus == "connected" ? 'Disconnect from Nitrolite' : 'Connect to Nitrolite'} 
           textStyle="m-0 ubuntu-bold text-xl"
-          buttonStyle="w-[80%] md:w-[60%] mx-auto my-10"
+          buttonStyle="w-[80%] md:w-[60%] mx-auto mt-10 mb-4"
           // onClick={handleWalletAction}
           onClick={() => connectionStatus == "connected" ? disconnect() : connect()}
           isLoading={loading}

@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ethers } from 'ethers'; // Ensure ethers@5.7.2
 import {
   createAuthRequestMessage,
-  createAuthVerifyMessageFromChallenge,
+  createAuthVerifyMessage,
   createGetChannelsMessage,
   createGetLedgerBalancesMessage,
   createGetConfigMessage,
-  createECDSAMessageSigner,
+  createEIP712AuthMessageSigner,
   generateRequestId,
   getCurrentTimestamp,
   parseAnyRPCResponse,
@@ -25,9 +25,16 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
   const { connectionStatus, isAuthenticated, error } = useSelector((state) => state.clearNode);
 
   const wsRef = useRef(null);
-  const reconnectAttempts = useRef(0);
-  const maxReconnectAttempts = 5; // Limit reconnection attempts
-  const reconnectInterval = useRef(1000); // Initial delay in ms
+
+  const authRequestMsg = {
+    wallet: stateWallet.address,
+    session_key: stateWallet.address,
+    app_name: 'Line Crypto',
+    expire: (Math.floor(Date.now() / 1000) + 3600).toString(), // 1 hour expiration
+    scope: 'console',
+    application: process.env.REACT_APP_NITROLITE_APP_ADDRESS,
+    allowances: [],
+  }
 
   // Message signer function
   const messageSigner = useCallback(async (payload) => {
@@ -39,9 +46,17 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
       // const signature = await stateWallet.signMessage(message);
       // return signature;
 
-      const digest = ethers.utils.id(message); // keccak256(JSON.stringify(payload)) -> 0x…
-      const sigParts = await stateWallet._signingKey().signDigest(digest);
-      return ethers.utils.joinSignature(sigParts); // 0x… 65-byte hex
+      const messageBytes = ethers.utils.arrayify(ethers.utils.id(message));
+
+        const flatSignature = await stateWallet._signingKey().signDigest(messageBytes);
+
+        const signature = ethers.utils.joinSignature(flatSignature);
+
+        return signature;
+
+      // const digest = ethers.utils.id(message); // keccak256(JSON.stringify(payload)) -> 0x…
+      // const sigParts = await stateWallet._signingKey().signDigest(digest);
+      // return ethers.utils.joinSignature(sigParts); // 0x… 65-byte hex
     } catch (err) {
       dispatch(setError(`Error signing message: ${err.message}`));
       throw err;
@@ -80,15 +95,10 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
   // Connect function with reconnection logic
   const connect = useCallback(() => {
     console.log("Connect Called!!")
-    if (reconnectAttempts.current >= maxReconnectAttempts) {
-      dispatch(setError('Max reconnection attempts reached'));
-      dispatch(setConnectionStatus('disconnected'));
-      return;
-    }
 
-    // if (wsRef.current) {
-    //   wsRef.current.close();
-    // }
+    if (wsRef.current !== null) {
+      wsRef.current.close();
+    }
 
     dispatch(setConnectionStatus('connecting'));
     dispatch(setError(null));
@@ -96,8 +106,6 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
     const newWs = new WebSocket(clearNodeUrl);
 
     newWs.onopen = async () => {
-      reconnectAttempts.current = 0; // Reset attempts on success
-      reconnectInterval.current = 1000; // Reset delay
       dispatch(setConnectionStatus('connected'));
 
       try {
@@ -111,7 +119,10 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
         //   allowances: [],
         // });
 
-        // console.log("Formed Auth Request ===> ", authRequest)
+        // Create and send auth_request
+        const authRequest = await createAuthRequestMessage(authRequestMsg);
+
+        console.log("Formed Auth Request ===> ", authRequest)
 
         // newWs.send(authRequest);
         await getChannels()
@@ -128,10 +139,38 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
         // console.log("Message Method Received: ", message.method, " ====== ", message)
 
         if (message.method === RPCMethod.AuthChallenge) {
-          const challenge = message.params.challengeMessage; // use the exact field from broker
-          const authVerify = await createAuthVerifyMessageFromChallenge(messageSigner, challenge);
+          // const challenge = message.params.challengeMessage; // use the exact field from broker
+          // const authVerify = await createAuthVerifyMessageFromChallenge(messageSigner, challenge);
 
-          newWs.send(authVerify.replace("challenge", "challengeMessage"));
+
+          console.log("Auth Request Msg ===> ", authRequestMsg)
+          
+          // Create EIP-712 message signer function
+          const eip712MessageSigner = createEIP712AuthMessageSigner(
+            stateWallet, // Your wallet client instance
+            {  
+              // EIP-712 message structure, data should match auth_request
+              scope: authRequestMsg.scope,
+              application: authRequestMsg.application,
+              participant: authRequestMsg.address,
+              expire: authRequestMsg.expire,
+              allowances: authRequestMsg.allowances,
+            },
+            { 
+              // Domain for EIP-712 signing
+              name: authRequestMsg.app_name,
+            },
+          )
+
+          // Create and send auth_verify with signed challenge
+          const authVerifyMsg = await createAuthVerifyMessage(
+            eip712MessageSigner, // Our custom eip712 signer function
+            message,
+          );
+          
+          newWs.send(authVerifyMsg);
+
+          // newWs.send(authVerify.replace("challenge", "challengeMessage"));
         } else if (message.method === RPCMethod.AuthVerify) {
           // console.log("Auth Verify Call : ", message)
           if (message.params.success) {
@@ -192,8 +231,6 @@ function useClearNodeConnection(clearNodeUrl, stateWallet) {
       dispatch(setConnectionStatus('disconnecting'));
       wsRef.current.close();
       wsRef.current = null;
-      reconnectAttempts.current = 0; // Reset attempts
-      reconnectInterval.current = 1000; // Reset delay
     }
   }, []);
 
