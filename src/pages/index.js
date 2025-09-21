@@ -1,5 +1,8 @@
 import Home from "./home";
 import Overlay from "./overlay";
-import LineGame from "./lineGame";
 
-export { Home, LineGame, Overlay }
+// Games
+import LineGame from "./lineGame";
+import SpaceGame from "./spaceGame";
+
+export { Home, Overlay, LineGame, SpaceGame }

@@ -9,10 +9,10 @@ import { updateEarnedFromGame } from '../lib/redux/appSlice';
 
 const LineGame = () => {
     const { unityProvider, unload, addEventListener, removeEventListener, isLoaded, loadingProgression } = useUnityContext({
-        loaderUrl: "build/line_game.loader.js",
-        dataUrl: "build/line_game.data",
-        frameworkUrl: "build/line_game.framework.js",
-        codeUrl: "build/line_game.wasm",
+        loaderUrl: "games/line_game/build/line_game.loader.js",
+        dataUrl: "games/line_game/build/line_game.data",
+        frameworkUrl: "games/line_game/build/line_game.framework.js",
+        codeUrl: "games/line_game/build/line_game.wasm",
         streamingAssetsUrl: "StreamingAssets",
         productName: "web3",
         productVersion: "1.0.2",

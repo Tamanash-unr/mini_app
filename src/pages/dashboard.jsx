@@ -54,7 +54,7 @@ const Dashboard = () => {
     useEffect(() => {
       const progressStatus = () => {
         const progress = Math.floor((currentMiningDuration / (miningDuration * 60 * 60)) * 100)
-        console.log(progress, (miningDuration * 60 * 60), currentMiningDuration)
+        // console.log(progress, (miningDuration * 60 * 60), currentMiningDuration)
 
         setMiningProgress(progress)
       }
@@ -116,7 +116,7 @@ const Dashboard = () => {
       }
 
       dispatch(updateTickets(-1)); 
-      navigate('/game');
+      navigate('/line_game');
     }
 
     const getRankTxt = () => {
