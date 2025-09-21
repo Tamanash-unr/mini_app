@@ -27,7 +27,6 @@
     "react-slot-counter": "^3.0.1",
     "react-timer-hook": "^3.0.8",
     "react-unity-webgl": "^9.6.0",
-    "viem": "^2.37.7",
     "web-vitals": "^2.1.4",
     "zod": "^4.1.1"
   },
