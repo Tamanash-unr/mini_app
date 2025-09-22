@@ -33,6 +33,13 @@ const GameCenter = () => {
       type: "internal",
       link: '/space_game',
       name: "Space Game"
+    },
+    {
+      id: "app_endlessCar",
+      icon: icons.EndlessCarGame,
+      type: "internal",
+      link: '/endless_car_game',
+      name: "Endless Car Game"
     }
   ]
 

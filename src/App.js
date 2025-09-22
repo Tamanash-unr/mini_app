@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Home, LineGame, Overlay, SpaceGame } from "./pages";
+import { EndlessCarGame, Home, LineGame, Overlay, SpaceGame } from "./pages";
 import { setUserData } from "./lib/redux/userSlice";
 import { updateMineState, updateMinedCoins, setStartParam, updateCurrentMiningDuration} from "./lib/redux/appSlice";
 
@@ -81,6 +81,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/line_game" element={<LineGame />} />      
       <Route path="/space_game" element={<SpaceGame />} /> 
+      <Route path="/endless_car_game" element={<EndlessCarGame />} />
       <Route path="/main" element={<Overlay />} />
     </Routes>
   );
