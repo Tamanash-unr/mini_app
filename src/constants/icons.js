@@ -20,6 +20,7 @@ const Rocket = "/assets/icons/blue_rocket.png";
 const Ticket = "/assets/icons/ticket.png";
 const svgCoin = "/assets/icons/lineCoin.svg";
 const SpaceGame = "/assets/icons/spaceGame_icon.png";
+const EndlessCarGame = "/assets/icons/endless_car_game.png";
 
 const gcenterStock = "/assets/icons/comingSoon.jpg";
 
@@ -29,6 +30,8 @@ const Twitter = "/assets/icons/twitter.svg";
 
 const Blum = "/assets/icons/blumCrypto.png";
 const Tomarket = "/assets/icons/tomarket.png";
+
+const Car = "/assets/icons/car0.png";
 
 const attribute = {
     friendsPortrait: <a href="https://www.flaticon.com/free-icons/friends" title="friends icons">Friends icons created by Freepik - Flaticon</a>,
@@ -63,6 +66,8 @@ export default {
     Telegram,
     Instagram,
     Twitter,
-    SpaceGame
+    SpaceGame,
+    Car,
+    EndlessCarGame
 }
 
