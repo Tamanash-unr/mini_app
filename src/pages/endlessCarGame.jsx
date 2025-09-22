@@ -245,12 +245,16 @@ const EndlessCarGame = () => {
 
   // Touch controls
   const handleTouchStart = (e) => {
+    if(!gameState.isGameStarted) return;
+
     e.preventDefault();
     const touch = e.touches[0];
     touchStartRef.current = { x: touch.clientX, y: touch.clientY };
   };
 
   const handleTouchEnd = (e) => {
+    if(!gameState.isGameStarted) return;
+
     e.preventDefault();
     const touch = e.changedTouches[0];
     const deltaX = touch.clientX - touchStartRef.current.x;
