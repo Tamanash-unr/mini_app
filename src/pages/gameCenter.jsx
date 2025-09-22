@@ -58,7 +58,7 @@ const GameCenter = () => {
       <h1 className='mt-8 mb-2 text-5xl denver-regular '>
         GAME CENTER
       </h1>
-      <div className='w-[90%] md:w-[80%] rounded-xl bg-sky-600/65 py-4 px-2'>
+      <div className='w-[90%] md:w-[50%] rounded-xl bg-sky-600/65 py-4 px-2'>
         <div className='flex items-center justify-between'>
           <h3 className='px-2 pb-2 text-2xl font-bold'>Popular Apps</h3>
           <h3 className='flex items-center gap-x-2 px-2 pb-2 text-2xl font-bold'>
@@ -71,7 +71,7 @@ const GameCenter = () => {
               <GameCards
                 key={`${app.id}_${index}`}
                 imgSrc={app.icon}
-                imgClass="w-full h-40 rounded-lg object-cover bg-gray-950"
+                imgClass="w-full h-40 md:h-60 rounded-lg object-cover bg-gray-950"
                 txtClass="font-bold"
                 btnTxtClass="text-md font-bold"
                 appName={app.name}
