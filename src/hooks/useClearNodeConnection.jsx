@@ -387,7 +387,7 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
       return await createAppSession({
         participants: [me, counterparty],
         allocations: [
-          { participant: me, asset, amount },
+          { participant: me, asset, amount: '0' },
           { participant: counterparty, asset, amount: '0' },
         ],
         session_data: JSON.stringify({ channel_id: channelId }),

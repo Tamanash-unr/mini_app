@@ -45,6 +45,7 @@ const Wallet = () => {
     getChannels,
     getLedgerBalances,
     sessionKey, // Get session key from hook
+    createAppSessionFromChannel, // Added for app session creation
   } = useClearNodeConnection(clearNodeUrl, walletClient);
 
   // Use transfer hook
@@ -333,7 +334,7 @@ const Wallet = () => {
                 channelId: process.env.REACT_APP_NITROLITE_CHANNEL_ID,
                 counterparty,
                 asset: 'usdc',
-                amount: '1000000' // 1 USDC
+                amount: '0' // Start with zero - no upfront allocation needed
               });
 
               console.log('✅ Test session created:', result);
