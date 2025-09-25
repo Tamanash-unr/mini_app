@@ -432,7 +432,11 @@ const Wallet = () => {
               : 'Disconnect Wallet'
           }
           textStyle="m-0 ubuntu-bold text-xl"
-          buttonStyle="w-[80%] md:w-[60%] mx-auto my-10"
+          buttonStyle={`w-[80%] md:w-[60%] mx-auto my-10 ${
+            !account 
+              ? 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 shadow-[0px_4px_24px_#4f46e5]'
+              : 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700'
+          }`}
           onClick={() => {
             if (!account) {
               connectWallet();
@@ -443,8 +447,8 @@ const Wallet = () => {
           isLoading={loading}
         />
         {account && (
-          <div className='my-2 min-w-[75%] md:min-w-[60%] mx-auto ubuntu-bold text-lg px-4 py-2 rounded-full bg-black/75'>
-            Connected: {formatAddress(account)}
+          <div className='my-2 min-w-[75%] md:min-w-[60%] mx-auto ubuntu-bold text-lg px-4 py-2 rounded-full bg-emerald-500/20 border border-emerald-500/30'>
+            <span className="text-emerald-400">✅ Connected:</span> {formatAddress(account)}
           </div>
         )}
       </div>
@@ -456,82 +460,56 @@ const Wallet = () => {
         </div>
       </div>
       <div className='w-[90%] md:w-3/4 bg-zinc-900/80 rounded-2xl px-2 py-6 my-5'>
-        <p className='w-full text-center ubuntu-bold text-lg'>Nitrolite Status</p>
-        <ul className='md:w-3/4 mx-auto ubuntu-medium flex flex-col items-center gap-y-2 text-sm md:text-base'>
-          <li>
-            WebSocket Status: <span className={`font-bold ${isAuthenticated ? 'text-green-400' : 'text-red-400'}`}>
-              {getDisplayStatus()}
+        <p className='w-full text-center ubuntu-bold text-lg'>Yellow Network Status</p>
+        <div className='md:w-3/4 mx-auto ubuntu-medium flex flex-col items-center gap-y-3 text-sm md:text-base'>
+          <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${
+            isAuthenticated 
+              ? 'bg-emerald-500/20 border border-emerald-500/30' 
+              : 'bg-red-500/20 border border-red-500/30'
+          }`}>
+            <span className={`text-sm font-bold ${isAuthenticated ? 'text-emerald-400' : 'text-red-400'}`}>
+              {isAuthenticated ? '🟢 Connected' : '🔴 Not Connected'}
             </span>
-          </li>
-          <li>
-            Connection: {connectionStatus || 'disconnected'}
-          </li>
-                  <li>
-                    Authenticated: {isAuthenticated ? '✅' : '❌'}
-                  </li>
-                  {nitroliteError && (
-                    <li className='text-red-400 text-center'>
-                      Error: {nitroliteError}
-                    </li>
-                  )}
-                  <li>
-                    Connection: {connectionStatus || 'disconnected'}
-          </li>
-        </ul>
+          </div>
+          
+          {nitroliteError && (
+            <div className='text-red-400 text-center text-sm bg-red-500/10 p-3 rounded-lg border border-red-500/20'>
+              <p className='font-semibold'>Connection Issue:</p>
+              <p className='text-xs'>{nitroliteError}</p>
+            </div>
+          )}
+          
+          {!isAuthenticated && !nitroliteError && (
+            <div className='text-center text-gray-400 text-sm'>
+              <p>Connecting to Yellow Network...</p>
+              <p className='text-xs'>This may take a few moments</p>
+            </div>
+          )}
+        </div>
         
-        {/* Control Buttons */}
-        <div className='flex flex-col gap-2 mt-4'>
-          <CustomButton
-            text="Debug Info"
-            textStyle="m-0 ubuntu-medium text-sm"
-            buttonStyle="w-full mx-auto"
-            onClick={handleDebugInfo}
-            isLoading={false}
-          />
-
-          {!isAuthenticated && connectionStatus === 'connected' && (
+        {/* User Actions */}
+        {!isAuthenticated && connectionStatus === 'connected' && (
+          <div className='flex flex-col gap-2 mt-4'>
             <CustomButton
-              text="Retry Authentication"
+              text="Retry Connection"
               textStyle="m-0 ubuntu-medium text-sm"
-              buttonStyle="w-full mx-auto"
+              buttonStyle="w-full mx-auto bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
               onClick={handleRetryAuthentication}
               isLoading={loading}
             />
-          )}
+          </div>
+        )}
 
-          {isAuthenticated && (
-            <>
-              <CustomButton
-                text="Get Channels"
-                textStyle="m-0 ubuntu-medium text-sm"
-                buttonStyle="w-full mx-auto"
-                onClick={handleGetChannels}
-                isLoading={loading}
-              />
-              <CustomButton
-                text="Get Balances"
-                textStyle="m-0 ubuntu-medium text-sm"
-                buttonStyle="w-full mx-auto"
-                onClick={handleGetBalances}
-                isLoading={loading}
-              />
-              <CustomButton
-                text="Create Test Session"
-                textStyle="m-0 ubuntu-medium text-sm"
-                buttonStyle="w-full mx-auto"
-                onClick={handleCreateTestSession}
-                isLoading={loading}
-              />
-              <CustomButton
-                text="Test Transfer (0.01 USDC)"
-                textStyle="m-0 ubuntu-medium text-sm"
-                buttonStyle="w-full mx-auto"
-                onClick={handleTestTransfer}
-                isLoading={loading}
-              />
-            </>
-          )}
-        </div>
+        {isAuthenticated && (
+          <div className='flex flex-col gap-2 mt-4'>
+            <p className='text-center text-emerald-400 font-semibold text-sm'>
+              ✅ Successfully connected to Yellow Network!
+            </p>
+            <p className='text-center text-gray-400 text-xs'>
+              Your wallet is now ready for real crypto rewards.
+            </p>
+          </div>
+        )}
       </div>
       {/* <div className='flex items-center justify-center bg-zinc-900 rounded-full p-2 my-5'>
         <button 

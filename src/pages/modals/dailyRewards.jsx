@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef, useCallback} from 'react'
 import Confetti from 'react-confetti'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
@@ -50,28 +50,34 @@ const DailyRewards = ({  }) => {
         dispatch(setLoading(false))
     }
 
-    const onClaimComplete = () => {
+    const onClaimComplete = useCallback(() => {
         dispatch(setDailyClaimed(true))
         setShowConfetti(false)
         dispatch(setModalOpen({isOpen: false, modalChild: null}))
-    }
+    }, [dispatch])
+
+    // Auto-close modal after 3 seconds to prevent users from waiting too long
+    useEffect(() => {
+        if (showConfetti) {
+            const timeout = setTimeout(() => {
+                onClaimComplete()
+            }, 3000) // Close after 3 seconds max
+
+            return () => clearTimeout(timeout)
+        }
+    }, [showConfetti, onClaimComplete])
 
     useEffect(() => {
         const svgFiles = [icons.svgCoin];
-        let loadedCount = 0;
-        
+
         // Create Image objects for each SVG
         svgFiles.forEach((svgSrc) => {
         const img = new Image();
-        
+
         img.onload = () => {
-            loadedCount++;
-            // When all images are loaded, set imagesLoaded to true
-            // if (loadedCount === svgFiles.length) {
-            // setImagesLoaded(true);
-            // }
+            // Image loaded successfully
         };
-        
+
         img.src = svgSrc;
         svgRef.current.push(img);
         });
@@ -189,7 +195,7 @@ const DailyRewards = ({  }) => {
                         </div> 
                     </motion.div>
                 </div>
-                <CustomButton 
+                <CustomButton
                     text="Claim Bonus"
                     textStyle="m-0 ubuntu-bold"
                     buttonStyle='mt-4'
@@ -197,14 +203,24 @@ const DailyRewards = ({  }) => {
                     isLoading={loading}
                     disabled={disabled}
                 />
+                {showConfetti && (
+                    <CustomButton
+                        text="Skip Animation"
+                        textStyle="m-0 ubuntu-bold text-sm"
+                        buttonStyle='mt-2 bg-gray-600 hover:bg-gray-700'
+                        onClick={onClaimComplete}
+                    />
+                )}
             </div>
         </div>
         {
-            showConfetti && 
+            showConfetti &&
             <Confetti
                 className='w-full h-full'
                 recycle={false}
-                numberOfPieces={150}
+                numberOfPieces={50}
+                gravity={0.3}
+                initialVelocityY={-10}
                 onConfettiComplete={onClaimComplete}
                 drawShape={drawSvgConfetti}
             />

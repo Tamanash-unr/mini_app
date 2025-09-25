@@ -9,6 +9,7 @@ import { CustomButton } from '../components'
 import { updateCoins, updateMineState, updateMinedCoins, updateEarnedFromGame, setModalOpen, setLoading, updateTickets } from '../lib/redux/appSlice'
 import { updateEarnedCoins, serverUpdateMining } from '../lib/firebase/firebase_api'
 import toast from 'react-hot-toast'
+import { setCurrentTab } from '../lib/redux/appSlice'
 
 const Dashboard = () => {
     const nickname = useSelector(state => state.user.nickname)
@@ -214,6 +215,54 @@ const Dashboard = () => {
             separatorClassName='text-3xl md:text-5xl'
           />
       </motion.div>
+
+      {/* Wallet Connection Prompt */}
+      <motion.div
+        className="w-[95%] md:w-[80%] mx-auto my-4 p-4 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/30 rounded-xl shadow-[0px_4px_24px_#4f46e5]"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.5 }}
+      >
+        <div className="flex items-center justify-center gap-3 mb-3">
+          <img src={icons.Wallet} alt="Wallet" className="w-8 h-8" />
+          <h3 className="text-xl font-bold text-indigo-400">Connect Your Wallet for Full Experience</h3>
+        </div>
+        <p className="text-center text-gray-300 mb-4">
+          Connect your MetaMask wallet to unlock:
+        </p>
+        <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-400">✓</span>
+            <span>Real USDC rewards</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-400">✓</span>
+            <span>Yellow Network integration</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-400">✓</span>
+            <span>Token staking</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-400">✓</span>
+            <span>Multi-token balances</span>
+          </div>
+        </div>
+        <CustomButton
+          text="Connect Wallet"
+          textStyle="ubuntu-bold text-base"
+          buttonStyle="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 shadow-[0px_4px_24px_#4f46e5]"
+          onClick={() => {
+            dispatch(setCurrentTab("wallet"));
+            navigate('/main');
+          }}
+          isLoading={loading}
+        />
+        <p className="text-xs text-center text-gray-400 mt-2">
+          Playing games without wallet connection gives mock rewards
+        </p>
+      </motion.div>
+
       {/* Tech Image */}
       <img 
         src={gifs.tech} 
