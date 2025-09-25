@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useCallback } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import toast, { Toaster } from "react-hot-toast"
 
@@ -9,7 +9,6 @@ import CoinPage from "./coinPage"
 import Friends from "./friends"
 import Wallet from "./wallet"
 import GameCenter from "./gameCenter"
-import Wip from "./wip"
 import { DailyRewards, BoostPage, ReferralRewards, ProfileInfo } from "./modals"
 import { gifs } from "../constants"
 import { getTaskData } from "../lib/firebase/firebase_api"
@@ -22,7 +21,7 @@ const Overlay = () => {
 
     const dispatch = useDispatch()
 
-    const retrieveTasks = async () => {
+    const retrieveTasks = useCallback(async () => {
       const data = await getTaskData();
 
       if(data.status){
@@ -30,7 +29,7 @@ const Overlay = () => {
       } else {
         toast.error(data.message, {duration: 2500})
       }
-    }
+    }, [dispatch])
 
     useEffect(() => {
       if(!daily){
@@ -40,7 +39,7 @@ const Overlay = () => {
 
     useEffect(()=>{
       retrieveTasks()
-    },[])
+    },[retrieveTasks])
 
     const body = {
         dashboard: <Dashboard />,
@@ -48,7 +47,6 @@ const Overlay = () => {
         friends: <Friends />,
         wallet: <Wallet />,
         gameCenter: <GameCenter />,
-        wip: <Wip />,
     }
 
     const modalBody = {

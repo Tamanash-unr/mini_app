@@ -327,3 +327,4 @@ export function createEqualPartnershipSession(participants, totalAmount, asset =
 // Create and export singleton instance
 export const nitroliteSessionManager = new NitroliteSessionManager();
 export default nitroliteSessionManager;
+

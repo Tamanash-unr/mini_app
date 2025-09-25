@@ -7,7 +7,8 @@ const initialState = {
   channels: {
     channels: []
   }, // Store fetched channels here if needed
-  // Add more as needed, e.g., ledgerBalances, config
+  ledgerBalances: {}, // Store fetched ledger balances here
+  // Add more as needed, e.g., config
 };
 
 const clearNodeSlice = createSlice({
@@ -26,7 +27,10 @@ const clearNodeSlice = createSlice({
     setChannels: (state, action) => {
       state.channels = action.payload;
     },
-    // Add reducers for other data, e.g., setLedgerBalances, setConfig
+    setLedgerBalances: (state, action) => {
+      state.ledgerBalances = action.payload;
+    },
+    // Add reducers for other data, e.g., setConfig
   },
 });
 
@@ -35,6 +39,7 @@ export const {
   setAuthenticated,
   setError,
   setChannels,
+  setLedgerBalances,
 } = clearNodeSlice.actions;
 
 export default clearNodeSlice.reducer;

@@ -16,21 +16,23 @@ import {
   setAuthenticated,
   setError,
   setChannels,
+  setLedgerBalances,
 } from '../lib/redux/clearNodeSlice';
 import { webSocketService, WsStatus } from '../lib/websocketSimple';
 import { nitroliteSessionManager } from '../lib/nitroliteSession';
-import { 
-  generateSessionKey, 
-  getStoredSessionKey, 
-  storeSessionKey, 
+import {
+  generateSessionKey,
+  getStoredSessionKey,
+  storeSessionKey,
   removeSessionKey,
   storeJWT,
   removeJWT,
   getAuthDomain,
   AUTH_SCOPE,
   APP_NAME,
-  SESSION_DURATION 
+  SESSION_DURATION
 } from '../lib/sessionUtils';
+import { getStoredAllowances } from '../lib/sessionUtils';
 
 // New: Create App Session helpers
 import {
@@ -50,6 +52,9 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
   const MAX_AUTH_RETRIES = 3;
   
   const isInitialized = useRef(false);
+
+  // Track in-flight requests to prevent duplicates
+  const pendingRequests = useRef(new Map());
 
   // Chapter 2: Initialize WebSocket connection (runs once on mount)
   useEffect(() => {
@@ -121,8 +126,8 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
         app_name: APP_NAME,
         expire: expireTimestamp,
         scope: AUTH_SCOPE,
-        application: walletClient.account.address,
-        allowances: [],
+        application: process.env.REACT_APP_NITROLITE_APP_ADDRESS || walletClient.account.address,
+        allowances: getStoredAllowances(),
       };
 
       console.log('🔐 Starting authentication with params:', authParams);
@@ -159,10 +164,10 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
         // Chapter 3 docs: EIP-712 signer uses scope, application, participant, expire, allowances
         const authParams = {
           scope: AUTH_SCOPE,
-          application: walletClient.account.address,
+          application: process.env.REACT_APP_NITROLITE_APP_ADDRESS || walletClient.account.address,
           participant: sessionKey.address,
           expire: sessionExpireTimestamp,
-          allowances: [],
+          allowances: getStoredAllowances(),
         };
 
         const eip712Signer = createEIP712AuthMessageSigner(walletClient, authParams, getAuthDomain());
@@ -189,7 +194,7 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
       // Handle auth success
       if (response.method === RPCMethod.AuthVerify && response.params?.success) {
         console.log('✅ Authentication successful!', response.params);
-        dispatch(setAuthenticated(true));
+            dispatch(setAuthenticated(true));
         if (response.params.jwtToken) {
           console.log('🔑 Storing JWT token');
           storeJWT(response.params.jwtToken);
@@ -215,7 +220,7 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
       // Handle channels
       if (response.method === RPCMethod.GetChannels) {
         console.log('📋 Processing channels data:', response.params);
-        
+
         if (response.params && response.params.channels) {
           const safeChannels = response.params.channels.map((ch) => ({
             ...ch,
@@ -224,10 +229,26 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
             updatedAt: ch.updatedAt ? new Date(ch.updatedAt).toISOString() : new Date().toISOString()
           }));
 
-          dispatch(setChannels({ 
-            ...response.params, 
-            channels: safeChannels 
+          dispatch(setChannels({
+            ...response.params,
+            channels: safeChannels
           }));
+        }
+      }
+
+      // Handle ledger balances
+      if (response.method === RPCMethod.GetLedgerBalances) {
+        console.log('💰 Processing ledger balances data:', response.params);
+        if (response.params) {
+          dispatch(setLedgerBalances(response.params));
+        }
+      }
+
+      // Handle balance updates (real-time updates)
+      if (response.method === RPCMethod.BalanceUpdate) {
+        console.log('💰 Real-time balance update:', response.params);
+        if (response.params) {
+          dispatch(setLedgerBalances(response.params));
         }
       }
     };
@@ -254,20 +275,37 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
       throw new Error('Please authenticate first');
     }
 
+    // Check if request is already pending
+    const requestKey = `getLedgerBalances_${participant}`;
+    if (pendingRequests.current.has(requestKey)) {
+      console.log('💰 Balance request already pending, skipping duplicate');
+      return false;
+    }
+
     try {
       console.log('💰 Fetching ledger balances for:', participant);
-      
+
+      // Mark request as pending
+      pendingRequests.current.set(requestKey, true);
+
       // Create session signer
       const sessionSigner = createECDSAMessageSigner(sessionKey.privateKey);
-      
+
       // Create signed request
       const getBalancesPayload = await createGetLedgerBalancesMessage(sessionSigner, participant);
       webSocketService.send(getBalancesPayload);
-      
+
       console.log('✅ Balance request sent');
+
+      // Set timeout to clear pending status
+      setTimeout(() => {
+        pendingRequests.current.delete(requestKey);
+      }, 5000); // 5 second timeout
+
       return true;
     } catch (error) {
       console.error('❌ Failed to get ledger balances:', error);
+      pendingRequests.current.delete(requestKey);
       dispatch(setError(`Failed to get ledger balances: ${error.message}`));
       throw error;
     }
@@ -279,20 +317,37 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
       throw new Error('Please authenticate first');
     }
 
+    // Check if request is already pending
+    const requestKey = 'getChannels';
+    if (pendingRequests.current.has(requestKey)) {
+      console.log('📋 Channels request already pending, skipping duplicate');
+      return false;
+    }
+
     try {
       console.log('📋 Fetching channels...');
-      
+
+      // Mark request as pending
+      pendingRequests.current.set(requestKey, true);
+
       // Create session signer
       const sessionSigner = createECDSAMessageSigner(sessionKey.privateKey);
-      
+
       // Create signed request
       const getChannelsPayload = await createGetChannelsMessage(sessionSigner);
       webSocketService.send(getChannelsPayload);
-      
+
       console.log('✅ Channels request sent');
+
+      // Set timeout to clear pending status
+      setTimeout(() => {
+        pendingRequests.current.delete(requestKey);
+      }, 5000); // 5 second timeout
+
       return true;
     } catch (error) {
       console.error('❌ Failed to get channels:', error);
+      pendingRequests.current.delete(requestKey);
       dispatch(setError(`Failed to get channels: ${error.message}`));
       throw error;
     }
@@ -396,6 +451,29 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
     [createAppSession, walletClient]
   );
 
+  // Reset session: clear JWT and session key, close connection, and reconnect
+  const resetSession = useCallback(async () => {
+    console.log('🔄 Resetting session...');
+
+    // Clear authentication state
+    dispatch(setAuthenticated(false));
+    dispatch(setError(null));
+
+    // Remove stored tokens
+    removeJWT();
+    removeSessionKey();
+
+    // Disconnect and reconnect to force fresh auth
+    webSocketService.disconnect();
+
+    // Wait a bit then reconnect
+    setTimeout(() => {
+      webSocketService.connect(clearNodeUrl);
+    }, 1000);
+
+    console.log('✅ Session reset complete - will auto-reconnect and re-authenticate');
+  }, [dispatch, clearNodeUrl]);
+
   // After authentication, automatically fetch channels
   useEffect(() => {
     if (isAuthenticated) {
@@ -413,6 +491,7 @@ function useClearNodeConnection(clearNodeUrl, walletClient) {
     getLedgerBalances,
     createAppSession,
     createAppSessionFromChannel,
+    resetSession,
     sessionKey, // Expose session key for transfer hook
   };
 }

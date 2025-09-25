@@ -8,6 +8,7 @@ import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
 // Storage keys
 const SESSION_KEY_STORAGE = 'line_crypto_session_key';
 const JWT_KEY = 'line_crypto_jwt_token';
+const ALLOWANCES_KEY = 'line_crypto_auth_allowances';
 
 export const generateSessionKey = () => {
   const privateKey = generatePrivateKey();
@@ -86,3 +87,30 @@ export const getAuthDomain = () => ({
 export const AUTH_SCOPE = process.env.REACT_APP_AUTH_SCOPE || 'line-crypto.app';
 export const APP_NAME = process.env.REACT_APP_APP_NAME || 'Line Crypto';
 export const SESSION_DURATION = 3600; // 1 hour
+
+// Auth allowances helpers (array of { asset: string, amount: string })
+export const getStoredAllowances = () => {
+  try {
+    const raw = localStorage.getItem(ALLOWANCES_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed;
+  } catch {
+    return [];
+  }
+};
+
+export const storeAllowances = (allowances) => {
+  try {
+    localStorage.setItem(ALLOWANCES_KEY, JSON.stringify(Array.isArray(allowances) ? allowances : []));
+  } catch {
+    console.warn('Failed to store allowances');
+  }
+};
+
+export const clearAllowances = () => {
+  try {
+    localStorage.removeItem(ALLOWANCES_KEY);
+  } catch {}
+};

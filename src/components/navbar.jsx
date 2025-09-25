@@ -1,14 +1,11 @@
 import { useDispatch } from "react-redux"
 import { motion } from "framer-motion"
-import { useNavigate } from 'react-router-dom'
 
 import TabButton from "./tabButton"
 import { icons } from "../constants"
 import { setCurrentTab } from "../lib/redux/appSlice"
 
 const Navbar = () => {
-    const navigate = useNavigate()
-
     const bounceAnimation = {
         y: {
             duration: 0.8,
@@ -35,6 +32,10 @@ const Navbar = () => {
             y:[100, 1]
         }}
     >
+        {/* ENV badge */}
+        <div className="absolute -top-6 left-4 text-[10px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-600/40">
+            {(process.env.REACT_APP_CLEARNODE_WS_URL || '').includes('sandbox') ? 'SANDBOX' : 'MAINNET'}
+        </div>
         <TabButton
             icon={icons.Home} 
             iconStyle="w-[22px] md:w-[30px] h-[22px] md:h-[30px]"
@@ -58,23 +59,25 @@ const Navbar = () => {
                 y: ["20%", "-18%"],
             }}
         >
-            <TabButton 
-                icon={icons.Gamepad} 
+            <TabButton
+                icon={icons.Gamepad}
                 iconStyle="w-[38px] md:w-[65px] h-[38px] md:h-[65px]"
                 buttonStyle="absolute w-[70px] md:w-auto p-4 md:p-5 flex justify-center items-center rounded-full bottom-5 md:bottom-2 gradient-purple shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f]"
                 onClick={() => dispatch(setCurrentTab("gameCenter"))}
+                text="Games"
+                textStyle="ubuntu-bold text-xs md:text-sm"
             />
         </motion.div>
-        <TabButton 
-            icon={icons.Friends} 
+        <TabButton
+            icon={icons.Friends}
             iconStyle="w-[22px] md:w-[30px] h-[22px] md:h-[30px]"
             buttonStyle="p-2 mt-2 w-full h-full flex flex-col justify-center items-center"
             onClick={() => dispatch(setCurrentTab("friends"))}
             text="Friends"
             textStyle="ubuntu-bold text-sm my-1"
         />
-        <TabButton 
-            icon={icons.Wallet} 
+        <TabButton
+            icon={icons.Wallet}
             iconStyle="w-[22px] md:w-[30px] h-[22px] md:h-[30px]"
             buttonStyle="p-2 mt-2 w-full h-full flex flex-col justify-center items-center"
             onClick={() => dispatch(setCurrentTab("wallet"))}

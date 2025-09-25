@@ -199,8 +199,8 @@ const Wallet = () => {
     if (!userId || !sessionId) return;
 
     try {
-      await fetch("https://tganalytics.xyz/events", {
-        method: 'POST',
+    await fetch("https://tganalytics.xyz/events", {
+      method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -476,7 +476,7 @@ const Wallet = () => {
                   )}
                   <li>
                     Connection: {connectionStatus || 'disconnected'}
-                  </li>
+          </li>
         </ul>
         
         {/* Control Buttons */}

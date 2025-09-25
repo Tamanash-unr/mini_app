@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Home, LineGame, Overlay } from "./pages";
+import { Home, LineGame, Overlay, SpaceGame, EndlessCarGame } from "./pages";
 import { setUserData } from "./lib/redux/userSlice";
 import { updateMineState, updateMinedCoins, setStartParam, updateCurrentMiningDuration} from "./lib/redux/appSlice";
 
@@ -15,12 +15,12 @@ function App() {
   const currentElapsed = useSelector(state => state.app.currentMiningDuration);
   const finalDuration = ((miningDuration * 60 * 60) * 1000);
 
-  const handleTimerCompletion = () => {
+  const handleTimerCompletion = useCallback(() => {
     // clearInterval(miningInterval)
     // miningInterval = null
     dispatch(updateMineState(3))
     // restart(new Date().getTime() + (miningDuration * 60 * 1000 ), false)
-  }
+  }, [dispatch])
 
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -74,12 +74,14 @@ function App() {
         clearTimeout(updateTimer)
       }
     }
-  }, [mineState, boostRate, dispatch])
+  }, [mineState, boostRate, dispatch, currentElapsed, finalDuration, handleTimerCompletion])
 
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/game" element={<LineGame />} />
+      <Route path="/space_game" element={<SpaceGame />} />
+      <Route path="/endless_car_game" element={<EndlessCarGame />} />
       <Route path="/main" element={<Overlay />} />
     </Routes>
   );

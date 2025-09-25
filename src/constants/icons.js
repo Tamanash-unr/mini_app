@@ -19,6 +19,8 @@ const Nft = "/assets/icons/nft.png";
 const Rocket = "/assets/icons/blue_rocket.png";
 const Ticket = "/assets/icons/ticket.png";
 const svgCoin = "/assets/icons/lineCoin.svg";
+const SpaceGame = "/assets/icons/spaceGame_icon.png";
+const EndlessCarGame = "/assets/icons/endless_car_game.png";
 
 const gcenterStock = "/assets/icons/comingSoon.jpg";
 
@@ -29,36 +31,41 @@ const Twitter = "/assets/icons/twitter.svg";
 const Blum = "/assets/icons/blumCrypto.png";
 const Tomarket = "/assets/icons/tomarket.png";
 
+const Car = "/assets/icons/car0.png";
+
 const attribute = {
     friendsPortrait: <a href="https://www.flaticon.com/free-icons/friends" title="friends icons">Friends icons created by Freepik - Flaticon</a>,
     pixkaxe: <a href="https://www.flaticon.com/free-icons/pickaxe" title="pickaxe icons">Pickaxe icons created by Iconjam - Flaticon</a>,
 }
 
 export default {
-    Home, 
-    Store, 
-    Coins, 
-    Wallet, 
-    Placeholder, 
-    Gamepad, 
-    Friends, 
-    Gear, 
-    Pickaxe, 
-    FriendsPortrait, 
-    Game, 
-    Bolt, 
-    User, 
-    Copy, 
-    Gift, 
-    Crown, 
-    FullCrown, 
-    gcenterStock, 
-    Nft, 
-    Rocket, 
-    Ticket, 
+    Home,
+    Store,
+    Coins,
+    Wallet,
+    Placeholder,
+    Gamepad,
+    Friends,
+    Gear,
+    Pickaxe,
+    FriendsPortrait,
+    Game,
+    Bolt,
+    User,
+    Copy,
+    Gift,
+    Crown,
+    FullCrown,
+    gcenterStock,
+    Nft,
+    Rocket,
+    Ticket,
     svgCoin,
+    SpaceGame,
+    EndlessCarGame,
     Blum,
     Tomarket,
+    Car,
     Telegram,
     Instagram,
     Twitter
