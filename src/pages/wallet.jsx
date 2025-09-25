@@ -114,7 +114,23 @@ const Wallet = () => {
   // Connect wallet using viem (following reference implementation)
   const connectWallet = async () => {
     if (!window.ethereum) {
-      toast.error('Please install MetaMask!');
+      // Mobile in-app browsers (like Telegram) don't inject window.ethereum.
+      // Open deep link to MetaMask's dapp browser as a zero-deps fallback.
+      const currentUrl = window.location.href.replace(/^https?:\/\//, '');
+      const metamaskDeepLink = `https://metamask.app.link/dapp/${currentUrl}`;
+
+      if (isTelegramMiniApp && window?.Telegram?.WebApp?.openLink) {
+        toast('Opening MetaMask…', { duration: 2000 });
+        try {
+          window.Telegram.WebApp.openLink(metamaskDeepLink);
+        } catch (e) {
+          window.open(metamaskDeepLink, '_blank');
+        }
+      } else {
+        // Non-Telegram/mobile environment without provider
+        toast.error('No injected wallet found. Opening MetaMask…');
+        window.open(metamaskDeepLink, '_blank');
+      }
       return;
     }
     
