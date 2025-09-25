@@ -111,10 +111,104 @@ const Wallet = () => {
     return connectionStatus;
   };
 
+  // Mobile MetaMask detection
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  };
+
+  const isMetaMaskInstalled = () => {
+    return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
+  };
+
+  const openMetaMaskDeepLink = () => {
+    const currentUrl = window.location.href;
+    const metamaskDeepLink = `https://metamask.app.link/dapp/${window.location.host}${window.location.pathname}`;
+    window.open(metamaskDeepLink, '_blank');
+  };
+
   // Connect wallet using viem (following reference implementation)
   const connectWallet = async () => {
+    // Check if we're on mobile and MetaMask is not detected
+    if (isMobile() && !isMetaMaskInstalled()) {
+      toast(
+        (t) => (
+          <div className="flex flex-col items-center gap-3">
+            <span className="font-bold text-center">Open in MetaMask App</span>
+            <span className="text-sm text-center">
+              To connect your wallet, please open this app in MetaMask browser
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  openMetaMaskDeepLink();
+                  toast.dismiss(t.id);
+                }}
+                className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-semibold hover:bg-indigo-600"
+              >
+                Open MetaMask
+              </button>
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ),
+        {
+          duration: 10000,
+          style: {
+            background: '#1e293b',
+            color: 'white',
+            padding: '16px',
+            borderRadius: '12px',
+            border: '1px solid #3b82f6'
+          }
+        }
+      );
+      return;
+    }
+
+    // Desktop MetaMask check
     if (!window.ethereum) {
-      toast.error('Please install MetaMask!');
+      toast(
+        (t) => (
+          <div className="flex flex-col items-center gap-3">
+            <span className="font-bold text-center">MetaMask Required</span>
+            <span className="text-sm text-center">
+              Please install MetaMask browser extension to continue
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  window.open('https://metamask.io/download/', '_blank');
+                  toast.dismiss(t.id);
+                }}
+                className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-semibold hover:bg-indigo-600"
+              >
+                Install MetaMask
+              </button>
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ),
+        {
+          duration: 10000,
+          style: {
+            background: '#1e293b',
+            color: 'white',
+            padding: '16px',
+            borderRadius: '12px',
+            border: '1px solid #3b82f6'
+          }
+        }
+      );
       return;
     }
     
