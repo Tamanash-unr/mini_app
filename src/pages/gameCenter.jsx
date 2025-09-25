@@ -88,44 +88,6 @@ const GameCenter = () => {
             textStyle="ubuntu-bold text-base"
             buttonStyle="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 shadow-[0px_4px_24px_#4f46e5]"
             onClick={() => {
-              // Check if mobile and MetaMask not detected
-              const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-              const isMetaMaskInstalled = typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
-              
-              if (isMobile && !isMetaMaskInstalled) {
-                toast(
-                  (t) => (
-                    <div className="flex flex-col items-center gap-3">
-                      <span className="font-bold text-center">Open in MetaMask App</span>
-                      <span className="text-sm text-center">
-                        Please open this app in MetaMask mobile browser to connect your wallet
-                      </span>
-                      <button
-                        onClick={() => {
-                          const metamaskDeepLink = `https://metamask.app.link/dapp/${window.location.host}${window.location.pathname}`;
-                          window.open(metamaskDeepLink, '_blank');
-                          toast.dismiss(t.id);
-                        }}
-                        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-semibold hover:bg-indigo-600"
-                      >
-                        Open MetaMask
-                      </button>
-                    </div>
-                  ),
-                  {
-                    duration: 8000,
-                    style: {
-                      background: '#1e293b',
-                      color: 'white',
-                      padding: '16px',
-                      borderRadius: '12px',
-                      border: '1px solid #3b82f6'
-                    }
-                  }
-                );
-                return;
-              }
-              
               dispatch(setCurrentTab("wallet"));
               navigate('/main');
             }}
